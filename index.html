@@ -3,91 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profi Website</title>
+    <title>Profi-Website mit Suche</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #f5f5f5;
         }
         .navbar {
-            background-color: #333;
-            overflow: hidden;
+            background-color: #232f3e;
+            color: white;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
-            padding: 10px 20px;
+            align-items: center;
+            position: relative;
         }
-        .navbar a {
+        .navbar h1 {
+            color: #ff9900;
+        }
+        .menu {
+            list-style: none;
+            display: flex;
+        }
+        .menu li {
+            position: relative;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        .menu a {
             color: white;
             text-decoration: none;
-            padding: 14px 20px;
-            display: block;
-        }
-        .navbar a:hover {
-            background-color: #575757;
+            font-size: 16px;
         }
         .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-        .dropdown-content {
             display: none;
             position: absolute;
-            background-color: #333;
-            min-width: 160px;
-            z-index: 1;
+            top: 100%;
+            left: 0;
+            background: white;
+            box-shadow: 0px 5px 10px rgba(0,0,0,0.1);
+            min-width: 150px;
+            z-index: 1000;
         }
-        .dropdown-content a {
-            color: white;
-            padding: 12px 16px;
+        .dropdown a {
+            color: black;
+            padding: 10px;
             display: block;
         }
-        .dropdown-content a:hover {
-            background-color: #575757;
+        .dropdown a:hover {
+            background: #ff9900;
+            color: white;
         }
-        .dropdown:hover .dropdown-content {
+        .menu li:hover .dropdown {
             display: block;
         }
-        .hero {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 80vh;
-            background: url('https://source.unsplash.com/1600x900/?business,technology') no-repeat center center/cover;
-            color: white;
-            font-size: 2rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-        .content {
-            padding: 20px;
-            text-align: center;
+        .menu-icon {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
         }
         @media (max-width: 768px) {
-            .navbar {
+            .menu {
+                display: none;
                 flex-direction: column;
-                align-items: center;
+                position: absolute;
+                top: 50px;
+                left: 0;
+                background: #232f3e;
+                width: 100%;
             }
+            .menu.active {
+                display: flex;
+            }
+            .menu li {
+                text-align: center;
+                width: 100%;
+            }
+            .menu-icon {
+                display: block;
+            }
+        }
+        /* Suchleiste */
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .search-box {
+            padding: 8px;
+            width: 200px;
+            border-radius: 5px;
+            border: none;
+        }
+        .search-results {
+            display: none;
+            position: absolute;
+            top: 35px;
+            left: 0;
+            width: 100%;
+            background: white;
+            box-shadow: 0px 5px 10px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            z-index: 1000;
+        }
+        .search-results div {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .search-results div:hover {
+            background: #ff9900;
+            color: white;
         }
     </style>
 </head>
 <body>
+
     <div class="navbar">
-        <a href="#">Startseite</a>
-        <div class="dropdown">
-            <a href="#">Menü &#9662;</a>
-            <div class="dropdown-content">
-                <a href="#">Über uns</a>
-                <a href="#">Leistungen</a>
-                <a href="#">Kontakt</a>
-            </div>
+        <h1>Profi-Website</h1>
+
+        <!-- Suchleiste -->
+        <div class="search-container">
+            <input type="text" id="search" class="search-box" placeholder="Suche...">
+            <div class="search-results" id="results"></div>
         </div>
-        <a href="#">Blog</a>
+
+        <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
+        <ul class="menu" id="menu">
+            <li><a href="#">Home</a></li>
+            <li>
+                <a href="#">Dienste ⌄</a>
+                <ul class="dropdown">
+                    <li><a href="#">Webdesign</a></li>
+                    <li><a href="#">SEO</a></li>
+                    <li><a href="#">Marketing</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Über uns</a></li>
+            <li><a href="#">Kontakt</a></li>
+        </ul>
     </div>
-    <div class="hero">Willkommen auf unserer Profi-Website!</div>
-    <div class="content">
-        <h2>Unsere Dienstleistungen</h2>
-        <p>Hier kannst du Informationen über dein Unternehmen oder deine Dienstleistungen hinzufügen.</p>
-    </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById("menu").classList.toggle("active");
+        }
+
+        // Suchfunktion
+        const searchBox = document.getElementById("search");
+        const resultsBox = document.getElementById("results");
+
+        const searchItems = ["Webdesign", "SEO", "Marketing", "Über uns", "Kontakt"];
+
+        searchBox.addEventListener("input", function() {
+            const query = this.value.toLowerCase();
+            resultsBox.innerHTML = "";
+            if (query.length > 0) {
+                const filteredItems = searchItems.filter(item => item.toLowerCase().includes(query));
+                filteredItems.forEach(item => {
+                    const div = document.createElement("div");
+                    div.textContent = item;
+                    div.addEventListener("click", () => {
+                        searchBox.value = item;
+                        resultsBox.style.display = "none";
+                    });
+                    resultsBox.appendChild(div);
+                });
+                resultsBox.style.display = filteredItems.length ? "block" : "none";
+            } else {
+                resultsBox.style.display = "none";
+            }
+        });
+
+        document.addEventListener("click", function(e) {
+            if (!searchBox.contains(e.target) && !resultsBox.contains(e.target)) {
+                resultsBox.style.display = "none";
+            }
+        });
+    </script>
+
 </body>
 </html>
