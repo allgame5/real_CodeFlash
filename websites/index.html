@@ -1,1 +1,87 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unsere Webseiten</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            text-align: center;
+        }
+        header {
+            background: #0073e6;
+            color: white;
+            padding: 20px;
+            font-size: 24px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 20px;
+        }
+        .card {
+            background: white;
+            width: 300px;
+            margin: 15px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card h3 {
+            margin: 0 0 10px;
+            color: #333;
+        }
+        .card p {
+            color: #666;
+            font-size: 14px;
+        }
+        .button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background: #0073e6;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background: #005bb5;
+        }
+    </style>
+</head>
+<body>
+
+<header>Unsere Webseiten</header>
+
+<div class="container">
+    <div class="card">
+        <h3>Loes</h3>
+        <p>Beschreibung der ersten Webseite.</p>
+        <a href="loes/loes.html" class="button" target="_blank">Besuchen</a>
+    </div>
+
+    <div class="card">
+        <h3>AppStore</h3>
+        <p>Kurze Beschreibung der zweiten Webseite.</p>
+        <a href="AppStore/appstore.html" class="button" target="_blank">Besuchen</a>
+    </div>
+
+    <div class="card">
+        <h3>Andere</h3>
+        <p>Informationen zur dritten Webseite.</p>
+        <a href="https://beispiel3.com" class="button" target="_blank">Besuchen</a>
+    </div>
+</div>
+
+</body>
+</html>
 
