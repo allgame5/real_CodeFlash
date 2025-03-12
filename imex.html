@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loes-Webseiten</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Allgemeine Styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #1e3a5f;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-logo img {
+            height: 40px;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 15px;
+        }
+
+        .dropbtn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 10px 15px;
+            transition: 0.3s;
+        }
+
+        .dropbtn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: white;
+            min-width: 160px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: #1e3a5f;
+            padding: 10px;
+            display: block;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background: #1e3a5f;
+            color: white;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .navbar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Hauptcontainer */
+        .container {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        h1 {
+            color: #1e3a5f;
+            font-weight: 600;
+        }
+
+        /* Suchfeld */
+        #search-input {
+            width: 60%;
+            max-width: 500px;
+            padding: 10px;
+            margin: 20px 0;
+            border: 2px solid #1e3a5f;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        /* URL-Liste */
+        .url-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .url-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+        }
+
+        .url-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .url-item a {
+            text-decoration: none;
+            color: #1e3a5f;
+            font-weight: 600;
+        }
+
+        /* Responsive Anpassungen */
+        @media (max-width: 768px) {
+            .navbar-menu {
+                display: none;
+                flex-direction: column;
+                background: #1e3a5f;
+                position: absolute;
+                top: 60px;
+                right: 20px;
+                width: 200px;
+                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+                border-radius: 5px;
+            }
+
+            .navbar-menu.show {
+                display: flex;
+            }
+
+            .navbar-toggle {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-logo">
+            <img src="logo.png" alt="Logo">
+        </div>
+        <button class="navbar-toggle" onclick="toggleNavbar()">☰</button>
+        <div class="navbar-menu" id="navbarMenu">
+            <div class="dropdown">
+                <button class="dropbtn">Minecraft</button>
+                <div class="dropdown-content">
+                    <a href="minecraft.html">Welten</a>
+                    <a href="#">Konsolen</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">Weitere Webseiten</button>
+                <div class="dropdown-content">
+                    <a href="https://loes-anderewebseiten.vercel.app">Andere Webseiten von Loes</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">Menü</button>
+                <div class="dropdown-content">
+                    <a href="index.html">Home</a>
+                    <a href="mitarbeiter.html">Team</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Loes-Webseiten</h1>
+        <input type="text" id="search-input" placeholder="Suche eine Webseite von LOES" onkeyup="filterUrls()">
+        <div class="url-list" id="url-list">
+            <div class="url-item"><a href="https://loes-downloader.vercel.app/" target="_blank">Downloader</a></div>
+            <div class="url-item"><a href="https://loes-aufgabenliste.vercel.app/" target="_blank">Aufgabenliste</a></div>
+            <div class="url-item"><a href="https://loes-cutspeicher.vercel.app/" target="_blank">WEB-CUT-Speicher</a></div>
+            <div class="url-item"><a href="https://loes-rechner.vercel.app/" target="_blank">Taschenrechner</a></div>
+            <div class="url-item"><a href="https://loes-bruchrechner.vercel.app/" target="_blank">Bruchrechner</a></div>
+            <div class="url-item"><a href="https://loes-verkauf.vercel.app/" target="_blank">Verkauf</a></div>
+            <div class="url-item"><a href="https://loes-chitter-cklick.vercel.app/" target="_blank">ChitterClicker</a></div>
+            <div class="url-item"><a href="https://loes-zufallsgenerator.vercel.app/" target="_blank">Zufallsgenerator (Zahlen)</a></div>
+        </div>
+    </div>
+
+    <script>
+        function toggleNavbar() {
+            document.getElementById("navbarMenu").classList.toggle("show");
+        }
+    </script>
+</body>
+</html>
