@@ -14,6 +14,37 @@
             color: #fff;
             text-align: center;
         }
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            text-align: center;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: rgba(255, 255, 255, 0.9);
+            min-width: 160px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            display: block;
+            text-decoration: none;
+        }
+        .dropdown-content a:hover {
+            background: #ff7eb3;
+            color: white;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
         .container {
             max-width: 900px;
             margin: 60px auto;
@@ -22,6 +53,7 @@
             border-radius: 15px;
             backdrop-filter: blur(10px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
         }
         h1 {
             font-size: 3em;
@@ -54,10 +86,30 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Willkommen auf unserer Info-Seite</h1>
-        <p>Entdecke die neuesten Features, spannende Inhalte und alles, was du über unsere Plattform wissen musst.</p>
-        <a href="#" class="btn" onclick="alert('Mehr Infos folgen in Kürze!')">Mehr erfahren</a>
+    <div class="navbar">
+        <div class="dropdown">
+            <button class="btn">Menü</button>
+            <div class="dropdown-content">
+                <a href="#about">Über uns</a>
+                <a href="#features">Features</a>
+                <a href="#contact">Kontakt</a>
+            </div>
+        </div>
+    </div>
+    
+    <div id="about" class="container">
+        <h1>Über Uns</h1>
+        <p>Wir sind ein innovatives Unternehmen, das großartige digitale Lösungen entwickelt.</p>
+    </div>
+    
+    <div id="features" class="container">
+        <h1>Features</h1>
+        <p>Unsere Plattform bietet moderne Technologien und erstklassige Benutzererfahrung.</p>
+    </div>
+    
+    <div id="contact" class="container">
+        <h1>Kontakt</h1>
+        <p>Erreiche uns per E-Mail oder über unsere Social-Media-Kanäle.</p>
     </div>
 </body>
 </html>
