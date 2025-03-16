@@ -93,7 +93,7 @@ submitButton.addEventListener("click", function() {
     .then((userCredential) => {
       // Signed in
       const user = userCredential.user;
-      window.location.href = "error/404.html"; // Weiterleitung nach erfolgreicher Anmeldung
+      window.location.href = "error/503.html"; // Weiterleitung nach erfolgreicher Anmeldung
     // Hier können Sie den Login Status speichern (z.B. als Cookie oder in Local Storage)
     localStorage.setItem('loggedIn', 'true'); // Beispiel für einen "eingeloggt"-Status
     })
