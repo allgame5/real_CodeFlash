@@ -3,38 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDQGtRc6ku9YxIEhezn31GBJmvNaHvblQk",
-            authDomain: "virtutrust-7a88a.firebaseapp.com",
-            projectId: "virtutrust-7a88a",
-            storageBucket: "virtutrust-7a88a.firebasestorage.app",
-            messagingSenderId: "166266778192",
-            appId: "1:166266778192:web:c66e91fafdd69ba50f5755",
-            measurementId: "G-JG2QBY1SZ5"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        // Überprüfung, ob der Benutzer eingeloggt ist, sonst Weiterleitung zur Login-Seite
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = "index.html"; // Falls nicht eingeloggt, weiterleiten
+    <title>Zwischenseite</title>
+    <script>
+        window.onload = function() {
+            // Überprüfen, ob der Benutzer von index.html kommt
+            if (document.referrer.indexOf('index.html') === -1) {
+                window.location.href = 'index.html'; // Weiterleitung zur Indexseite
+                return;
             }
-        });
-        
-        if (!loggedInUser || window.location.pathname.split("/").pop() !== allowedPage) {
-        window.location.href = "anmeldung.html"; // Zurück zur Login-Seite
-    }
+            
+            // Überprüfen, ob der Benutzer eingeloggt ist
+            const loggedIn = localStorage.getItem('loggedIn');
+            if (!loggedIn || loggedIn !== 'true') {
+                window.location.href = 'index.html'; // Weiterleitung zur Indexseite
+            }
+        }
     </script>
+
+    <style>
+
+    </style>
+
+    
 </head>
 <body>
-    <h1>Willkommen im Dashboard</h1>
-    <p>Du bist erfolgreich eingeloggt.</p>
+    <h1>Willkommen auf der Zwischenseite!</h1>
+    <p>Du hast Zugriff, da du angemeldet bist und von der Index-Seite gekommen bist.</p>
 </body>
 </html>
