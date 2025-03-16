@@ -82,8 +82,7 @@ submitButton.addEventListener("click", function() {
     .then((userCredential) => {
       // Signed in
       const user = userCredential.user;
-      console.log("Success! Welcome back!");
-      window.alert("Success! Welcome back!");
+      window.location.href = "dashboard.html"; // Weiterleitung nach erfolgreicher Anmeldung
       // ...
     })
     .catch((error) => {
