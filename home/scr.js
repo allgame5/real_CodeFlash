@@ -28,7 +28,7 @@ export function checkAuth() {
   }
 
   if (/Mobi|Android/i.test(navigator.userAgent)) {
-    setInterval(handleAuthStateChange, 20000); // Alle 20 Sekunden für Mobilgeräte
+    setInterval(handleAuthStateChange, 200000); // Alle 20 Sekunden für Mobilgeräte
   } else {
     handleAuthStateChange(); // Sofort für andere Geräte
   }
