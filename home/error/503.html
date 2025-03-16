@@ -1,1 +1,95 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>503 - Seite in Arbeit</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+  <style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f1f1f1;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.error-container {
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+}
+
+.error-code {
+    font-size: 120px;
+    color: #f39c12;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.error-message {
+    font-size: 24px;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.error-description {
+    font-size: 18px;
+    color: #7f8c8d;
+    margin-bottom: 30px;
+}
+
+.loader {
+    border: 5px solid #f1f1f1;
+    border-top: 5px solid #f39c12;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.error-footer {
+    font-size: 16px;
+    color: #95a5a6;
+}
+
+a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+  </style>
+<body>
+    <div class="error-container">
+        <div class="error-content">
+            <h1 class="error-code">503</h1>
+            <p class="error-message">Wir arbeiten gerade an etwas Großartigem!</p>
+            <p class="error-description">Unsere Website wird derzeit gewartet. Wir sind bald wieder online. Bitte versuchen Sie es später erneut.</p>
+            <div class="loader"></div>
+            <p class="error-footer">Danke für Ihre Geduld!</p>
+        </div>
+    </div>
+</body>
+</html>
 
