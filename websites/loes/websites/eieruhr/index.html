@@ -9,23 +9,71 @@
     <link rel="manifest" href="manifest.json">
 
     <style>
-        .background-dark {
-            background-color: #262626;
-        }
-        
-        .center {
+        body {
             display: flex;
-            justify-content: center;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
         }
-        
-        .margin-top {
-            margin-top: 100px;
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            height: 100vh;
+            padding-top: 20px;
+            position: fixed;
+            left: 0;
+            top: 0;
         }
-        
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .sidebar a {
+            display: block;
+            padding: 15px;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: background 0.3s;
+        }
+        .sidebar a:hover {
+            background-color: #1a252f;
+        }
+        .dropdown {
+            display: none;
+            background-color: #34495e;
+            padding-left: 20px;
+        }
+        .dropdown a {
+            font-size: 16px;
+        }
+        .dropdown-btn {
+            cursor: pointer;
+            padding: 15px;
+            font-size: 18px;
+            display: block;
+            color: white;
+            background: none;
+            border: none;
+            text-align: left;
+            width: 100%;
+        }
+        .dropdown-btn:hover {
+            background-color: #1a252f;
+        }
+        .main-content {
+            margin-left: 270px;
+            padding: 40px;
+            flex-grow: 1;
+            background-color: #262626;
+            text-align: center;
+        }
         .timer {
             font-size: 60px;
             color: white;
-            font-family: 'Roboto', sans-serif;
+        }
+        .margin-top {
+            margin-top: 100px;
         }
     </style>
 
@@ -33,54 +81,60 @@
         let alarm = new Audio('alarm.mp3');
         let timerStarted = false;
 
-
         function startTimer() {
             if (!timerStarted) {
                 let startTime = new Date().getTime();
                 let fiveMinutes = 1000 * 60 * 5;
                 let endTime = startTime + fiveMinutes;
 
-
                 setInterval(function() {
                     let timeLeft = endTime - new Date().getTime();
-
-
                     if (timeLeft > 0) {
-                        let minutes = timeLeft / (1000 * 60);
-                        minutes = Math.floor(minutes);
-                        let seconds = (timeLeft / 1000) % 60;
-                        seconds = Math.round(seconds);
+                        let minutes = Math.floor(timeLeft / (1000 * 60));
+                        let seconds = Math.round((timeLeft / 1000) % 60);
                         seconds = ('0' + seconds).slice(-2);
-                        let text = '0'  +  minutes  +  ' : '  +  seconds;
-                        timer.innerHTML = text;
+                        document.getElementById("timer").innerHTML = '0' + minutes + ' : ' + seconds;
                     } else {
                         alarm.play();
-                        timer.innerHTML = '00 : 00';
+                        document.getElementById("timer").innerHTML = '00 : 00';
                     }
                 }, 1000);
                 timerStarted = true;
             }
         }
-    </script>
 
+        function toggleDropdown() {
+            var dropdown = document.getElementById("dropdown-menu");
+            if (dropdown.style.display === "block") {
+                dropdown.style.display = "none";
+            } else {
+                dropdown.style.display = "block";
+            }
+        }
+    </script>
 </head>
 
-<body class="background-dark">
-    <div>
-        <img src="menu.png">
+<body>
+    <div class="sidebar">
+        <h2>Menü</h2>
+        <a href="#">• Startseite</a>
+        <button class="dropdown-btn" onclick="toggleDropdown()">Weitere Optionen</button>
+        <div class="dropdown" id="dropdown-menu">
+            <a href="#">Info</a>
+            <a href="#"></a>
+            <a href="#"></a>
+        </div>
+        <a href="#">Kontakt</a>
     </div>
 
-
-    <div class="center margin-top">
-        <img src="egg.png">
-    </div>
-
-
-    <div class="center margin-top timer" id="timer">05 : 00</div>
-
-
-    <div class="center margin-top timer">
-        <img onclick="startTimer()" src="button.png">
+    <div class="main-content">
+        <div class="margin-top">
+            <img src="egg.png">
+        </div>
+        <div class="margin-top timer" id="timer">05 : 00</div>
+        <div class="margin-top">
+            <img onclick="startTimer()" src="button.png">
+        </div>
     </div>
 </body>
 
