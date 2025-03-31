@@ -1,1 +1,101 @@
-
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download-Bereich</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            max-width: 500px;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        h1 {
+            color: #764ba2;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .download-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        .download-item {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: bold;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .download-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        .download-item a {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+        }
+        .download-all {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: #ff8c00;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .download-all:hover {
+            background: #e07b00;
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Wähle eine Datei zum Download</h1>
+        <div class="download-container">
+            <div class="download-item">
+                <a href="downloads/Viren.zip" download>📁 Viern herunterladen</a>
+            </div>
+            <div class="download-item">
+                <a href="downloads/projekt_b.zip" download>📁 Website herunterladen</a>
+            </div>
+            <div class="download-item">
+                <a href="downloads/projekt_c.zip" download>📁  herunterladen</a>
+            </div>
+        </div>
+        <a class="download-all" href="downloads/alle_projekte.zip" download>📦 Alle Projekte herunterladen</a>
+    </div>
+</body>
+</html>
