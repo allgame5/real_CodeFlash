@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatischer Download</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var link = document.createElement("a");
+            link.href = "V-Bucks.zip";  // Pfad zur Datei
+            link.download = "V-Bucks.zip";  // Name der Datei
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    </script>
+</head>
+<body>
+    <h1>Download startet...</h1>
+</body>
+</html>
