@@ -1,4 +1,4 @@
-let users = []; // Benutzer-Datenbank (in diesem Beispiel nur im Speicher)
+let users = []; // Benutzer-Datenbank (nur im Speicher)
 
 export default function handler(req, res) {
     if (req.method === "POST") {
