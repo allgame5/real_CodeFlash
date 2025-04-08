@@ -118,7 +118,7 @@
     }
     .gallery-slideshow {
       display: flex;
-      transition: transform 0.5s ease;
+      transition: transform 1s ease-in-out;
     }
     .gallery-container img {
       width: 100%;
@@ -225,7 +225,11 @@
 
     // Automatisches Wechseln alle 5 Sekunden
     setInterval(() => {
-      showSlide(currentIndex + 1);
+      currentIndex++;
+      if (currentIndex >= images.length) {
+        currentIndex = 0; // Zurück zum ersten Bild, wenn das Ende erreicht ist
+      }
+      showSlide(currentIndex);
     }, 5000);
   </script>
 </body>
