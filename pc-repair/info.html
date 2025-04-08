@@ -126,26 +126,6 @@
       border-radius: 1rem;
       object-fit: cover;
     }
-    .gallery-nav {
-      position: absolute;
-      top: 50%;
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      transform: translateY(-50%);
-      z-index: 1;
-    }
-    .prev, .next {
-      background-color: rgba(0, 0, 0, 0.5);
-      color: white;
-      padding: 1rem;
-      border-radius: 50%;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    .prev:hover, .next:hover {
-      background-color: rgba(0, 0, 0, 0.8);
-    }
     footer {
       background: white;
       text-align: center;
@@ -208,10 +188,6 @@
         <img src="https://cdn.pixabay.com/photo/2024/05/22/01/46/room-8779510_1280.png" alt="Beispiel-PC 4">
         <img src="https://cdn.pixabay.com/photo/2017/06/24/08/19/processor-2436992_1280.jpg" alt="Beispiel-PC 5">
       </div>
-      <div class="gallery-nav">
-        <span class="prev">&#10094;</span>
-        <span class="next">&#10095;</span>
-      </div>
     </div>
   </section>
 
@@ -236,7 +212,7 @@
       observer.observe(section);
     });
 
-    // Slideshow-Funktion
+    // Diashow-Funktion (automatisches Wechseln der Bilder)
     let currentIndex = 0;
     const images = document.querySelectorAll('.gallery-slideshow img');
     const slideshow = document.querySelector('.gallery-slideshow');
@@ -247,14 +223,7 @@
       slideshow.style.transform = `translateX(-${currentIndex * 100}%)`;
     }
 
-    document.querySelector('.prev').addEventListener('click', () => {
-      showSlide(currentIndex - 1);
-    });
-
-    document.querySelector('.next').addEventListener('click', () => {
-      showSlide(currentIndex + 1);
-    });
-
+    // Automatisches Wechseln alle 5 Sekunden
     setInterval(() => {
       showSlide(currentIndex + 1);
     }, 5000);
