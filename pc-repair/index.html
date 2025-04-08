@@ -1,10 +1,9 @@
-<!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PC Aufrüstungen</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet">
   <style>
     :root {
       --text-color: #1d1d1f;
@@ -112,19 +111,35 @@
       background: #005bb5;
     }
     .gallery-container {
+      position: relative;
+      max-width: 100%;
+      overflow: hidden;
+      border-radius: 1rem;
+    }
+    .gallery-slideshow {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1rem;
+      transition: transform 0.5s ease;
     }
     .gallery-container img {
       width: 100%;
-      max-width: 280px;
+      max-width: 100%;
       border-radius: 1rem;
-      transition: transform 0.3s;
     }
-    .gallery-container img:hover {
-      transform: scale(1.05);
+    .gallery-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+      z-index: 1;
+    }
+    .prev, .next {
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      padding: 1rem;
+      border-radius: 50%;
+      cursor: pointer;
     }
     footer {
       background: white;
@@ -147,48 +162,54 @@
     </nav>
   </header>
 
-  <section id="start">
+  <section id="start" class="visible">
     <h2>Willkommen bei deinem PC-Aufrüster</h2>
     <p>Leistungsstarke Upgrades für Gaming, Arbeit und Alltag – perfekt abgestimmt auf deine Bedürfnisse.</p>
   </section>
 
-  <section id="leistungen" class="card">
+  <section id="leistungen" class="card visible">
     <h2>Unsere Leistungen</h2>
     <ul>
       <li>Beratung zur optimalen Hardware</li>
-      <li>Professioneller Einbau & Montage</li>
+      <li>Professioneller Einbau &amp; Montage</li>
       <li>System-Optimierung und Konfiguration</li>
-      <li>Innenreinigung & Thermo-Check</li>
+      <li>Innenreinigung &amp; Thermo-Check</li>
     </ul>
   </section>
 
-  <section id="preise" class="card">
+  <section id="preise" class="card visible">
     <h2>Preise</h2>
     <p><strong>Komponenten-Einbau:</strong> ab 30€</p>
-    <p><strong>Komplettpaket:</strong> ab 100€ inkl. Beratung & Test</p>
+    <p><strong>Komplettpaket:</strong> ab 100€ inkl. Beratung &amp; Test</p>
   </section>
 
-  <section id="kontakt" class="card">
+  <section id="kontakt" class="card visible">
     <h2>Kontakt</h2>
     <form id="kontaktformular" action="mailto:info@codeflash.eu" method="POST" enctype="text/plain">
-      <input type="text" name="name" placeholder="Dein Name" required />
-      <input type="email" name="email" placeholder="Deine E-Mail" required />
-      <textarea name="nachricht" rows="5" placeholder="Deine Nachricht" required></textarea>
+      <input type="text" name="name" placeholder="Dein Name" required="">
+      <input type="email" name="email" placeholder="Deine E-Mail" required="">
+      <textarea name="nachricht" rows="5" placeholder="Deine Nachricht" required=""></textarea>
       <button type="submit">Absenden</button>
     </form>
   </section>
 
-  <section id="galerie" class="card">
+  <section id="galerie" class="card visible">
     <h2>Galerie</h2>
     <div class="gallery-container">
-      <img src="https://via.placeholder.com/300x200" alt="Beispiel-PC 1" />
-      <img src="https://via.placeholder.com/300x200" alt="Beispiel-PC 2" />
-      <img src="https://via.placeholder.com/300x200" alt="Beispiel-PC 3" />
+      <div class="gallery-slideshow">
+        <img src="https://via.placeholder.com/300x200" alt="Beispiel-PC 1">
+        <img src="https://via.placeholder.com/300x200" alt="Beispiel-PC 2">
+        <img src="https://via.placeholder.com/300x200" alt="Beispiel-PC 3">
+      </div>
+      <div class="gallery-nav">
+        <span class="prev">&#10094;</span>
+        <span class="next">&#10095;</span>
+      </div>
     </div>
   </section>
 
   <footer>
-    <p>&copy; 2025 PC Upgrade Service – Alle Rechte vorbehalten.</p>
+    <p>© 2025 PC Upgrade Service – Alle Rechte vorbehalten.</p>
   </footer>
 
   <script>
@@ -207,6 +228,29 @@
     sections.forEach(section => {
       observer.observe(section);
     });
+
+    // Slideshow-Funktion
+    let currentIndex = 0;
+    const images = document.querySelectorAll('.gallery-slideshow img');
+    const slideshow = document.querySelector('.gallery-slideshow');
+
+    function showSlide(index) {
+      if (index >= images.length) currentIndex = 0;
+      if (index < 0) currentIndex = images.length - 1;
+      slideshow.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
+
+    document.querySelector('.prev').addEventListener('click', () => {
+      showSlide(currentIndex - 1);
+    });
+
+    document.querySelector('.next').addEventListener('click', () => {
+      showSlide(currentIndex + 1);
+    });
+
+    setInterval(() => {
+      showSlide(currentIndex + 1);
+    }, 5000);
   </script>
 </body>
 </html>
