@@ -5,35 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Automatischer Windows 10 Download</title>
   <script>
-    // Funktion, die automatisch den Download auslöst
     function triggerDownload() {
-      // URL der Windows 10 ISO von Microsoft oder deinem eigenen GitHub-Server
-      const downloadUrl = "https://software-download.microsoft.com/pr/Win10_21H1_German_x64.iso"; // Beispiel-Link (Windows 10 21H1)
+      const downloadUrl = "https://software-download.microsoft.com/pr/Win10_21H1_German_x64.iso";
 
-      // Erstelle ein unsichtbares Link-Element
       const link = document.createElement('a');
       link.href = downloadUrl;
-      link.download = "Windows10_German.iso"; // Dateiname, wie er im Download angezeigt wird
-
-      // Füge den Link zum Dokument hinzu
+      link.download = "Windows10_German.iso";
       document.body.appendChild(link);
-
-      // Klicke auf den Link, um den Download zu starten
       link.click();
-
-      // Entferne den Link nach dem Klicken
       document.body.removeChild(link);
 
-      // Schließe den Tab nach dem Download
-      window.close();
+      // Warte z. B. 15 Sekunden, bevor sich der Tab schließt
+      setTimeout(() => {
+        window.close();
+      }, 15000); // 15000 ms = 15 Sekunden
     }
 
-    // Lade die Funktion beim Laden der Seite
     window.onload = triggerDownload;
   </script>
 </head>
 <body>
-  <h1>Dein Windows 10 Download startet in Kürze...</h1>
-  <p>Bitte warten Sie einen Moment, während die Datei heruntergeladen wird.</p>
+  <h1>Download von Windows 10 startet gleich...</h1>
+  <p>Dieser Tab schließt sich automatisch, nachdem der Download gestartet wurde.</p>
 </body>
 </html>
