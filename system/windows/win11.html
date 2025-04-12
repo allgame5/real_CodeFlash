@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automatischer Windows 10 Download</title>
+  <script>
+    function triggerDownload() {
+      const downloadUrl = "https://software.download.prss.microsoft.com/dbazure/Win11_24H2_German_x64.iso?t=d8f51758-5b83-46ea-941e-237782266f1a&P1=1744558697&P2=601&P3=2&P4=1Z%2bHOTN3s9lCrQ1wdtesbKeDrkxWUunLI0IDjFAtgxTXVHFfiwiqbX0R89XAONss4FP8K%2b9mhPgdC5Mja9%2f9HQVvGWSVyEGLbsIC45e3vHMZw0rzqyb5S4uq90AAm%2ftluB4iR5O00v58jRsFUmPbLv%2fEj9XQA%2fr32Q%2fKW1vzO9iakSd%2b6p2HB35HbG5GFQkwa%2fwytNG%2bDunPFsAY3j6aV1HqLPZtDM8npTmnwFZU3byISzJ%2bN42RmVAdvvuNlBjm2v20lvdy2D02WPcHji081Rf2YtuKgy92sMA6Zqs1yAffXJAVL%2bo5Jx63sQRzJEEzv9wcJWoP%2fzUG6ciY1laTbw%3d%3d";
+
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = "Windows10_German.iso";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // Warte z. B. 15 Sekunden, bevor sich der Tab schließt
+      setTimeout(() => {
+        window.close();
+      }, 15000); // 15000 ms = 15 Sekunden
+    }
+
+    window.onload = triggerDownload;
+  </script>
+</head>
+<body>
+  <h1>Download von Windows 10 startet gleich...</h1>
+  <p>Dieser Tab schließt sich automatisch, nachdem der Download gestartet wurde.</p>
+</body>
+</html>
