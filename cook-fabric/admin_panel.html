@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin-Panel</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+    h1 { text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 12px; text-align: left; border: 1px solid #ddd; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Admin-Panel</h1>
+    <h2>Bestellungen</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>E-Mail</th>
+          <th>Adresse</th>
+          <th>Bäckerei</th>
+          <th>Produkte</th>
+        </tr>
+      </thead>
+      <tbody id="ordersTable"></tbody>
+    </table>
+  </div>
+
+  <script>
+    async function fetchOrders() {
+      const res = await fetch('/api/orders');
+      const data = await res.json();
+      const tableBody = document.getElementById('ordersTable');
+      data.orders.forEach(order => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${order.name}</td>
+          <td>${order.email}</td>
+          <td>${order.adresse}</td>
+          <td>${order.bäckerei}</td>
+          <td>${order.produkte}</td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    }
+
+    fetchOrders();
+  </script>
+
+</body>
+</html>
