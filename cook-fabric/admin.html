@@ -13,6 +13,9 @@
     button { background-color: #4CAF50; color: white; padding: 10px; border: none; cursor: pointer; }
     button:hover { background-color: #45a049; }
   </style>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-auth.js"></script>
 </head>
 <body>
 
@@ -30,16 +33,35 @@
   </div>
 
   <script>
+    // Firebase-Konfiguration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCQP1eIXZGndS1aNR-c9JGc6lAZ0lxxb1A",
+      authDomain: "bank-fa116.firebaseapp.com",
+      projectId: "bank-fa116",
+      storageBucket: "bank-fa116.firebasestorage.app",
+      messagingSenderId: "431788300991",
+      appId: "1:431788300991:web:a466dc726c3a8a4e9c440a"
+    };
+
+    // Firebase initialisieren
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
     document.getElementById('loginForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
 
-      if (username === 'admin' && password === 'admin123') {
-        window.location.href = '/cook-fabric/admin-panel.html'; // Erfolg: Weiterleitung zum Admin-Panel
-      } else {
-        alert('Ungültige Anmeldedaten');
-      }
+      // Benutzer mit Firebase Authentication anmelden
+      auth.signInWithEmailAndPassword(username, password)
+        .then(userCredential => {
+          const user = userCredential.user;
+          // Wenn der Admin erfolgreich eingeloggt ist, Weiterleitung zum Admin-Panel
+          window.location.href = '/cook-fabric/admin-panel.html'; // Erfolg: Weiterleitung zum Admin-Panel
+        })
+        .catch(error => {
+          alert('Anmeldung fehlgeschlagen: ' + error.message);
+        });
     });
   </script>
 
