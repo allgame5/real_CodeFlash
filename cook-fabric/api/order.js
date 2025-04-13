@@ -9,10 +9,10 @@ export default async function handler(req, res) {
   const { name, email, adresse, bäckerei, cart } = data;
 
   const webhookMap = {
-    backstube1: 'WEBHOOK_URL_1',
-    backstube2: 'WEBHOOK_URL_2',
-    backstube3: 'WEBHOOK_URL_3',
-    backstube4: 'WEBHOOK_URL_4',
+    backstube1: 'https://discord.com/api/webhooks/1360985136547631304/4VfK9pZqlvDR1mnrq3Qp6jmIlQSav65sZuUAtviLK3AMKp65uatrQ20BnEQpOWs1wPmh',
+    backstube2: 'https://discord.com/api/webhooks/1360985316256907425/xmkzwT1Wjcno5uucA6pCV6kXh1w0gZcwFAuB4zhbKCk2SNJ2hKG0MFEMwSA1UQxtynox',
+    backstube3: 'https://discord.com/api/webhooks/1360985419629723750/yWk_Cbb2-VYo7u87rQSBoGKKeD-Mwj2dI906am_yDASCamV2dr3eS5nEahcM8ErocVGY',
+    backstube4: 'https://discord.com/api/webhooks/1360985504555864084/jOxQyHPGFNxj3MlRsRAA4K0LSrMqUqnm4XeJ66Wowd-JIoL_IwZeAGxOh2XrWX_vSyv9',
   };
 
   const webhookUrl = webhookMap[bäckerei];
