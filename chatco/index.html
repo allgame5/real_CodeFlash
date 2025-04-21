@@ -45,7 +45,6 @@
     }
 
     #chat {
-      display: none;
       height: 90vh;
       display: flex;
       flex-direction: row;
@@ -139,7 +138,7 @@
     <button type="submit">Absenden</button>
   </form>
 
-  <section id="chat">
+  <section id="chat" style="display: none;">
     <button id="logout">Abmelden</button>
     <div class="chat-container">
       <aside class="user-list" id="user-list"></aside>
@@ -158,7 +157,6 @@
     </div>
   </section>
 
-  <!-- Firebase SDKs -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
     import {
@@ -166,7 +164,7 @@
       createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut
     } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
     import {
-      getFirestore, collection, doc, setDoc, getDocs, addDoc, getDoc,
+      getFirestore, collection, doc, setDoc, getDocs, addDoc, getDoc, updateDoc,
       query, orderBy, onSnapshot, serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
@@ -196,6 +194,7 @@
 
     let currentUser = null;
     let currentChatId = null;
+    let currentChatType = null; // "private" oder "group"
 
     loginForm.onsubmit = async (e) => {
       e.preventDefault();
@@ -260,13 +259,15 @@
 
     function openChatWith(otherUid, otherEmail) {
       const chatId = [currentUser.uid, otherUid].sort().join("_");
-      currentChatId = chatId;
+      currentChatId = `chats/${chatId}/messages`;
+      currentChatType = "private";
       chatTitle.textContent = `Chat mit: ${otherEmail}`;
-      listenForMessages(`chats/${chatId}/messages`);
+      listenForMessages(currentChatId);
     }
 
     function openGroupChat(groupId, groupName) {
       currentChatId = `groups/${groupId}/messages`;
+      currentChatType = "group";
       chatTitle.textContent = `Gruppe: ${groupName}`;
       listenForMessages(currentChatId);
     }
