@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Clone</title>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, setDoc, doc, getDocs } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAn7EWQm8GkW2EvtHXOeyBvNWjQl0SXYm0",
+      authDomain: "codeflash-104e9.firebaseapp.com",
+      projectId: "codeflash-104e9",
+      storageBucket: "codeflash-104e9.appspot.com",
+      messagingSenderId: "837372104139",
+      appId: "1:837372104139:web:389a641f070069018afa4e",
+      measurementId: "G-XNS1QSQVTT"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const loginForm = document.getElementById('login-form');
+    const chatSection = document.getElementById('chat');
+    const messageList = document.getElementById('messages');
+    const messageForm = document.getElementById('message-form');
+    const logoutBtn = document.getElementById('logout');
+    const statusText = document.getElementById('status');
+    const userList = document.getElementById('user-list');
+
+    let currentUser = null;
+    let currentChatId = null;
+
+    loginForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const email = loginForm['email'].value;
+      const password = loginForm['password'].value;
+      const isRegister = loginForm['register'].checked;
+      try {
+        if (isRegister) {
+          const cred = await createUserWithEmailAndPassword(auth, email, password);
+          await setDoc(doc(db, "users", cred.user.uid), { uid: cred.user.uid, email });
+        } else {
+          await signInWithEmailAndPassword(auth, email, password);
+        }
+      } catch (error) {
+        alert(error.message);
+      }
+    };
+
+    logoutBtn.onclick = () => signOut(auth);
+
+    onAuthStateChanged(auth, async user => {
+      currentUser = user;
+      if (user) {
+        loginForm.style.display = "none";
+        chatSection.style.display = "block";
+        statusText.textContent = `Angemeldet als: ${user.email}`;
+        await setDoc(doc(db, "users", user.uid), { uid: user.uid, email: user.email });
+        loadUsers();
+      } else {
+        loginForm.style.display = "block";
+        chatSection.style.display = "none";
+        statusText.textContent = "";
+      }
+    });
+
+    async function loadUsers() {
+      const q = query(collection(db, "users"));
+      const snapshot = await getDocs(q);
+      userList.innerHTML = "";
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        if (data.uid !== currentUser.uid) {
+          const li = document.createElement("li");
+          li.innerHTML = `<label><input type="checkbox" value="${data.uid}">${data.email}</label>`;
+          userList.appendChild(li);
+        }
+      });
+    }
+
+    function getSelectedUsers() {
+      const boxes = document.querySelectorAll("#user-list input[type=checkbox]:checked");
+      return Array.from(boxes).map(cb => cb.value);
+    }
+
+    async function createChat(type, participants, name = "") {
+      const docRef = await addDoc(collection(db, "chats"), {
+        type,
+        participants,
+        name,
+        createdAt: serverTimestamp()
+      });
+      loadChat(docRef.id);
+    }
+
+    window.createPrivateChat = async () => {
+      const uid = getSelectedUsers()[0];
+      if (!uid) return alert("Wähle einen Benutzer aus");
+      await createChat("private", [currentUser.uid, uid]);
+    };
+
+    window.createGroupChat = async () => {
+      const uids = getSelectedUsers();
+      if (uids.length < 2) return alert("Mindestens 2 Benutzer wählen");
+      const name = prompt("Name der Gruppe:");
+      await createChat("group", [currentUser.uid, ...uids], name);
+    };
+
+    function loadChat(chatId) {
+      currentChatId = chatId;
+      const q = query(collection(db, `chats/${chatId}/messages`), orderBy("createdAt"));
+      onSnapshot(q, snapshot => {
+        messageList.innerHTML = "";
+        snapshot.forEach(doc => {
+          const msg = doc.data();
+          const li = document.createElement("li");
+          li.innerHTML = `<strong>${msg.sender}:</strong> ${msg.text}`;
+          messageList.appendChild(li);
+        });
+      });
+    }
+
+    messageForm.onsubmit = async (e) => {
+      e.preventDefault();
+      if (!currentChatId) return alert("Kein Chat ausgewählt!");
+      const text = messageForm['text'].value;
+      await addDoc(collection(db, `chats/${currentChatId}/messages`), {
+        text,
+        sender: currentUser.email,
+        createdAt: serverTimestamp()
+      });
+      messageForm.reset();
+    };
+  </script>
+  <style>
+    body { font-family: sans-serif; padding: 2em; }
+    #chat { display: none; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    input, button { padding: 0.5em; margin: 0.2em; }
+  </style>
+</head>
+<body>
+  <h1>🟢 WhatsApp Clone</h1>
+  <p id="status"></p>
+
+  <form id="login-form">
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Passwort" required>
+    <label><input type="checkbox" id="register"> Registrieren</label>
+    <button type="submit">Absenden</button>
+  </form>
+
+  <section id="chat">
+    <button id="logout">Abmelden</button>
+
+    <h3>Benutzer auswählen</h3>
+    <ul id="user-list"></ul>
+    <button onclick="createPrivateChat()">Privater Chat</button>
+    <button onclick="createGroupChat()">Gruppenchat</button>
+
+    <h3>Chat</h3>
+    <ul id="messages"></ul>
+    <form id="message-form">
+      <input id="text" placeholder="Nachricht..." required>
+      <button type="submit">Senden</button>
+    </form>
+  </section>
+</body>
+</html>
