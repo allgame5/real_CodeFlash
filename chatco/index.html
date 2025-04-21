@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WhatsApp Clone</title>
+  <script type="module">
+    // ========== Firebase importieren ==========
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+    // ========== Deine Firebase-Konfiguration ==========
+    const firebaseConfig = {
+      apiKey: "DEIN_API_KEY",
+      authDomain: "DEIN_AUTH_DOMAIN",
+      projectId: "DEIN_PROJECT_ID",
+      storageBucket: "DEIN_STORAGE_BUCKET",
+      messagingSenderId: "DEIN_SENDER_ID",
+      appId: "DEIN_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // ========== DOM-Referenzen ==========
+    const loginForm = document.getElementById('login-form');
+    const chatSection = document.getElementById('chat');
+    const messageList = document.getElementById('messages');
+    const messageForm = document.getElementById('message-form');
+    const logoutBtn = document.getElementById('logout');
+    const statusText = document.getElementById('status');
+
+    let currentUser = null;
+
+    // ========== Login/Register ==========
+    loginForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const email = loginForm['email'].value;
+      const password = loginForm['password'].value;
+      const isRegister = loginForm['register'].checked;
+      try {
+        if (isRegister) {
+          await createUserWithEmailAndPassword(auth, email, password);
+        } else {
+          await signInWithEmailAndPassword(auth, email, password);
+        }
+      } catch (error) {
+        alert(error.message);
+      }
+    };
+
+    logoutBtn.onclick = () => signOut(auth);
+
+    // ========== Auth-Status ==========
+    onAuthStateChanged(auth, user => {
+      currentUser = user;
+      if (user) {
+        loginForm.style.display = "none";
+        chatSection.style.display = "block";
+        statusText.textContent = `Angemeldet als: ${user.email}`;
+        startChatListener();
+      } else {
+        loginForm.style.display = "block";
+        chatSection.style.display = "none";
+        statusText.textContent = "";
+      }
+    });
+
+    // ========== Nachrichten senden ==========
+    messageForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const text = messageForm['text'].value;
+      if (!text.trim()) return;
+      await addDoc(collection(db, "messages"), {
+        text,
+        uid: currentUser.uid,
+        email: currentUser.email,
+        createdAt: serverTimestamp()
+      });
+      messageForm.reset();
+    };
+
+    // ========== Nachrichten anzeigen ==========
+    function startChatListener() {
+      const q = query(collection(db, "messages"), orderBy("createdAt"));
+      onSnapshot(q, snapshot => {
+        messageList.innerHTML = "";
+        snapshot.forEach(doc => {
+          const msg = doc.data();
+          const li = document.createElement("li");
+          li.innerHTML = `<strong>${msg.email}:</strong> ${msg.text}`;
+          messageList.appendChild(li);
+        });
+      });
+    }
+  </script>
+  <style>
+    body { font-family: sans-serif; padding: 2em; }
+    #chat { display: none; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    input, button { padding: 0.5em; margin: 0.2em; }
+  </style>
+</head>
+<body>
+  <h1>🟢 WhatsApp Clone</h1>
+  <p id="status"></p>
+
+  <form id="login-form">
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Passwort" required />
+    <label><input type="checkbox" id="register" /> Registrieren</label>
+    <button type="submit">Absenden</button>
+  </form>
+
+  <section id="chat">
+    <button id="logout">Abmelden</button>
+    <ul id="messages"></ul>
+    <form id="message-form">
+      <input id="text" placeholder="Nachricht..." required />
+      <button type="submit">Senden</button>
+    </form>
+  </section>
+</body>
+</html>
