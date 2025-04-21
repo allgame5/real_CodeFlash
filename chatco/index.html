@@ -2,108 +2,125 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>WhatsApp Clone</title>
-  <script type="module">
-    // ========== Firebase importieren ==========
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
-    // ========== Firebase Konfiguration ==========
-   const firebaseConfig = {
-  apiKey: "AIzaSyAn7EWQm8GkW2EvtHXOeyBvNWjQl0SXYm0",
-  authDomain: "codeflash-104e9.firebaseapp.com",
-  projectId: "codeflash-104e9",
-  storageBucket: "codeflash-104e9.firebasestorage.app",
-  messagingSenderId: "837372104139",
-  appId: "1:837372104139:web:389a641f070069018afa4e",
-  measurementId: "G-XNS1QSQVTT"
-};
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    // ========== DOM ==========
-    const loginForm = document.getElementById('login-form');
-    const chatSection = document.getElementById('chat');
-    const messageList = document.getElementById('messages');
-    const messageForm = document.getElementById('message-form');
-    const logoutBtn = document.getElementById('logout');
-    const statusText = document.getElementById('status');
-
-    let currentUser = null;
-
-    // ========== Login / Registrierung ==========
-    loginForm.onsubmit = async (e) => {
-      e.preventDefault();
-      const email = loginForm['email'].value;
-      const password = loginForm['password'].value;
-      const isRegister = loginForm['register'].checked;
-      try {
-        if (isRegister) {
-          await createUserWithEmailAndPassword(auth, email, password);
-        } else {
-          await signInWithEmailAndPassword(auth, email, password);
-        }
-      } catch (error) {
-        alert(error.message);
-      }
-    };
-
-    logoutBtn.onclick = () => signOut(auth);
-
-    // ========== Auth Status ==========
-    onAuthStateChanged(auth, user => {
-      currentUser = user;
-      if (user) {
-        loginForm.style.display = "none";
-        chatSection.style.display = "block";
-        statusText.textContent = `Angemeldet als: ${user.email}`;
-        startChatListener();
-      } else {
-        loginForm.style.display = "block";
-        chatSection.style.display = "none";
-        statusText.textContent = "";
-      }
-    });
-
-    // ========== Nachricht senden ==========
-    messageForm.onsubmit = async (e) => {
-      e.preventDefault();
-      const text = messageForm['text'].value;
-      if (!text.trim()) return;
-      await addDoc(collection(db, "messages"), {
-        text,
-        uid: currentUser.uid,
-        email: currentUser.email,
-        createdAt: serverTimestamp(),
-        read: false
-      });
-      messageForm.reset();
-    };
-
-    // ========== Nachrichten laden ==========
-    function startChatListener() {
-      const q = query(collection(db, "messages"), orderBy("createdAt"));
-      onSnapshot(q, snapshot => {
-        messageList.innerHTML = "";
-        snapshot.forEach(doc => {
-          const msg = doc.data();
-          const li = document.createElement("li");
-          li.innerHTML = `<strong>${msg.email}:</strong> ${msg.text}`;
-          messageList.appendChild(li);
-        });
-      });
-    }
-  </script>
   <style>
-    body { font-family: sans-serif; padding: 2em; }
-    #chat { display: none; }
-    ul { list-style: none; padding: 0; }
-    li { margin: 0.5em 0; }
-    input, button { padding: 0.5em; margin: 0.2em; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #ece5dd;
+    }
+
+    h1 {
+      padding: 1em;
+      background: #075e54;
+      color: white;
+      margin: 0;
+      text-align: center;
+    }
+
+    #status {
+      padding: 0.5em;
+      text-align: center;
+    }
+
+    #login-form {
+      text-align: center;
+      padding: 2em;
+    }
+
+    input, button {
+      padding: 0.7em;
+      margin: 0.5em;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #128c7e;
+      color: white;
+      border: none;
+    }
+
+    #chat {
+      display: none;
+      height: 90vh;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .chat-container {
+      display: flex;
+      flex: 1;
+    }
+
+    .user-list {
+      width: 25%;
+      background: #f0f0f0;
+      border-right: 1px solid #ddd;
+      overflow-y: auto;
+      padding: 1em;
+    }
+
+    .user {
+      padding: 1em;
+      border-bottom: 1px solid #ddd;
+      cursor: pointer;
+    }
+
+    .user:hover {
+      background: #e0e0e0;
+    }
+
+    .chat-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 1em;
+      background: #ffffff;
+    }
+
+    #chat-title {
+      margin-bottom: 0.5em;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    li {
+      margin: 0.5em 0;
+      max-width: 60%;
+      padding: 0.7em;
+      border-radius: 10px;
+      word-wrap: break-word;
+    }
+
+    .sent {
+      align-self: flex-end;
+      background: #dcf8c6;
+    }
+
+    .received {
+      align-self: flex-start;
+      background: #f1f0f0;
+    }
+
+    form {
+      display: flex;
+      margin-top: 1em;
+    }
+
+    form input {
+      flex: 1;
+      margin-right: 0.5em;
+    }
   </style>
 </head>
 <body>
@@ -119,11 +136,138 @@
 
   <section id="chat">
     <button id="logout">Abmelden</button>
-    <ul id="messages"></ul>
-    <form id="message-form">
-      <input id="text" placeholder="Nachricht..." required />
-      <button type="submit">Senden</button>
-    </form>
+    <div class="chat-container">
+      <aside class="user-list" id="user-list"></aside>
+      <div class="chat-box">
+        <h3 id="chat-title">Kein Chat ausgewählt</h3>
+        <ul id="messages"></ul>
+        <form id="message-form">
+          <input id="text" placeholder="Nachricht..." required />
+          <button type="submit">Senden</button>
+        </form>
+      </div>
+    </div>
   </section>
+
+  <!-- Firebase SDKs -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    import {
+      getAuth, onAuthStateChanged,
+      createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut
+    } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+    import {
+      getFirestore, collection, doc, setDoc, getDocs, addDoc,
+      query, orderBy, onSnapshot, serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAn7EWQm8GkW2EvtHXOeyBvNWjQl0SXYm0",
+      authDomain: "codeflash-104e9.firebaseapp.com",
+      projectId: "codeflash-104e9",
+      storageBucket: "codeflash-104e9.appspot.com",
+      messagingSenderId: "837372104139",
+      appId: "1:837372104139:web:389a641f070069018afa4e"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const loginForm = document.getElementById('login-form');
+    const chatSection = document.getElementById('chat');
+    const messageList = document.getElementById('messages');
+    const messageForm = document.getElementById('message-form');
+    const logoutBtn = document.getElementById('logout');
+    const statusText = document.getElementById('status');
+    const userList = document.getElementById('user-list');
+    const chatTitle = document.getElementById('chat-title');
+
+    let currentUser = null;
+    let currentChatId = null;
+
+    loginForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const email = loginForm['email'].value;
+      const password = loginForm['password'].value;
+      const isRegister = loginForm['register'].checked;
+      try {
+        if (isRegister) {
+          const cred = await createUserWithEmailAndPassword(auth, email, password);
+          await setDoc(doc(db, "users", cred.user.uid), { email });
+        } else {
+          await signInWithEmailAndPassword(auth, email, password);
+        }
+      } catch (err) {
+        alert(err.message);
+      }
+    };
+
+    logoutBtn.onclick = () => signOut(auth);
+
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      if (user) {
+        loginForm.style.display = "none";
+        chatSection.style.display = "flex";
+        statusText.textContent = `Angemeldet als: ${user.email}`;
+        await loadUsers();
+      } else {
+        loginForm.style.display = "block";
+        chatSection.style.display = "none";
+        statusText.textContent = "";
+      }
+    });
+
+    async function loadUsers() {
+      const usersSnapshot = await getDocs(collection(db, "users"));
+      userList.innerHTML = "";
+      usersSnapshot.forEach(docSnap => {
+        if (docSnap.id !== currentUser.uid) {
+          const user = docSnap.data();
+          const div = document.createElement("div");
+          div.className = "user";
+          div.textContent = user.email;
+          div.onclick = () => openChatWith(docSnap.id, user.email);
+          userList.appendChild(div);
+        }
+      });
+    }
+
+    function openChatWith(otherUid, otherEmail) {
+      const chatId = [currentUser.uid, otherUid].sort().join("_");
+      currentChatId = chatId;
+      chatTitle.textContent = `Chat mit: ${otherEmail}`;
+      listenForMessages(chatId);
+    }
+
+    messageForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const text = messageForm['text'].value;
+      if (!text.trim() || !currentChatId) return;
+      await addDoc(collection(db, `chats/${currentChatId}/messages`), {
+        text,
+        uid: currentUser.uid,
+        email: currentUser.email,
+        createdAt: serverTimestamp()
+      });
+      messageForm.reset();
+    };
+
+    function listenForMessages(chatId) {
+      const q = query(collection(db, `chats/${chatId}/messages`), orderBy("createdAt"));
+      onSnapshot(q, snapshot => {
+        messageList.innerHTML = "";
+        snapshot.forEach(doc => {
+          const msg = doc.data();
+          const li = document.createElement("li");
+          li.className = msg.uid === currentUser.uid ? "sent" : "received";
+          li.innerHTML = `<span>${msg.text}</span>`;
+          messageList.appendChild(li);
+        });
+        messageList.scrollTop = messageList.scrollHeight;
+      });
+    }
+  </script>
 </body>
 </html>
