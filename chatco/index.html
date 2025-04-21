@@ -10,21 +10,22 @@
     import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
     import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
-    // ========== Deine Firebase-Konfiguration ==========
-    const firebaseConfig = {
-      apiKey: "DEIN_API_KEY",
-      authDomain: "DEIN_AUTH_DOMAIN",
-      projectId: "DEIN_PROJECT_ID",
-      storageBucket: "DEIN_STORAGE_BUCKET",
-      messagingSenderId: "DEIN_SENDER_ID",
-      appId: "DEIN_APP_ID"
-    };
+    // ========== Firebase Konfiguration ==========
+   const firebaseConfig = {
+  apiKey: "AIzaSyAn7EWQm8GkW2EvtHXOeyBvNWjQl0SXYm0",
+  authDomain: "codeflash-104e9.firebaseapp.com",
+  projectId: "codeflash-104e9",
+  storageBucket: "codeflash-104e9.firebasestorage.app",
+  messagingSenderId: "837372104139",
+  appId: "1:837372104139:web:389a641f070069018afa4e",
+  measurementId: "G-XNS1QSQVTT"
+};
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // ========== DOM-Referenzen ==========
+    // ========== DOM ==========
     const loginForm = document.getElementById('login-form');
     const chatSection = document.getElementById('chat');
     const messageList = document.getElementById('messages');
@@ -34,7 +35,7 @@
 
     let currentUser = null;
 
-    // ========== Login/Register ==========
+    // ========== Login / Registrierung ==========
     loginForm.onsubmit = async (e) => {
       e.preventDefault();
       const email = loginForm['email'].value;
@@ -53,7 +54,7 @@
 
     logoutBtn.onclick = () => signOut(auth);
 
-    // ========== Auth-Status ==========
+    // ========== Auth Status ==========
     onAuthStateChanged(auth, user => {
       currentUser = user;
       if (user) {
@@ -68,7 +69,7 @@
       }
     });
 
-    // ========== Nachrichten senden ==========
+    // ========== Nachricht senden ==========
     messageForm.onsubmit = async (e) => {
       e.preventDefault();
       const text = messageForm['text'].value;
@@ -77,12 +78,13 @@
         text,
         uid: currentUser.uid,
         email: currentUser.email,
-        createdAt: serverTimestamp()
+        createdAt: serverTimestamp(),
+        read: false
       });
       messageForm.reset();
     };
 
-    // ========== Nachrichten anzeigen ==========
+    // ========== Nachrichten laden ==========
     function startChatListener() {
       const q = query(collection(db, "messages"), orderBy("createdAt"));
       onSnapshot(q, snapshot => {
