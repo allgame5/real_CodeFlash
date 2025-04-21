@@ -7,16 +7,15 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, setDoc, doc, getDocs } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+    import { getFirestore, collection, doc, setDoc, getDocs, addDoc, query, where, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAn7EWQm8GkW2EvtHXOeyBvNWjQl0SXYm0",
       authDomain: "codeflash-104e9.firebaseapp.com",
       projectId: "codeflash-104e9",
-      storageBucket: "codeflash-104e9.appspot.com",
+      storageBucket: "codeflash-104e9.firebasestorage.app",
       messagingSenderId: "837372104139",
-      appId: "1:837372104139:web:389a641f070069018afa4e",
-      measurementId: "G-XNS1QSQVTT"
+      appId: "1:837372104139:web:389a641f070069018afa4e"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -29,7 +28,8 @@
     const messageForm = document.getElementById('message-form');
     const logoutBtn = document.getElementById('logout');
     const statusText = document.getElementById('status');
-    const userList = document.getElementById('user-list');
+    const userSelect = document.getElementById('user-select');
+    const chatTitle = document.getElementById('chat-title');
 
     let currentUser = null;
     let currentChatId = null;
@@ -42,25 +42,24 @@
       try {
         if (isRegister) {
           const cred = await createUserWithEmailAndPassword(auth, email, password);
-          await setDoc(doc(db, "users", cred.user.uid), { uid: cred.user.uid, email });
+          await setDoc(doc(db, "users", cred.user.uid), { email });
         } else {
           await signInWithEmailAndPassword(auth, email, password);
         }
-      } catch (error) {
-        alert(error.message);
+      } catch (err) {
+        alert(err.message);
       }
     };
 
     logoutBtn.onclick = () => signOut(auth);
 
-    onAuthStateChanged(auth, async user => {
+    onAuthStateChanged(auth, async (user) => {
       currentUser = user;
       if (user) {
         loginForm.style.display = "none";
         chatSection.style.display = "block";
         statusText.textContent = `Angemeldet als: ${user.email}`;
-        await setDoc(doc(db, "users", user.uid), { uid: user.uid, email: user.email });
-        loadUsers();
+        await loadUsers();
       } else {
         loginForm.style.display = "block";
         chatSection.style.display = "none";
@@ -69,79 +68,61 @@
     });
 
     async function loadUsers() {
-      const q = query(collection(db, "users"));
-      const snapshot = await getDocs(q);
-      userList.innerHTML = "";
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        if (data.uid !== currentUser.uid) {
-          const li = document.createElement("li");
-          li.innerHTML = `<label><input type="checkbox" value="${data.uid}">${data.email}</label>`;
-          userList.appendChild(li);
+      const usersSnapshot = await getDocs(collection(db, "users"));
+      userSelect.innerHTML = '<option value="">Wähle Benutzer</option>';
+      usersSnapshot.forEach(doc => {
+        if (doc.id !== currentUser.uid) {
+          const option = document.createElement("option");
+          option.value = doc.id;
+          option.textContent = doc.data().email;
+          userSelect.appendChild(option);
         }
       });
     }
 
-    function getSelectedUsers() {
-      const boxes = document.querySelectorAll("#user-list input[type=checkbox]:checked");
-      return Array.from(boxes).map(cb => cb.value);
-    }
+    userSelect.onchange = async () => {
+      const otherUid = userSelect.value;
+      if (!otherUid) return;
+      const chatId = [currentUser.uid, otherUid].sort().join("_");
+      currentChatId = chatId;
+      chatTitle.textContent = `Chat mit: ${userSelect.options[userSelect.selectedIndex].text}`;
+      listenForMessages(chatId);
+    };
 
-    async function createChat(type, participants, name = "") {
-      const docRef = await addDoc(collection(db, "chats"), {
-        type,
-        participants,
-        name,
+    messageForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const text = messageForm['text'].value;
+      if (!text.trim() || !currentChatId) return;
+      await addDoc(collection(db, `chats/${currentChatId}/messages`), {
+        text,
+        uid: currentUser.uid,
+        email: currentUser.email,
         createdAt: serverTimestamp()
       });
-      loadChat(docRef.id);
-    }
-
-    window.createPrivateChat = async () => {
-      const uid = getSelectedUsers()[0];
-      if (!uid) return alert("Wähle einen Benutzer aus");
-      await createChat("private", [currentUser.uid, uid]);
+      messageForm.reset();
     };
 
-    window.createGroupChat = async () => {
-      const uids = getSelectedUsers();
-      if (uids.length < 2) return alert("Mindestens 2 Benutzer wählen");
-      const name = prompt("Name der Gruppe:");
-      await createChat("group", [currentUser.uid, ...uids], name);
-    };
-
-    function loadChat(chatId) {
-      currentChatId = chatId;
+    function listenForMessages(chatId) {
       const q = query(collection(db, `chats/${chatId}/messages`), orderBy("createdAt"));
       onSnapshot(q, snapshot => {
         messageList.innerHTML = "";
         snapshot.forEach(doc => {
           const msg = doc.data();
           const li = document.createElement("li");
-          li.innerHTML = `<strong>${msg.sender}:</strong> ${msg.text}`;
+          li.innerHTML = `<strong>${msg.email}:</strong> ${msg.text}`;
           messageList.appendChild(li);
         });
       });
     }
-
-    messageForm.onsubmit = async (e) => {
-      e.preventDefault();
-      if (!currentChatId) return alert("Kein Chat ausgewählt!");
-      const text = messageForm['text'].value;
-      await addDoc(collection(db, `chats/${currentChatId}/messages`), {
-        text,
-        sender: currentUser.email,
-        createdAt: serverTimestamp()
-      });
-      messageForm.reset();
-    };
   </script>
   <style>
-    body { font-family: sans-serif; padding: 2em; }
-    #chat { display: none; }
-    ul { list-style: none; padding: 0; }
-    li { margin: 0.5em 0; }
-    input, button { padding: 0.5em; margin: 0.2em; }
+    body { font-family: sans-serif; padding: 2em; background: #f4f4f4; }
+    #chat { display: none; margin-top: 2em; }
+    ul { list-style: none; padding: 0; max-height: 300px; overflow-y: auto; }
+    li { margin: 0.5em 0; background: white; padding: 0.5em; border-radius: 5px; }
+    input, button, select { padding: 0.5em; margin: 0.2em; border-radius: 5px; border: 1px solid #ccc; }
+    button { cursor: pointer; background: #4CAF50; color: white; border: none; }
+    button:hover { background: #45a049; }
   </style>
 </head>
 <body>
@@ -156,14 +137,10 @@
   </form>
 
   <section id="chat">
-    <button id="logout">Abmelden</button>
-
-    <h3>Benutzer auswählen</h3>
-    <ul id="user-list"></ul>
-    <button onclick="createPrivateChat()">Privater Chat</button>
-    <button onclick="createGroupChat()">Gruppenchat</button>
-
-    <h3>Chat</h3>
+    <button id="logout">Abmelden</button><br>
+    <label>Benutzer auswählen:</label>
+    <select id="user-select"></select>
+    <h3 id="chat-title">Kein Chat ausgewählt</h3>
     <ul id="messages"></ul>
     <form id="message-form">
       <input id="text" placeholder="Nachricht..." required>
