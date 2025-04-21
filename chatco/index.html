@@ -121,6 +121,11 @@
       flex: 1;
       margin-right: 0.5em;
     }
+
+    .group {
+      font-weight: bold;
+      color: #075e54;
+    }
   </style>
 </head>
 <body>
@@ -145,6 +150,10 @@
           <input id="text" placeholder="Nachricht..." required />
           <button type="submit">Senden</button>
         </form>
+        <form id="create-group-form">
+          <input id="group-name" placeholder="Neue Gruppe erstellen..." />
+          <button type="submit">Gruppe erstellen</button>
+        </form>
       </div>
     </div>
   </section>
@@ -157,7 +166,7 @@
       createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut
     } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
     import {
-      getFirestore, collection, doc, setDoc, getDocs, addDoc,
+      getFirestore, collection, doc, setDoc, getDocs, addDoc, getDoc,
       query, orderBy, onSnapshot, serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
@@ -182,6 +191,8 @@
     const statusText = document.getElementById('status');
     const userList = document.getElementById('user-list');
     const chatTitle = document.getElementById('chat-title');
+    const createGroupForm = document.getElementById('create-group-form');
+    const groupNameInput = document.getElementById('group-name');
 
     let currentUser = null;
     let currentChatId = null;
@@ -212,6 +223,7 @@
         chatSection.style.display = "flex";
         statusText.textContent = `Angemeldet als: ${user.email}`;
         await loadUsers();
+        await loadGroups();
       } else {
         loginForm.style.display = "block";
         chatSection.style.display = "none";
@@ -234,18 +246,36 @@
       });
     }
 
+    async function loadGroups() {
+      const groupsSnapshot = await getDocs(collection(db, "groups"));
+      groupsSnapshot.forEach(docSnap => {
+        const group = docSnap.data();
+        const div = document.createElement("div");
+        div.className = "user group";
+        div.textContent = `Gruppe: ${group.name}`;
+        div.onclick = () => openGroupChat(docSnap.id, group.name);
+        userList.appendChild(div);
+      });
+    }
+
     function openChatWith(otherUid, otherEmail) {
       const chatId = [currentUser.uid, otherUid].sort().join("_");
       currentChatId = chatId;
       chatTitle.textContent = `Chat mit: ${otherEmail}`;
-      listenForMessages(chatId);
+      listenForMessages(`chats/${chatId}/messages`);
+    }
+
+    function openGroupChat(groupId, groupName) {
+      currentChatId = `groups/${groupId}/messages`;
+      chatTitle.textContent = `Gruppe: ${groupName}`;
+      listenForMessages(currentChatId);
     }
 
     messageForm.onsubmit = async (e) => {
       e.preventDefault();
       const text = messageForm['text'].value;
       if (!text.trim() || !currentChatId) return;
-      await addDoc(collection(db, `chats/${currentChatId}/messages`), {
+      await addDoc(collection(db, currentChatId), {
         text,
         uid: currentUser.uid,
         email: currentUser.email,
@@ -254,8 +284,8 @@
       messageForm.reset();
     };
 
-    function listenForMessages(chatId) {
-      const q = query(collection(db, `chats/${chatId}/messages`), orderBy("createdAt"));
+    function listenForMessages(path) {
+      const q = query(collection(db, path), orderBy("createdAt"));
       onSnapshot(q, snapshot => {
         messageList.innerHTML = "";
         snapshot.forEach(doc => {
@@ -268,6 +298,15 @@
         messageList.scrollTop = messageList.scrollHeight;
       });
     }
+
+    createGroupForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const name = groupNameInput.value.trim();
+      if (!name) return;
+      await addDoc(collection(db, "groups"), { name });
+      groupNameInput.value = "";
+      await loadGroups();
+    };
   </script>
 </body>
 </html>
