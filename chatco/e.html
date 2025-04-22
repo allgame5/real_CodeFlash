@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WhatsApp Clone</title>
+  <style>
+    body { font-family: Arial; background: #ece5dd; margin: 0; padding: 0; }
+    #login-form, #chat { max-width: 900px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input, button { width: 100%; padding: 10px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; }
+    button { background: #25d366; color: white; border: none; }
+    button:hover { background: #128c7e; }
+    .chat-container { display: flex; gap: 20px; }
+    .user-list { width: 30%; background: #f4f4f4; padding: 10px; border-radius: 8px; max-height: 400px; overflow-y: auto; }
+    .chat-box { flex: 1; }
+    #messages { list-style: none; padding: 0; max-height: 300px; overflow-y: auto; background: #e5ddd5; border-radius: 8px; padding: 10px; }
+    #messages li { margin-bottom: 10px; padding: 8px; border-radius: 6px; }
+    .sent { background: #dcf8c6; text-align: right; }
+    .received { background: white; text-align: left; }
+    .member-item { font-size: 0.9em; color: #444; margin-bottom: 3px; }
+  </style>
+</head>
+<body>
+  <h1 style="text-align: center; color: #075e54;">🟢 WhatsApp Clone</h1>
+
+  <form id="login-form">
+    <input type="email" id="email" placeholder="E-Mail" required />
+    <input type="password" id="password" placeholder="Passwort" required />
+    <label><input type="checkbox" id="register"> Registrieren</label>
+    <button type="submit">Anmelden / Registrieren</button>
+  </form>
+
+  <section id="chat" style="display: none;">
+    <button id="logout">Abmelden</button>
+    <p id="status"></p>
+
+    <div class="chat-container">
+      <div class="user-list">
+        <h4>Privatchat</h4>
+        <input id="private-id" placeholder="Benutzer-ID">
+        <button id="start-private">Start</button>
+
+        <h4>Gruppe erstellen</h4>
+        <input id="group-name" placeholder="Gruppenname">
+        <button id="create-group">Erstellen</button>
+
+        <h4>Gruppe beitreten</h4>
+        <input id="group-id" placeholder="Gruppen-ID">
+        <button id="join-group">Beitreten</button>
+
+        <h4>Verlauf</h4>
+        <ul id="chat-history"></ul>
+
+        <h4>Gruppenmitglieder</h4>
+        <div id="group-members"></div>
+      </div>
+
+      <div class="chat-box">
+        <h3 id="chat-title">Kein Chat aktiv</h3>
+        <ul id="messages"></ul>
+        <form id="message-form">
+          <input id="text" placeholder="Nachricht eingeben" required>
+          <button>Senden</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc, addDoc, updateDoc, collection, query, where, onSnapshot, orderBy, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAn7EWQm8GkW2EvtHXOeyBvNWjQl0SXYm0",
+      authDomain: "codeflash-104e9.firebaseapp.com",
+      projectId: "codeflash-104e9",
+      storageBucket: "codeflash-104e9.appspot.com",
+      messagingSenderId: "837372104139",
+      appId: "1:837372104139:web:389a641f070069018afa4e"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const loginForm = document.getElementById("login-form");
+    const chatSection = document.getElementById("chat");
+    const logoutBtn = document.getElementById("logout");
+    const statusText = document.getElementById("status");
+    const messageForm = document.getElementById("message-form");
+    const messageList = document.getElementById("messages");
+    const chatTitle = document.getElementById("chat-title");
+    const chatHistory = document.getElementById("chat-history");
+    const privateInput = document.getElementById("private-id");
+    const startPrivateBtn = document.getElementById("start-private");
+    const groupNameInput = document.getElementById("group-name");
+    const groupIdInput = document.getElementById("group-id");
+    const createGroupBtn = document.getElementById("create-group");
+    const joinGroupBtn = document.getElementById("join-group");
+    const groupMembersDiv = document.getElementById("group-members");
+
+    let currentUser = null;
+    let currentChatId = null;
+    let currentChatType = null;
+
+    loginForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const email = loginForm.email.value;
+      const password = loginForm.password.value;
+      const register = loginForm.register.checked;
+
+      try {
+        if (register) {
+          const cred = await createUserWithEmailAndPassword(auth, email, password);
+          await setDoc(doc(db, "users", cred.user.uid), {
+            email,
+            id: cred.user.uid,
+            chats: []
+          });
+        } else {
+          await signInWithEmailAndPassword(auth, email, password);
+        }
+      } catch (err) {
+        alert("Fehler: " + err.message);
+      }
+    };
+
+    logoutBtn.onclick = () => signOut(auth);
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        currentUser = user;
+        loginForm.style.display = "none";
+        chatSection.style.display = "block";
+
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        const userData = userDoc.exists() ? userDoc.data() : {};
+        statusText.textContent = `Angemeldet als ${user.email} | ID: ${user.uid}`;
+        loadChatHistory(userData.chats || []);
+      } else {
+        currentUser = null;
+        loginForm.style.display = "block";
+        chatSection.style.display = "none";
+      }
+    });
+
+    function loadChatHistory(chats) {
+      chatHistory.innerHTML = "";
+      localStorage.setItem("chatHistory", JSON.stringify(chats));
+      chats.forEach(chat => {
+        const li = document.createElement("li");
+        li.textContent = chat;
+        li.onclick = () => openChat(chat);
+        chatHistory.appendChild(li);
+      });
+    }
+
+    async function openChat(chatId) {
+      currentChatId = chatId;
+      const chatDoc = await getDoc(doc(db, "chats", chatId));
+      if (chatDoc.exists()) {
+        currentChatType = "private";
+        const users = chatDoc.data().users;
+        chatTitle.textContent = "Chat mit: " + users.join(", ");
+        groupMembersDiv.innerHTML = "";
+        listenMessages(`chats/${chatId}/messages`);
+      } else {
+        const groupDoc = await getDoc(doc(db, "groups", chatId));
+        if (groupDoc.exists()) {
+          currentChatType = "group";
+          chatTitle.textContent = "Gruppe: " + groupDoc.data().name;
+          listenMessages(`groups/${chatId}/messages`);
+          renderGroupMembers(groupDoc.data().members);
+        }
+      }
+    }
+
+    function listenMessages(path) {
+      const q = query(collection(db, path), orderBy("createdAt"));
+      onSnapshot(q, snapshot => {
+        messageList.innerHTML = "";
+        snapshot.forEach(doc => {
+          const msg = doc.data();
+          const li = document.createElement("li");
+          li.className = msg.uid === currentUser.uid ? "sent" : "received";
+          li.textContent = `${msg.email}: ${msg.text}`;
+          messageList.appendChild(li);
+        });
+        messageList.scrollTop = messageList.scrollHeight;
+      });
+    }
+
+    function renderGroupMembers(members) {
+      groupMembersDiv.innerHTML = "";
+      members.forEach(async memberId => {
+        const memberDoc = await getDoc(doc(db, "users", memberId));
+        if (memberDoc.exists()) {
+          const member = memberDoc.data();
+          const div = document.createElement("div");
+          div.className = "member-item";
+          div.textContent = `${member.email} (${member.id})`;
+          groupMembersDiv.appendChild(div);
+        }
+      });
+    }
+
+    messageForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const text = messageForm.text.value.trim();
+      if (!text || !currentChatId) return;
+      const path = currentChatType === "private" ? `chats/${currentChatId}/messages` : `groups/${currentChatId}/messages`;
+      await addDoc(collection(db, path), {
+        text,
+        uid: currentUser.uid,
+        email: currentUser.email,
+        createdAt: serverTimestamp()
+      });
+      messageForm.reset();
+    };
+
+    startPrivateBtn.onclick = async () => {
+      const id = privateInput.value.trim();
+      if (!id) return;
+      const chatId = [currentUser.uid, id].sort().join("_");
+      await setDoc(doc(db, "chats", chatId), {
+        users: [currentUser.uid, id]
+      }, { merge: true });
+
+      const userRef = doc(db, "users", currentUser.uid);
+      const userSnap = await getDoc(userRef);
+      const updatedChats = new Set([...(userSnap.data().chats || []), chatId]);
+      await updateDoc(userRef, { chats: Array.from(updatedChats) });
+
+      openChat(chatId);
+    };
+
+    createGroupBtn.onclick = async () => {
+      const name = groupNameInput.value.trim();
+      if (!name) return;
+      const groupRef = await addDoc(collection(db, "groups"), {
+        name,
+        members: [currentUser.uid]
+      });
+      alert("Gruppe erstellt! ID: " + groupRef.id);
+    };
+
+    joinGroupBtn.onclick = async () => {
+      const gid = groupIdInput.value.trim();
+      if (!gid) return;
+      const groupRef = doc(db, "groups", gid);
+      const groupSnap = await getDoc(groupRef);
+      if (!groupSnap.exists()) return alert("Gruppe nicht gefunden");
+      await updateDoc(groupRef, {
+        members: [...new Set([...(groupSnap.data().members || []), currentUser.uid])]
+      });
+
+      const userRef = doc(db, "users", currentUser.uid);
+      const userSnap = await getDoc(userRef);
+      const updatedChats = new Set([...(userSnap.data().chats || []), gid]);
+      await updateDoc(userRef, { chats: Array.from(updatedChats) });
+
+      openChat(gid);
+    };
+  </script>
+</body>
+</html>
