@@ -128,6 +128,104 @@
     <meta name="theme-color" content="#0d1117">
 <body>
 
+    <div id="lea-popup-container">
+  <style>
+    #lea-popup-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      animation: leaFadeIn 1s ease;
+    }
+
+    #lea-popup {
+      background: #fff;
+      padding: 30px;
+      border-radius: 25px;
+      text-align: center;
+      width: 90%;
+      max-width: 450px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.3);
+      position: relative;
+      animation: leaSlideUp 1s ease;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    #lea-popup h2 {
+      margin-top: 0;
+      font-size: 26px;
+      color: #333;
+    }
+
+    #lea-popup p {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    #lea-popup img {
+      max-width: 100%;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+
+    #lea-popup button {
+      background-color: #ff6f91;
+      color: white;
+      padding: 10px 25px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    #lea-popup button:hover {
+      background-color: #e65b7a;
+    }
+
+    .lea-heart {
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 40px;
+      color: #ff6f91;
+      animation: leaPulse 2s infinite;
+    }
+
+    @keyframes leaFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes leaSlideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes leaPulse {
+      0%, 100% { transform: translateX(-50%) scale(1); }
+      50% { transform: translateX(-50%) scale(1.2); }
+    }
+  </style>
+
+  <div id="lea-popup-overlay">
+    <div id="lea-popup">
+      <div class="lea-heart">❤️</div>
+      <img src="https://example.com/dein-bild-von-lea.jpg" alt="Lea">
+      <h2>Für unsere treue Seele Lea 🐾</h2>
+      <p>Deine Liebe war bedingungslos, dein Herz unendlich groß.<br>Du wirst für immer ein Teil von uns sein. 🌈</p>
+      <button onclick="document.getElementById('lea-popup-overlay').style.display='none'">In Liebe weitergehen</button>
+    </div>
+  </div>
+</div>
+
+
     <chat-bot platform_id="1b33ed59-122f-49f9-8734-9d48f015e5bf" user_id="a21698b7-0a6e-463f-b641-05540c076356" chatbot_id="2638593e-2377-462f-b947-621f5a7b3663"><a href="https://www.chatsimple.ai/?utm_source=widget&utm_medium=referral">chatsimple</a></chat-bot><script src="https://cdn.chatsimple.ai/chat-bot-loader.js" defer></script>
 
     <div class="navbar">
