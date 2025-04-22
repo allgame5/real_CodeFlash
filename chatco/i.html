@@ -48,7 +48,7 @@
       padding: 10px;
       border-radius: 8px;
       overflow-y: auto;
-      max-height: 500px;
+      max-height: 400px;
     }
     .chat-box {
       flex: 1;
@@ -90,19 +90,6 @@
       font-weight: bold;
       color: #075e54;
     }
-    #chat-list {
-      margin-top: 20px;
-    }
-    .chat-item {
-      background: #fff;
-      border-radius: 4px;
-      padding: 8px;
-      margin: 5px 0;
-      cursor: pointer;
-    }
-    .chat-item:hover {
-      background: #d4f1c5;
-    }
   </style>
 </head>
 <body>
@@ -110,29 +97,27 @@
   <form id="login-form">
     <input type="email" id="email" placeholder="Email" required>
     <input type="password" id="password" placeholder="Passwort" required>
-    <input type="text" id="code" placeholder="Geheimer Benutzer-Code (nur bei Registrierung)" />
     <label><input type="checkbox" id="register"> Registrieren</label>
     <button type="submit">Absenden</button>
   </form>
   <section id="chat" style="display: none;">
     <button id="logout">Abmelden</button><br>
     <h3 id="status"></h3>
+
     <div class="chat-container">
       <div class="user-list">
         <h4>Privatchat starten</h4>
-        <input type="text" id="private-code" placeholder="Benutzer-Code">
+        <input type="text" id="private-code" placeholder="Benutzer-ID">
         <button id="start-private">Starten</button>
+        <hr>
         <h4>Gruppe erstellen</h4>
         <input type="text" id="group-name" placeholder="Gruppenname">
         <button id="create-group">Erstellen</button>
         <h4>Gruppe beitreten</h4>
         <input type="text" id="group-id" placeholder="Gruppen-ID">
         <button id="join-group">Beitreten</button>
-        <div id="chat-list">
-          <h4>Meine Chats</h4>
-          <div id="my-chats"></div>
-        </div>
       </div>
+
       <div class="chat-box">
         <h3 id="chat-title">Kein Chat ausgewählt</h3>
         <ul id="messages"></ul>
@@ -169,30 +154,41 @@
     const logoutBtn = document.getElementById('logout');
     const statusText = document.getElementById('status');
     const chatTitle = document.getElementById('chat-title');
-    const codeInput = document.getElementById('code');
+
     const privateCodeInput = document.getElementById('private-code');
     const startPrivateBtn = document.getElementById('start-private');
     const groupNameInput = document.getElementById('group-name');
     const createGroupBtn = document.getElementById('create-group');
     const joinGroupInput = document.getElementById('group-id');
     const joinGroupBtn = document.getElementById('join-group');
-    const myChatsDiv = document.getElementById('my-chats');
 
     let currentUser = null;
     let currentChatId = null;
     let currentChatType = null;
 
+    async function generateUniqueCode() {
+      let code;
+      let exists = true;
+      while (exists) {
+        code = Math.floor(Math.random() * (9999 - 1111 + 1)) + 1111;
+        const q = query(collection(db, "users"), where("code", "==", code.toString()));
+        const snapshot = await getDocs(q);
+        exists = !snapshot.empty;
+      }
+      return code.toString();
+    }
+
     loginForm.onsubmit = async (e) => {
       e.preventDefault();
       const email = loginForm['email'].value;
       const password = loginForm['password'].value;
-      const code = codeInput.value.trim();
       const isRegister = loginForm['register'].checked;
       try {
         if (isRegister) {
           const cred = await createUserWithEmailAndPassword(auth, email, password);
-          if (!code) throw new Error("Bitte gib einen geheimen Code an.");
+          const code = await generateUniqueCode();
           await setDoc(doc(db, "users", cred.user.uid), { email, code });
+          alert("Deine Benutzer-ID ist: " + code);
         } else {
           await signInWithEmailAndPassword(auth, email, password);
         }
@@ -208,8 +204,9 @@
       if (user) {
         loginForm.style.display = "none";
         chatSection.style.display = "block";
-        statusText.textContent = `Angemeldet als: ${user.email}`;
-        loadChats();
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        const userData = userDoc.exists() ? userDoc.data() : {};
+        statusText.textContent = `Angemeldet als: ${user.email} (ID: ${userData.code || 'Unbekannt'})`;
       } else {
         loginForm.style.display = "block";
         chatSection.style.display = "none";
@@ -217,53 +214,18 @@
       }
     });
 
-    async function loadChats() {
-      myChatsDiv.innerHTML = "";
-      const groups = await getDocs(query(collection(db, "groups"), where("members", "array-contains", currentUser.uid)));
-      groups.forEach(doc => {
-        const div = document.createElement("div");
-        div.className = "chat-item";
-        div.textContent = `Gruppe: ${doc.data().name}`;
-        div.onclick = () => {
-          currentChatId = doc.id;
-          currentChatType = "group";
-          chatTitle.textContent = `Gruppe: ${doc.data().name}`;
-          listenForMessages(currentChatId);
-        };
-        myChatsDiv.appendChild(div);
-      });
-
-      const users = await getDocs(collection(db, "users"));
-      users.forEach(u => {
-        if (u.id !== currentUser.uid) {
-          const chatId = [currentUser.uid, u.id].sort().join("_");
-          const div = document.createElement("div");
-          div.className = "chat-item";
-          div.textContent = `Privat: ${u.data().email}`;
-          div.onclick = () => {
-            currentChatId = chatId;
-            currentChatType = "private";
-            chatTitle.textContent = `Chat mit: ${u.data().email}`;
-            listenForMessages(chatId);
-          };
-          myChatsDiv.appendChild(div);
-        }
-      });
-    }
-
     startPrivateBtn.onclick = async () => {
       const code = privateCodeInput.value.trim();
       if (!code) return;
       const q = query(collection(db, "users"), where("code", "==", code));
       const snapshot = await getDocs(q);
-      if (snapshot.empty) return alert("Kein Benutzer mit diesem Code gefunden.");
+      if (snapshot.empty) return alert("Kein Benutzer mit dieser ID gefunden.");
       const otherUser = snapshot.docs[0];
       const chatId = [currentUser.uid, otherUser.id].sort().join("_");
       currentChatId = chatId;
       currentChatType = "private";
       chatTitle.textContent = `Chat mit: ${otherUser.data().email}`;
       listenForMessages(chatId);
-      loadChats();
     };
 
     createGroupBtn.onclick = async () => {
@@ -274,7 +236,6 @@
         members: [currentUser.uid]
       });
       alert(`Gruppe erstellt! Gruppen-ID: ${groupRef.id}`);
-      loadChats();
     };
 
     joinGroupBtn.onclick = async () => {
@@ -290,7 +251,6 @@
       currentChatType = "group";
       chatTitle.textContent = `Gruppe: ${snap.data().name}`;
       listenForMessages(groupId);
-      loadChats();
     };
 
     messageForm.onsubmit = async (e) => {
