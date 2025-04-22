@@ -94,15 +94,15 @@
 </head>
 <body>
   <h1>🟢 WhatsApp Clone</h1>
-  <form id="login-form">
-    <input type="email" id="email" placeholder="Email" required>
-    <input type="password" id="password" placeholder="Passwort" required>
+  <form id="login-form" style="display: none;">
+    <input type="email" id="email" placeholder="Email" required="">
+    <input type="password" id="password" placeholder="Passwort" required="">
     <label><input type="checkbox" id="register"> Registrieren</label>
     <button type="submit">Absenden</button>
   </form>
-  <section id="chat" style="display: none;">
+  <section id="chat" style="display: block;">
     <button id="logout">Abmelden</button><br>
-    <h3 id="status"></h3>
+    <h3 id="status">Angemeldet als: leon.unger@biondekgasse.at (ID: Unbekannt)</h3>
 
     <div class="chat-container">
       <div class="user-list">
@@ -116,19 +116,18 @@
         <h4>Gruppe beitreten</h4>
         <input type="text" id="group-id" placeholder="Gruppen-ID">
         <button id="join-group">Beitreten</button>
-
-        <hr>
-        <h4>Alle Chats</h4>
-        <ul id="chat-list"></ul>
+        <h4>Frühere Chats</h4>
+        <ul id="chat-history"></ul>
       </div>
 
       <div class="chat-box">
         <h3 id="chat-title">Kein Chat ausgewählt</h3>
         <ul id="messages"></ul>
         <form id="message-form">
-          <input id="text" placeholder="Nachricht..." required>
+          <input id="text" placeholder="Nachricht..." required="">
           <button type="submit">Senden</button>
         </form>
+        <button id="delete-chat" style="display:none;">Chat löschen</button>
       </div>
     </div>
   </section>
@@ -136,7 +135,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
-    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, addDoc, updateDoc, query, where, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, query, where, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAn7EWQm8GkW2EvtHXOeyBvNWjQl0SXYm0",
@@ -158,7 +157,8 @@
     const logoutBtn = document.getElementById('logout');
     const statusText = document.getElementById('status');
     const chatTitle = document.getElementById('chat-title');
-    const chatList = document.getElementById('chat-list');
+    const deleteChatBtn = document.getElementById('delete-chat');
+    const chatHistoryList = document.getElementById('chat-history');
 
     const privateCodeInput = document.getElementById('private-code');
     const startPrivateBtn = document.getElementById('start-private');
@@ -181,20 +181,6 @@
         exists = !snapshot.empty;
       }
       return code.toString();
-    }
-
-    async function loadChats() {
-      const userDoc = await getDoc(doc(db, "users", currentUser.uid));
-      const userData = userDoc.exists() ? userDoc.data() : {};
-      const chats = userData.chats || [];
-      
-      chatList.innerHTML = '';
-      chats.forEach(chatId => {
-        const li = document.createElement('li');
-        li.textContent = chatId;
-        li.onclick = () => openChat(chatId);
-        chatList.appendChild(li);
-      });
     }
 
     loginForm.onsubmit = async (e) => {
@@ -226,13 +212,36 @@
         const userDoc = await getDoc(doc(db, "users", user.uid));
         const userData = userDoc.exists() ? userDoc.data() : {};
         statusText.textContent = `Angemeldet als: ${user.email} (ID: ${userData.code || 'Unbekannt'})`;
-        loadChats();
+
+        // Lade frühere Chats
+        loadChatHistory(userData.chats || []);
       } else {
         loginForm.style.display = "block";
         chatSection.style.display = "none";
         statusText.textContent = "";
       }
     });
+
+    function loadChatHistory(chats) {
+      chatHistoryList.innerHTML = "";
+      chats.forEach(chat => {
+        const li = document.createElement("li");
+        li.textContent = chat;
+        li.onclick = () => loadChat(chat);
+        chatHistoryList.appendChild(li);
+      });
+    }
+
+    async function loadChat(chatId) {
+      currentChatId = chatId;
+      const chatDoc = await getDoc(doc(db, "chats", chatId));
+      if (chatDoc.exists()) {
+        const chatData = chatDoc.data();
+        currentChatType = "private";  // Annahme, dass es ein privater Chat ist (kann angepasst werden)
+        chatTitle.textContent = `Chat mit: ${chatData.users.join(", ")}`;
+        listenForMessages(chatId);
+      }
+    }
 
     startPrivateBtn.onclick = async () => {
       const code = privateCodeInput.value.trim();
@@ -246,6 +255,11 @@
       currentChatType = "private";
       chatTitle.textContent = `Chat mit: ${otherUser.data().email}`;
       listenForMessages(chatId);
+
+      // Speichere den Chat in der Benutzerdatenbank
+      await updateDoc(doc(db, "users", currentUser.uid), {
+        chats: [...new Set([...(userData.chats || []), chatId])]
+      });
     };
 
     createGroupBtn.onclick = async () => {
@@ -287,6 +301,21 @@
       messageForm.reset();
     };
 
+    deleteChatBtn.onclick = async () => {
+      if (currentChatId) {
+        await deleteDoc(doc(db, "chats", currentChatId));
+        alert("Chat gelöscht");
+        // Entferne den Chat aus der Liste des Benutzers
+        await updateDoc(doc(db, "users", currentUser.uid), {
+          chats: (userData.chats || []).filter(chat => chat !== currentChatId)
+        });
+        currentChatId = null;
+        chatTitle.textContent = "Kein Chat ausgewählt";
+        messageList.innerHTML = "";
+        loadChatHistory(userData.chats || []);
+      }
+    };
+
     function listenForMessages(pathId) {
       const path = currentChatType === "private" ? `chats/${pathId}/messages` : `groups/${pathId}/messages`;
       const q = query(collection(db, path), orderBy("createdAt"));
@@ -301,12 +330,6 @@
         });
         messageList.scrollTop = messageList.scrollHeight;
       });
-    }
-
-    async function openChat(chatId) {
-      currentChatId = chatId;
-      chatTitle.textContent = `Chat: ${chatId}`;
-      listenForMessages(chatId);
     }
   </script>
 </body>
