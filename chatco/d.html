@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WhatsApp Clone</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #ece5dd;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #075e54;
+    }
+    #login-form, #chat {
+      max-width: 800px;
+      margin: auto;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, button, select {
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #25d366;
+      color: white;
+      border: none;
+    }
+    button:hover {
+      background-color: #128c7e;
+    }
+    .chat-container {
+      display: flex;
+      gap: 20px;
+    }
+    .user-list {
+      width: 30%;
+      background: #f0f0f0;
+      padding: 10px;
+      border-radius: 8px;
+      overflow-y: auto;
+      max-height: 400px;
+    }
+    .chat-box {
+      flex: 1;
+    }
+    #messages {
+      list-style: none;
+      padding: 0;
+      max-height: 300px;
+      overflow-y: auto;
+      background: #e5ddd5;
+      border-radius: 8px;
+      padding: 10px;
+    }
+    #messages li {
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      max-width: 70%;
+    }
+    .sent {
+      background: #dcf8c6;
+      margin-left: auto;
+    }
+    .received {
+      background: white;
+      margin-right: auto;
+    }
+    .user {
+      cursor: pointer;
+      padding: 8px;
+      margin-bottom: 5px;
+      background: white;
+      border-radius: 4px;
+    }
+    .user:hover {
+      background: #ccc;
+    }
+    .group {
+      font-weight: bold;
+      color: #075e54;
+    }
+  </style>
+</head>
+<body>
+  <h1>🟢 WhatsApp Clone</h1>
+  <form id="login-form">
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Passwort" required>
+    <label><input type="checkbox" id="register"> Registrieren</label>
+    <button type="submit">Absenden</button>
+  </form>
+  <section id="chat" style="display: none;">
+    <button id="logout">Abmelden</button><br>
+    <h3 id="status"></h3>
+
+    <div class="chat-container">
+      <div class="user-list">
+        <h4>Privatchat starten</h4>
+        <input type="text" id="private-code" placeholder="Benutzer-ID">
+        <button id="start-private">Starten</button>
+        <hr>
+        <h4>Gruppe erstellen</h4>
+        <input type="text" id="group-name" placeholder="Gruppenname">
+        <button id="create-group">Erstellen</button>
+        <h4>Gruppe beitreten</h4>
+        <input type="text" id="group-id" placeholder="Gruppen-ID">
+        <button id="join-group">Beitreten</button>
+
+        <hr>
+        <h4>Alle Chats</h4>
+        <ul id="chat-list"></ul>
+      </div>
+
+      <div class="chat-box">
+        <h3 id="chat-title">Kein Chat ausgewählt</h3>
+        <ul id="messages"></ul>
+        <form id="message-form">
+          <input id="text" placeholder="Nachricht..." required>
+          <button type="submit">Senden</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+    import { getFirestore, collection, doc, setDoc, getDoc, getDocs, addDoc, updateDoc, query, where, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAn7EWQm8GkW2EvtHXOeyBvNWjQl0SXYm0",
+      authDomain: "codeflash-104e9.firebaseapp.com",
+      projectId: "codeflash-104e9",
+      storageBucket: "codeflash-104e9.appspot.com",
+      messagingSenderId: "837372104139",
+      appId: "1:837372104139:web:389a641f070069018afa4e"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const loginForm = document.getElementById('login-form');
+    const chatSection = document.getElementById('chat');
+    const messageList = document.getElementById('messages');
+    const messageForm = document.getElementById('message-form');
+    const logoutBtn = document.getElementById('logout');
+    const statusText = document.getElementById('status');
+    const chatTitle = document.getElementById('chat-title');
+    const chatList = document.getElementById('chat-list');
+
+    const privateCodeInput = document.getElementById('private-code');
+    const startPrivateBtn = document.getElementById('start-private');
+    const groupNameInput = document.getElementById('group-name');
+    const createGroupBtn = document.getElementById('create-group');
+    const joinGroupInput = document.getElementById('group-id');
+    const joinGroupBtn = document.getElementById('join-group');
+
+    let currentUser = null;
+    let currentChatId = null;
+    let currentChatType = null;
+
+    async function generateUniqueCode() {
+      let code;
+      let exists = true;
+      while (exists) {
+        code = Math.floor(Math.random() * (9999 - 1111 + 1)) + 1111;
+        const q = query(collection(db, "users"), where("code", "==", code.toString()));
+        const snapshot = await getDocs(q);
+        exists = !snapshot.empty;
+      }
+      return code.toString();
+    }
+
+    async function loadChats() {
+      const userDoc = await getDoc(doc(db, "users", currentUser.uid));
+      const userData = userDoc.exists() ? userDoc.data() : {};
+      const chats = userData.chats || [];
+      
+      chatList.innerHTML = '';
+      chats.forEach(chatId => {
+        const li = document.createElement('li');
+        li.textContent = chatId;
+        li.onclick = () => openChat(chatId);
+        chatList.appendChild(li);
+      });
+    }
+
+    loginForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const email = loginForm['email'].value;
+      const password = loginForm['password'].value;
+      const isRegister = loginForm['register'].checked;
+      try {
+        if (isRegister) {
+          const cred = await createUserWithEmailAndPassword(auth, email, password);
+          const code = await generateUniqueCode();
+          await setDoc(doc(db, "users", cred.user.uid), { email, code, chats: [] });
+          alert("Deine Benutzer-ID ist: " + code);
+        } else {
+          await signInWithEmailAndPassword(auth, email, password);
+        }
+      } catch (err) {
+        alert(err.message);
+      }
+    };
+
+    logoutBtn.onclick = () => signOut(auth);
+
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      if (user) {
+        loginForm.style.display = "none";
+        chatSection.style.display = "block";
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        const userData = userDoc.exists() ? userDoc.data() : {};
+        statusText.textContent = `Angemeldet als: ${user.email} (ID: ${userData.code || 'Unbekannt'})`;
+        loadChats();
+      } else {
+        loginForm.style.display = "block";
+        chatSection.style.display = "none";
+        statusText.textContent = "";
+      }
+    });
+
+    startPrivateBtn.onclick = async () => {
+      const code = privateCodeInput.value.trim();
+      if (!code) return;
+      const q = query(collection(db, "users"), where("code", "==", code));
+      const snapshot = await getDocs(q);
+      if (snapshot.empty) return alert("Kein Benutzer mit dieser ID gefunden.");
+      const otherUser = snapshot.docs[0];
+      const chatId = [currentUser.uid, otherUser.id].sort().join("_");
+      currentChatId = chatId;
+      currentChatType = "private";
+      chatTitle.textContent = `Chat mit: ${otherUser.data().email}`;
+      listenForMessages(chatId);
+    };
+
+    createGroupBtn.onclick = async () => {
+      const name = groupNameInput.value.trim();
+      if (!name) return;
+      const groupRef = await addDoc(collection(db, "groups"), {
+        name,
+        members: [currentUser.uid]
+      });
+      alert(`Gruppe erstellt! Gruppen-ID: ${groupRef.id}`);
+    };
+
+    joinGroupBtn.onclick = async () => {
+      const groupId = joinGroupInput.value.trim();
+      if (!groupId) return;
+      const ref = doc(db, "groups", groupId);
+      const snap = await getDoc(ref);
+      if (!snap.exists()) return alert("Gruppe nicht gefunden");
+      await updateDoc(ref, {
+        members: [...new Set([...(snap.data().members || []), currentUser.uid])]
+      });
+      currentChatId = groupId;
+      currentChatType = "group";
+      chatTitle.textContent = `Gruppe: ${snap.data().name}`;
+      listenForMessages(groupId);
+    };
+
+    messageForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const text = messageForm['text'].value;
+      if (!text.trim() || !currentChatId) return;
+      const path = currentChatType === "private" ? `chats/${currentChatId}/messages` : `groups/${currentChatId}/messages`;
+      await addDoc(collection(db, path), {
+        text,
+        uid: currentUser.uid,
+        email: currentUser.email,
+        createdAt: serverTimestamp()
+      });
+      messageForm.reset();
+    };
+
+    function listenForMessages(pathId) {
+      const path = currentChatType === "private" ? `chats/${pathId}/messages` : `groups/${pathId}/messages`;
+      const q = query(collection(db, path), orderBy("createdAt"));
+      onSnapshot(q, snapshot => {
+        messageList.innerHTML = "";
+        snapshot.forEach(doc => {
+          const msg = doc.data();
+          const li = document.createElement("li");
+          li.className = msg.uid === currentUser.uid ? "sent" : "received";
+          li.innerHTML = `<strong>${msg.email}:</strong> ${msg.text}`;
+          messageList.appendChild(li);
+        });
+        messageList.scrollTop = messageList.scrollHeight;
+      });
+    }
+
+    async function openChat(chatId) {
+      currentChatId = chatId;
+      chatTitle.textContent = `Chat: ${chatId}`;
+      listenForMessages(chatId);
+    }
+  </script>
+</body>
+</html>
