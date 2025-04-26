@@ -71,13 +71,15 @@
 
     <!-- Firebase Konfiguration -->
     <script>
+      // Firebase-Konfiguration
       const firebaseConfig = {
-          apiKey: "AIzaSyAwheajWUhW3Fqb12NMQ68XwX7_enFlx2A",
-  authDomain: "home-eb7e6.firebaseapp.com",
-  projectId: "home-eb7e6",
-  storageBucket: "home-eb7e6.firebasestorage.app",
-  messagingSenderId: "1052466023200",
-  appId: "1:1052466023200:web:4765e334cc370a38356545"
+        apiKey: "AIzaSyAwheajWUhW3Fqb12NMQ68XwX7_enFlx2A",
+        authDomain: "home-eb7e6.firebaseapp.com",
+        projectId: "home-eb7e6",
+        storageBucket: "home-eb7e6.firebasestorage.app",
+        messagingSenderId: "1052466023200",
+        appId: "1:1052466023200:web:4765e334cc370a38356545",
+        measurementId: "G-BZZ1SQ3SJR"
       };
 
       // Firebase initialisieren
@@ -93,6 +95,8 @@
           .then((userCredential) => {
             console.log('Benutzer eingeloggt:', userCredential.user);
             alert("Erfolgreich eingeloggt!");
+            // Weiterleitung zur Dashboard-Seite nach erfolgreichem Login
+            window.location.href = "dashboard.html"; // Ändere dies auf die gewünschte URL
           })
           .catch((error) => {
             console.error('Fehler bei der Anmeldung:', error.message);
@@ -115,6 +119,8 @@
           .then((userCredential) => {
             console.log('Benutzer registriert:', userCredential.user);
             alert("Erfolgreich registriert!");
+            // Weiterleitung zur Dashboard-Seite nach erfolgreicher Registrierung
+            window.location.href = "dashboard.html"; // Ändere dies auf die gewünschte URL
           })
           .catch((error) => {
             console.error('Fehler bei der Registrierung:', error.message);
