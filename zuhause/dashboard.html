@@ -29,26 +29,31 @@
   <h1>Willkommen im Dashboard!</h1>
 
   <script>
-    // Firebase Konfiguration (wieder einfügen)
+    // Firebase Konfiguration
     const firebaseConfig = {
       apiKey: "AIzaSyAwheajWUhW3Fqb12NMQ68XwX7_enFlx2A",
-  authDomain: "home-eb7e6.firebaseapp.com",
-  projectId: "home-eb7e6",
-  storageBucket: "home-eb7e6.firebasestorage.app",
-  messagingSenderId: "1052466023200",
-  appId: "1:1052466023200:web:4765e334cc370a38356545",
-  measurementId: "G-BZZ1SQ3SJR"
+      authDomain: "home-eb7e6.firebaseapp.com",
+      projectId: "home-eb7e6",
+      storageBucket: "home-eb7e6.firebasestorage.app",
+      messagingSenderId: "1052466023200",
+      appId: "1:1052466023200:web:4765e334cc370a38356545",
+      measurementId: "G-BZZ1SQ3SJR"
     };
 
     // Firebase initialisieren
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // Überprüfen ob Benutzer eingeloggt ist
+    // Überprüfen ob Benutzer eingeloggt ist UND ob er von Login kommt
     auth.onAuthStateChanged((user) => {
-      if (!user) {
-        // Wenn KEIN Benutzer eingeloggt ist → Zurück zur Login-Seite
-        window.location.href = "index.html"; // Hier dein Login-Seitenname eintragen
+      const fromLogin = localStorage.getItem('fromLogin');
+
+      if (!user || fromLogin !== 'true') {
+        // Wenn nicht eingeloggt oder nicht von Login → zurück zur Login-Seite
+        window.location.href = "index.html";
+      } else {
+        // Alles gut: Danach löschen wir das fromLogin-Flag, damit er nicht nochmal durchkommt
+        localStorage.removeItem('fromLogin');
       }
     });
   </script>
