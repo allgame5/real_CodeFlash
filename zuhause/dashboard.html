@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.9.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.9.3/firebase-auth.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: -webkit-linear-gradient(left, #9896F0, #FBC8D5);
+      margin: 0;
+    }
+    h1 {
+      color: white;
+      font-size: 40px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Willkommen im Dashboard!</h1>
+
+  <script>
+    // Firebase Konfiguration (wieder einfügen)
+    const firebaseConfig = {
+      apiKey: "AIzaSyAwheajWUhW3Fqb12NMQ68XwX7_enFlx2A",
+      authDomain: "home-eb7e6.firebaseapp.com",
+      projectId: "home-eb7e6",
+      storageBucket: "home-eb7e6.firebasestorage.app",
+      messagingSenderId: "1052466023200",
+      appId: "1:1052466023200:web:4765e334cc370a38356545",
+      measurementId: "G-BZZ1SQ3SJR"
+    };
+
+    // Firebase initialisieren
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // Überprüfen ob Benutzer eingeloggt ist
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        // Wenn KEIN Benutzer eingeloggt ist → Zurück zur Login-Seite
+        window.location.href = "index.html"; // Hier dein Login-Seitenname eintragen
+      }
+    });
+  </script>
+</body>
+</html>
