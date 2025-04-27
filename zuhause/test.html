@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Sign Up | Log In</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Firebase einbinden -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="title-text">
+      <div class="title login">Account</div>
+      <div class="title signup">Account</div>
+    </div>
+    <div class="form-container">
+      <div class="slide-controls">
+        <input type="radio" name="slide" id="login" checked>
+        <input type="radio" name="slide" id="signup">
+        <label for="login" class="slide login">Login</label>
+        <label for="signup" class="slide signup">SignUp</label>
+        <div class="slider-tab"></div>
+      </div>
+      <div class="form-inner">
+        <form id="login-form" class="login" onsubmit="login(event)">
+          <div class="field">
+            <input type="email" id="login-email" placeholder="Email Address" required>
+          </div>
+          <div class="field">
+            <input type="password" id="login-password" placeholder="Password" required>
+          </div>
+          <div class="pass-link">
+            <a href="#">Reset password?</a>
+          </div>
+          <div class="field btn">
+            <div class="btn-layer"></div>
+            <input type="submit" value="Login">
+          </div>
+          <div class="signup-link">
+            Don't Have Account? <a href="#" onclick="switchToSignup()">Create A New</a>
+          </div>
+        </form>
+
+        <form id="signup-form" class="signup" onsubmit="signup(event)" style="display:none;">
+          <div class="field">
+            <input type="email" id="signup-email" placeholder="Email Address" required>
+          </div>
+          <div class="field">
+            <input type="password" id="signup-password" placeholder="Password" required>
+          </div>
+          <div class="field">
+            <input type="password" id="signup-confirm" placeholder="Confirm Password" required>
+          </div>
+          <div class="field btn">
+            <div class="btn-layer"></div>
+            <input type="submit" value="SignUp">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase Config und Funktionen -->
+  <script>
+    const firebaseConfig = {
+       apiKey: "AIzaSyAwheajWUhW3Fqb12NMQ68XwX7_enFlx2A",
+       authDomain: "home-eb7e6.firebaseapp.com",
+       projectId: "home-eb7e6",
+       storageBucket: "home-eb7e6.firebasestorage.app",
+       messagingSenderId: "1052466023200",
+       appId: "1:1052466023200:web:4765e334cc370a38356545"
+    };
+
+    // Firebase initialisieren
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function login(event) {
+      event.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          alert("Login erfolgreich!");
+          window.location.href = "dashboard.html"; // Zielseite nach Login
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    }
+
+    function signup(event) {
+      event.preventDefault();
+      const email = document.getElementById('signup-email').value;
+      const password = document.getElementById('signup-password').value;
+      const confirmPassword = document.getElementById('signup-confirm').value;
+
+      if (password !== confirmPassword) {
+        alert("Passwörter stimmen nicht überein.");
+        return;
+      }
+
+      auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          alert("Registrierung erfolgreich!");
+          window.location.href = "dashboard.html"; // Zielseite nach Registrierung
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    }
+
+    function switchToSignup() {
+      document.getElementById('login-form').style.display = 'none';
+      document.getElementById('signup-form').style.display = 'block';
+    }
+  </script>
+
+  <!-- Dein bestehendes JS (Animation usw.) -->
+  <script src="style.js"></script>
+</body>
+</html>
