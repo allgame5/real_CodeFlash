@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bruchrechner</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fa fa-calculator"></i> Bruchrechner</h1>
+        <div class="fraction-inputs">
+            <div class="fraction">
+                <input type="number" id="numerator1" placeholder="Zähler 1">
+                <div class="fraction-bar"></div>
+                <input type="number" id="denominator1" placeholder="Nenner 1">
+            </div>
+            <div class="operations">
+                <button onclick="addFractions()"><i class="fa fa-plus"></i></button>
+                <button onclick="subtractFractions()"><i class="fa fa-minus"></i></button>
+                <button onclick="multiplyFractions()"><i class="fa fa-times"></i></button>
+                <button onclick="divideFractions()"><i class="fa fa-divide"></i></button>
+            </div>
+            <div class="fraction">
+                <input type="number" id="numerator2" placeholder="Zähler 2">
+                <div class="fraction-bar"></div>
+                <input type="number" id="denominator2" placeholder="Nenner 2">
+            </div>
+        </div>
+        <div class="result">
+            <h2>Ergebnis:</h2>
+            <p id="result-display">Bitte geben Sie die Brüche ein und wählen Sie eine Operation.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
