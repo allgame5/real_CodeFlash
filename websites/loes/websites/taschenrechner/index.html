@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taschenrechner</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+</head>
+<body>
+    <div class="calculator">
+        <div class="screen">
+            <input type="text" id="result" readonly>
+        </div>
+        <div class="buttons">
+            <button onclick="clearInput()">C</button>
+            <button onclick="backspace()"><i class="fas fa-backspace"></i></button>
+            <button onclick="addToInput('(')">(</button>
+            <button onclick="addToInput(')')">)</button>
+            <button onclick="addToInput('**')" class="operator"><i class="fas fa-superscript"></i></button>
+            <button onclick="addToInput('7')">7</button>
+            <button onclick="addToInput('8')">8</button>
+            <button onclick="addToInput('9')">9</button>
+            <button onclick="addToInput('/')"><i class="fas fa-divide"></i></button>
+            <button onclick="addToInput('4')">4</button>
+            <button onclick="addToInput('5')">5</button>
+            <button onclick="addToInput('6')">6</button>
+            <button onclick="addToInput('*')"><i class="fas fa-times"></i></button>
+            <button onclick="addToInput('1')">1</button>
+            <button onclick="addToInput('2')">2</button>
+            <button onclick="addToInput('3')">3</button>
+            <button onclick="addToInput('-')"><i class="fas fa-minus"></i></button>
+            <button onclick="addToInput('0')">0</button>
+            <button onclick="addToInput('.')">.</button>
+            <button onclick="calculate()" id="calculate"><i class="fas fa-equals"></i></button>
+            <button onclick="addToInput('+')"><i class="fas fa-plus"></i></button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
