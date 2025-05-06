@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>CodeFlash Suche</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding-top: 100px;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      font-size: 40px;
+      color: #202124;
+    }
+    input {
+      width: 60%;
+      max-width: 600px;
+      padding: 15px;
+      font-size: 18px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      outline: none;
+    }
+    #results {
+      margin-top: 40px;
+    }
+    .result {
+      background: white;
+      margin: 10px auto;
+      width: 60%;
+      max-width: 700px;
+      text-align: left;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .result a {
+      font-size: 20px;
+      color: #1a0dab;
+      text-decoration: none;
+    }
+    .result p {
+      color: #4d5156;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1>CodeFlash Suche</h1>
+  <input type="text" id="search" placeholder="Suche auf codeflash.eu...">
+  <div id="results"></div>
+
+  <script>
+    let index = [];
+
+    // Lade JSON-Datei mit Seiteninhalt
+    fetch("index.json")
+      .then(res => res.json())
+      .then(data => index = data)
+      .catch(err => {
+        document.getElementById("results").innerHTML =
+          "<p>Fehler beim Laden der index.json</p>";
+      });
+
+    document.getElementById("search").addEventListener("input", e => {
+      const term = e.target.value.toLowerCase();
+      const filtered = index.filter(entry =>
+        entry.title.toLowerCase().includes(term) ||
+        entry.content.toLowerCase().includes(term)
+      );
+
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "";
+
+      if (term.trim() === "") return;
+
+      if (filtered.length === 0) {
+        resultsDiv.innerHTML = "<p>Keine Ergebnisse gefunden.</p>";
+      } else {
+        filtered.forEach(entry => {
+          resultsDiv.innerHTML += `
+            <div class="result">
+              <a href="${entry.url}" target="_blank">${entry.title}</a>
+              <p>${entry.content.slice(0, 200)}...</p>
+            </div>
+          `;
+        });
+      }
+    });
+  </script>
+</body>
+</html>
