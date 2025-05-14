@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Tic Tac Toe mit KI</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f8fbff, #d1e3f0);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 40px;
+      color: #222;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      font-size: 36px;
+    }
+
+    #level {
+      margin-bottom: 20px;
+      font-size: 16px;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #aaa;
+      background: #fff;
+    }
+
+    #board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+      gap: 10px;
+      background: #ccc;
+      padding: 10px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .cell {
+      width: 100px;
+      height: 100px;
+      background-color: white;
+      font-size: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 12px;
+      transition: background 0.3s, transform 0.2s;
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    .cell:hover:not(.taken) {
+      background-color: #f0f0f0;
+      transform: scale(1.05);
+    }
+
+    .cell.taken {
+      cursor: not-allowed;
+    }
+
+    #message {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background: linear-gradient(to right, #007BFF, #0056b3);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #0056b3, #004494);
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <h1>Tic Tac Toe mit KI</h1>
+  <label for="level">Schwierigkeit:</label>
+  <select id="level">
+    <option value="easy">Einfach</option>
+    <option value="medium">Mittel</option>
+    <option value="hard">Schwer</option>
+    <option value="extreme">Extrem</option>
+    <option value="unmöglich">Unmöglich</option>
+    <option value="wahnsinnig">Wahnsinnig</option>
+    <option value="random">Zufällig</option>
+  </select>
+  <div id="board"></div>
+  <div id="message"></div>
+  <button onclick="resetGame()">Neues Spiel</button>
+
+  <script>
+    const board = document.getElementById("board");
+    const message = document.getElementById("message");
+    const levelSelect = document.getElementById("level");
+    let cells, gameOver;
+
+    const human = "X";
+    const ai = "O";
+
+    function startGame() {
+      board.innerHTML = "";
+      cells = Array(9).fill("");
+      gameOver = false;
+      for (let i = 0; i < 9; i++) {
+        const cell = document.createElement("div");
+        cell.classList.add("cell");
+        cell.dataset.index = i;
+        cell.addEventListener("click", onCellClick);
+        board.appendChild(cell);
+      }
+      message.textContent = "Du bist dran!";
+      triggerEvent("start");
+    }
+
+    function onCellClick(e) {
+      const index = e.target.dataset.index;
+      if (cells[index] !== "" || gameOver) return;
+      makeMove(index, human);
+      if (!gameOver) {
+        setTimeout(() => aiMove(), 300);
+      }
+    }
+
+    function makeMove(index, player) {
+      cells[index] = player;
+      const cell = board.querySelector(`[data-index='${index}']`);
+      cell.textContent = player;
+      cell.classList.add("taken");
+
+      triggerEvent("move");
+
+      if (checkWin(cells, player)) {
+        message.textContent = (player === human ? "Du" : "Die KI") + " hast gewonnen!";
+        gameOver = true;
+        triggerEvent("win");
+      } else if (!cells.includes("")) {
+        message.textContent = "Unentschieden!";
+        gameOver = true;
+        triggerEvent("draw");
+      }
+    }
+
+    function aiMove() {
+      const level = levelSelect.value;
+      let index;
+      switch (level) {
+        case "easy": index = randomMove(); break;
+        case "medium": index = mediumMove(); break;
+        case "hard": index = bestMove(); break;
+        case "extreme": index = bestMove(); break;
+        case "unmöglich": index = unbeatableMove(); break;
+        case "wahnsinnig": index = bestMove(); break;
+        case "random": index = Math.random() > 0.5 ? randomMove() : mediumMove(); break;
+      }
+      if (index !== undefined) makeMove(index, ai);
+    }
+
+    function unbeatableMove() { return bestMove(); }
+
+    function randomMove() {
+      const empty = cells.map((v, i) => v === "" ? i : null).filter(i => i !== null);
+      return empty[Math.floor(Math.random() * empty.length)];
+    }
+
+    function mediumMove() {
+      for (let i = 0; i < 9; i++) {
+        if (cells[i] === "") {
+          cells[i] = ai;
+          if (checkWin(cells, ai)) { cells[i] = ""; return i; }
+          cells[i] = "";
+        }
+      }
+      for (let i = 0; i < 9; i++) {
+        if (cells[i] === "") {
+          cells[i] = human;
+          if (checkWin(cells, human)) { cells[i] = ""; return i; }
+          cells[i] = "";
+        }
+      }
+      return randomMove();
+    }
+
+    function bestMove() {
+      let bestScore = -Infinity, move;
+      for (let i = 0; i < 9; i++) {
+        if (cells[i] === "") {
+          cells[i] = ai;
+          let score = minimax(cells, 0, false);
+          cells[i] = "";
+          if (score > bestScore) {
+            bestScore = score;
+            move = i;
+          }
+        }
+      }
+      return move;
+    }
+
+    function minimax(boardState, depth, isMax) {
+      if (checkWin(boardState, ai)) return 10 - depth;
+      if (checkWin(boardState, human)) return depth - 10;
+      if (!boardState.includes("")) return 0;
+      let best = isMax ? -Infinity : Infinity;
+      for (let i = 0; i < 9; i++) {
+        if (boardState[i] === "") {
+          boardState[i] = isMax ? ai : human;
+          const score = minimax(boardState, depth + 1, !isMax);
+          boardState[i] = "";
+          best = isMax ? Math.max(best, score) : Math.min(best, score);
+        }
+      }
+      return best;
+    }
+
+    function checkWin(boardState, player) {
+      return [
+        [0,1,2],[3,4,5],[6,7,8],
+        [0,3,6],[1,4,7],[2,5,8],
+        [0,4,8],[2,4,6]
+      ].some(comb => comb.every(i => boardState[i] === player));
+    }
+
+    function resetGame() {
+      triggerEvent("reset");
+      startGame();
+    }
+
+    function triggerEvent(name) {
+      const event = new Event(name);
+      document.dispatchEvent(event);
+    }
+
+    document.addEventListener("start", () => console.log("Neues Spiel gestartet"));
+    document.addEventListener("win", () => console.log("Spiel gewonnen!"));
+    document.addEventListener("draw", () => console.log("Unentschieden!"));
+    document.addEventListener("reset", () => console.log("Spiel zurückgesetzt"));
+    document.addEventListener("move", () => console.log("Zug gemacht"));
+
+    for (let i = 1; i <= 20; i++) {
+      window[`funktion${i}`] = () => console.log(`Funktion ${i} wurde ausgelöst.`);
+    }
+
+    window.addEventListener("DOMContentLoaded", () => startGame());
+  </script>
+</body>
+</html>
