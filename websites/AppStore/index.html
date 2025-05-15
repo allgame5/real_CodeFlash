@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Meine Apps</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      background: linear-gradient(to right, #eef2f3, #8e9eab);
+      padding: 2rem;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 2rem;
+    }
+
+    .app-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 0 1rem;
+    }
+
+    .app-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .app-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+
+    .app-icon {
+      width: 100px;
+      height: 100px;
+      border-radius: 20px;
+      margin-bottom: 1rem;
+      object-fit: cover;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .app-icon:hover {
+      transform: rotate(5deg) scale(1.1);
+    }
+
+    .app-card h2 {
+      margin: 0.75rem 0 0.5rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .app-card p {
+      font-size: 1rem;
+      color: #666;
+    }
+
+    .store-buttons {
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      opacity: 1;
+    }
+
+    .store-buttons img {
+      height: 45px;
+      transition: transform 0.3s ease, filter 0.3s ease;
+      filter: grayscale(30%);
+      cursor: pointer;
+    }
+
+    .store-buttons img:hover {
+      transform: scale(1.1);
+      filter: grayscale(0%);
+    }
+
+    /* Preloader komplett statisch - nur sichtbar am Start, keine Animation */
+    #preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(135deg, #8e9eab, #eef2f3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      color: #333;
+      font-size: 1.5rem;
+      user-select: none;
+    }
+
+    /* Link Loader mit Ladebalken */
+    #link-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 6px;
+      background: #ddd;
+      display: none;
+      z-index: 10000;
+    }
+
+    #link-loader .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: #4caf50;
+      transition: width linear;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div id="preloader">App wird geladen...</div>
+
+  <div id="link-loader">
+    <div class="progress-bar"></div>
+  </div>
+
+  <h1>🚀 Meine Apps</h1>
+
+  <div class="app-list">
+    <div class="app-card">
+      <img class="app-icon" src="app1-icon.png" alt="App Icon" />
+      <h2>ChatCO</h2>
+      <p>Ein moderner WhatsApp-ähnlicher Chat mit Dark Mode, Gruppen, Profilbildern u.v.m.</p>
+      <div class="store-buttons">
+        <a href="https://play.google.com/store/apps/details?id=com.chatco"><img src="google-play-badge.png" alt="Google Play" /></a>
+        <a href="https://apps.apple.com/app/chatco"><img src="app-store-badge.png" alt="App Store" /></a>
+        <a href="chatco-win.zip"><img src="windows-store-badge.png" alt="Windows Version" /></a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Preloader nach 1 Sekunde ausblenden
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('preloader').style.display = 'none';
+      }, 1000);
+    });
+
+    const linkLoader = document.getElementById('link-loader');
+    const progressBar = linkLoader.querySelector('.progress-bar');
+
+    document.querySelectorAll('a[href]').forEach(link => {
+      link.addEventListener('click', function(e) {
+        const url = this.href;
+        // Keine Aktion bei # oder target=_blank
+        if (!url.startsWith('#') && this.target !== '_blank') {
+          e.preventDefault();
+          linkLoader.style.display = 'block';
+          progressBar.style.width = '0%';
+
+          // Ladebalken animieren von 0% auf 100% in 2-5 Sekunden zufällig
+          const duration = 2000 + Math.random() * 3000; // 2000-5000ms
+          progressBar.style.transition = `width ${duration}ms linear`;
+          setTimeout(() => {
+            progressBar.style.width = '100%';
+          }, 50);
+
+          // Nach der Dauer weiterleiten
+          setTimeout(() => {
+            window.location.href = url;
+          }, duration);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
