@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meine Links</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        .profile {
+            margin-bottom: 30px;
+        }
+        
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 15px;
+        }
+        
+        .profile h1 {
+            font-size: 28px;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .profile p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+            max-width: 80%;
+            margin: 0 auto;
+        }
+        
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+        
+        .link {
+            background-color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            background-color: #f8f8f8;
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .social-icon {
+            color: white;
+            font-size: 24px;
+            transition: transform 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            transform: scale(1.2);
+        }
+        
+        footer {
+            margin-top: 40px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile">
+            <!-- Platzhalter für dein Profilbild - ersetze mit deinem Bild -->
+            <img src="https://via.placeholder.com/120" alt="Profilbild" class="profile-img">
+            <h1>Dein Name</h1>
+            <p>Kurze Beschreibung oder Motto</p>
+        </div>
+        
+        <div class="links">
+            <a href="#" class="link">YouTube Kanal</a>
+            <a href="#" class="link">Instagram Profil</a>
+            <a href="#" class="link">Twitter Account</a>
+            <a href="#" class="link">TikTok Profile</a>
+            <a href="#" class="link">Mein Blog</a>
+            <a href="#" class="link">Podcast</a>
+        </div>
+        
+        <div class="social-icons">
+            <!-- Hier können Social Media Icons hinzugefügt werden -->
+            <a href="#" class="social-icon">📱</a>
+            <a href="#" class="social-icon">💻</a>
+            <a href="#" class="social-icon">📸</a>
+        </div>
+    </div>
+    
+    <footer>
+        © 2023 Dein Name • Alle Rechte vorbehalten
+    </footer>
+</body>
+</html>
