@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meine Schulfächer mit Firebase</title>
+    <!-- Firebase SDK einbinden -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #6b8cbc;
+            --light-color: #f5f7fa;
+            --dark-color: #333;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .auth-section {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .search-box {
+            flex-grow: 1;
+            max-width: 400px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-info {
+            background-color: var(--info-color);
+            color: white;
+        }
+        
+        .btn-info:hover {
+            background-color: #138496;
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning-color);
+            color: black;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .subject-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .subject-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .subject-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .subject-content {
+            padding: 1rem;
+        }
+        
+        .topic-list {
+            list-style-type: none;
+        }
+        
+        .topic-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .topic-item:last-child {
+            border-bottom: none;
+        }
+        
+        .status-badge {
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .status-completed {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .status-in-progress {
+            background-color: var(--warning-color);
+            color: black;
+        }
+        
+        .status-not-started {
+            background-color: #ddd;
+            color: black;
+        }
+        
+        .lessons-section {
+            margin-top: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+        }
+        
+        .lessons-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .lessons-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .lesson-item {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .lesson-item:last-child {
+            border-bottom: none;
+        }
+        
+        .lesson-details {
+            flex-grow: 1;
+        }
+        
+        .lesson-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .lesson-content {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .lesson-content.expanded {
+            display: block;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.2rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+            border-top: 1px solid #ddd;
+        }
+        
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+            }
+            
+            .search-box {
+                max-width: 100%;
+            }
+            
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .lesson-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .lesson-actions {
+                margin-top: 0.5rem;
+                width: 100%;
+                justify-content: flex-end;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Meine Schulfächer mit Firebase Realtime DB</h1>
+        <div class="auth-section" id="authSection">
+            <div class="user-info" id="userInfo" style="display: none;">
+                <span id="userEmail"></span>
+                <button class="btn btn-warning" id="logoutBtn">Abmelden</button>
+            </div>
+            <div id="loginForm">
+                <input type="email" id="loginEmail" placeholder="E-Mail">
+                <input type="password" id="loginPassword" placeholder="Passwort">
+                <button class="btn btn-primary" id="loginBtn">Anmelden</button>
+                <button class="btn btn-success" id="registerBtn">Registrieren</button>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div id="appContent" style="display: none;">
+            <div class="controls">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Fach, Thema oder Stunde suchen...">
+                </div>
+                <div>
+                    <button class="btn btn-primary" id="addSubjectBtn">Neues Fach hinzufügen</button>
+                    <button class="btn btn-info" id="viewAllLessonsBtn">Alle Stunden anzeigen</button>
+                </div>
+            </div>
+            
+            <div class="subjects-grid" id="subjectsContainer">
+                <!-- Fächer werden hier dynamisch eingefügt -->
+            </div>
+            
+            <div class="lessons-section" id="lessonsSection">
+                <div class="lessons-header">
+                    <h2>Stundenübersicht</h2>
+                    <button class="btn btn-primary" id="addLessonBtn">Neue Stunde hinzufügen</button>
+                </div>
+                <div class="lessons-list" id="lessonsList">
+                    <!-- Stunden werden hier dynamisch eingefügt -->
+                </div>
+            </div>
+        </div>
+        
+        <div id="loginMessage" class="loading">
+            Bitte melde dich an, um deine Schulfächer zu sehen.
+        </div>
+    </div>
+    
+    <!-- Modal für das Hinzufügen/Bearbeiten von Fächern -->
+    <div class="modal" id="subjectModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Neues Fach hinzufügen</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <form id="subjectForm">
+                <input type="hidden" id="subjectId">
+                <div class="form-group">
+                    <label for="subjectName">Fachname:</label>
+                    <input type="text" id="subjectName" required>
+                </div>
+                <div class="form-group">
+                    <label for="subjectTeacher">Lehrkraft:</label>
+                    <input type="text" id="subjectTeacher">
+                </div>
+                <div class="form-group">
+                    <label for="subjectColor">Farbe:</label>
+                    <input type="color" id="subjectColor" value="#4a6fa5">
+                </div>
+                <div class="actions">
+                    <button type="button" class="btn" id="cancelBtn">Abbrechen</button>
+                    <button type="submit" class="btn btn-primary">Speichern</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal für das Hinzufügen/Bearbeiten von Themen -->
+    <div class="modal" id="topicModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="topicModalTitle">Neues Thema hinzufügen</h2>
+                <button class="close-btn" id="closeTopicModal">&times;</button>
+            </div>
+            <form id="topicForm">
+                <input type="hidden" id="topicId">
+                <input type="hidden" id="parentSubjectId">
+                <div class="form-group">
+                    <label for="topicName">Thema:</label>
+                    <input type="text" id="topicName" required>
+                </div>
+                <div class="form-group">
+                    <label for="topicDescription">Beschreibung:</label>
+                    <textarea id="topicDescription"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="topicStatus">Status:</label>
+                    <select id="topicStatus">
+                        <option value="not-started">Noch nicht begonnen</option>
+                        <option value="in-progress">In Bearbeitung</option>
+                        <option value="completed">Abgeschlossen</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="topicDate">Datum:</label>
+                    <input type="date" id="topicDate">
+                </div>
+                <div class="actions">
+                    <button type="button" class="btn" id="cancelTopicBtn">Abbrechen</button>
+                    <button type="submit" class="btn btn-primary">Speichern</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal für das Hinzufügen/Bearbeiten von Stunden -->
+    <div class="modal" id="lessonModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="lessonModalTitle">Neue Stunde hinzufügen</h2>
+                <button class="close-btn" id="closeLessonModal">&times;</button>
+            </div>
+            <form id="lessonForm">
+                <input type="hidden" id="lessonId">
+                <div class="form-group">
+                    <label for="lessonSubject">Fach:</label>
+                    <select id="lessonSubject" required>
+                        <option value="">Bitte wählen</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="lessonDate">Datum:</label>
+                    <input type="date" id="lessonDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="lessonTitle">Titel:</label>
+                    <input type="text" id="lessonTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="lessonContent">Inhalt:</label>
+                    <textarea id="lessonContent" placeholder="Was wurde in der Stunde gemacht?"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="lessonHomework">Hausaufgaben:</label>
+                    <textarea id="lessonHomework"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="lessonNotes">Notizen:</label>
+                    <textarea id="lessonNotes"></textarea>
+                </div>
+                <div class="actions">
+                    <button type="button" class="btn" id="cancelLessonBtn">Abbrechen</button>
+                    <button type="submit" class="btn btn-primary">Speichern</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Schulfächer-Website mit Firebase Realtime Database &copy; 2023</p>
+    </footer>
+    
+    <script>
+        // Deine Firebase-Konfiguration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCVSprWY97ds1kcVJS1pq7ufmkPRSvubgQ",
+            authDomain: "school-14929.firebaseapp.com",
+            databaseURL: "https://school-14929-default-rtdb.firebaseio.com",
+            projectId: "school-14929",
+            storageBucket: "school-14929.firebasestorage.app",
+            messagingSenderId: "1016693748781",
+            appId: "1:1016693748781:web:b31cc4efdb1f78c12df4a4",
+            measurementId: "G-RRGLL2LS5D"
+        };
+        
+        // Firebase initialisieren
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const auth = firebase.auth();
+        
+        // DOM-Elemente
+        const authSection = document.getElementById('authSection');
+        const userInfo = document.getElementById('userInfo');
+        const userEmail = document.getElementById('userEmail');
+        const loginForm = document.getElementById('loginForm');
+        const loginEmail = document.getElementById('loginEmail');
+        const loginPassword = document.getElementById('loginPassword');
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const appContent = document.getElementById('appContent');
+        const loginMessage = document.getElementById('loginMessage');
+        
+        const subjectsContainer = document.getElementById('subjectsContainer');
+        const lessonsList = document.getElementById('lessonsList');
+        const searchInput = document.getElementById('searchInput');
+        const addSubjectBtn = document.getElementById('addSubjectBtn');
+        const addLessonBtn = document.getElementById('addLessonBtn');
+        const viewAllLessonsBtn = document.getElementById('viewAllLessonsBtn');
+        const subjectModal = document.getElementById('subjectModal');
+        const topicModal = document.getElementById('topicModal');
+        const lessonModal = document.getElementById('lessonModal');
+        const subjectForm = document.getElementById('subjectForm');
+        const topicForm = document.getElementById('topicForm');
+        const lessonForm = document.getElementById('lessonForm');
+        const closeModal = document.getElementById('closeModal');
+        const closeTopicModal = document.getElementById('closeTopicModal');
+        const closeLessonModal = document.getElementById('closeLessonModal');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const cancelTopicBtn = document.getElementById('cancelTopicBtn');
+        const cancelLessonBtn = document.getElementById('cancelLessonBtn');
+        const lessonSubjectSelect = document.getElementById('lessonSubject');
+        
+        // Globale Variablen
+        let currentUser = null;
+        let subjects = [];
+        let lessons = [];
+        
+        // Firebase Auth Status überwachen
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // Benutzer ist angemeldet
+                currentUser = user;
+                userEmail.textContent = user.email;
+                userInfo.style.display = 'flex';
+                loginForm.style.display = 'none';
+                appContent.style.display = 'block';
+                loginMessage.style.display = 'none';
+                
+                // Daten für den angemeldeten Benutzer laden
+                loadUserData();
+            } else {
+                // Benutzer ist nicht angemeldet
+                currentUser = null;
+                userInfo.style.display = 'none';
+                loginForm.style.display = 'flex';
+                appContent.style.display = 'none';
+                loginMessage.style.display = 'block';
+            }
+        });
+        
+        // Benutzerdaten aus Realtime Database laden
+        function loadUserData() {
+            if (!currentUser) return;
+            
+            const userId = currentUser.uid;
+            
+            // Fächer laden mit Echtzeit-Updates
+            database.ref('users/' + userId + '/subjects').on('value', (snapshot) => {
+                subjects = [];
+                const data = snapshot.val();
+                if (data) {
+                    Object.keys(data).forEach(key => {
+                        subjects.push({
+                            id: key,
+                            ...data[key]
+                        });
+                    });
+                }
+                renderSubjects();
+                updateSubjectSelect();
+            });
+            
+            // Stunden laden mit Echtzeit-Updates
+            database.ref('users/' + userId + '/lessons').on('value', (snapshot) => {
+                lessons = [];
+                const data = snapshot.val();
+                if (data) {
+                    Object.keys(data).forEach(key => {
+                        lessons.push({
+                            id: key,
+                            ...data[key]
+                        });
+                    });
+                    // Nach Datum sortieren (neueste zuerst)
+                    lessons.sort((a, b) => new Date(b.date) - new Date(a.date));
+                }
+                renderLessons();
+            });
+        }
+        
+        // Fächer anzeigen
+        function renderSubjects(filteredSubjects = null) {
+            const subjectsToRender = filteredSubjects || subjects;
+            subjectsContainer.innerHTML = '';
+            
+            if (subjectsToRender.length === 0) {
+                subjectsContainer.innerHTML = '<p>Noch keine Fächer vorhanden. Füge dein erstes Fach hinzu!</p>';
+                return;
+            }
+            
+            subjectsToRender.forEach(subject => {
+                const subjectCard = document.createElement('div');
+                subjectCard.className = 'subject-card';
+                subjectCard.innerHTML = `
+                    <div class="subject-header" style="background-color: ${subject.color || '#4a6fa5'}">
+                        <h3>${subject.name}</h3>
+                        <div>
+                            <button class="btn" onclick="editSubject('${subject.id}')">Bearbeiten</button>
+                            <button class="btn btn-danger" onclick="deleteSubject('${subject.id}')">Löschen</button>
+                        </div>
+                    </div>
+                    <div class="subject-content">
+                        <p><strong>Lehrkraft:</strong> ${subject.teacher || 'Nicht angegeben'}</p>
+                        <h4>Themen:</h4>
+                        <ul class="topic-list" id="topics-${subject.id}">
+                            ${subject.topics && Object.keys(subject.topics).length > 0 ? 
+                                Object.values(subject.topics).map(topic => `
+                                    <li class="topic-item">
+                                        <div>
+                                            <strong>${topic.name}</strong>
+                                            <p>${topic.description || ''}</p>
+                                            <small>${topic.date || ''}</small>
+                                        </div>
+                                        <div>
+                                            <span class="status-badge status-${topic.status || 'not-started'}">
+                                                ${getStatusText(topic.status || 'not-started')}
+                                            </span>
+                                            <button class="btn" onclick="editTopic('${subject.id}', '${topic.id}')">Bearbeiten</button>
+                                            <button class="btn btn-danger" onclick="deleteTopic('${subject.id}', '${topic.id}')">Löschen</button>
+                                        </div>
+                                    </li>
+                                `).join('') : '<p>Noch keine Themen vorhanden.</p>'}
+                        </ul>
+                        <button class="btn btn-primary" onclick="addTopic('${subject.id}')" style="margin-top: 1rem;">Thema hinzufügen</button>
+                    </div>
+                `;
+                subjectsContainer.appendChild(subjectCard);
+            });
+        }
+        
+        // Stunden anzeigen
+        function renderLessons(filteredLessons = null) {
+            const lessonsToRender = filteredLessons || lessons;
+            lessonsList.innerHTML = '';
+            
+            if (lessonsToRender.length === 0) {
+                lessonsList.innerHTML = '<p>Noch keine Stunden eingetragen.</p>';
+                return;
+            }
+            
+            lessonsToRender.forEach(lesson => {
+                const subject = subjects.find(s => s.id === lesson.subjectId);
+                const lessonItem = document.createElement('div');
+                lessonItem.className = 'lesson-item';
+                lessonItem.innerHTML = `
+                    <div class="lesson-details">
+                        <h4>${lesson.title}</h4>
+                        <p><strong>Fach:</strong> ${subject ? subject.name : 'Unbekannt'} | <strong>Datum:</strong> ${formatDate(lesson.date)}</p>
+                        <div class="lesson-content" id="content-${lesson.id}">
+                            <p><strong>Inhalt:</strong> ${lesson.content || ''}</p>
+                            ${lesson.homework ? `<p><strong>Hausaufgaben:</strong> ${lesson.homework}</p>` : ''}
+                            ${lesson.notes ? `<p><strong>Notizen:</strong> ${lesson.notes}</p>` : ''}
+                        </div>
+                    </div>
+                    <div class="lesson-actions">
+                        <button class="btn btn-info" onclick="toggleLessonContent('${lesson.id}')">Details</button>
+                        <button class="btn" onclick="editLesson('${lesson.id}')">Bearbeiten</button>
+                        <button class="btn btn-danger" onclick="deleteLesson('${lesson.id}')">Löschen</button>
+                    </div>
+                `;
+                lessonsList.appendChild(lessonItem);
+            });
+        }
+        
+        // Status-Text für Badge
+        function getStatusText(status) {
+            switch(status) {
+                case 'completed': return 'Abgeschlossen';
+                case 'in-progress': return 'In Bearbeitung';
+                case 'not-started': return 'Noch nicht begonnen';
+                default: return status;
+            }
+        }
+        
+        // Datum formatieren
+        function formatDate(dateString) {
+            if (!dateString) return 'Nicht angegeben';
+            const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            return new Date(dateString).toLocaleDateString('de-DE', options);
+        }
+        
+        // Fächer für Auswahlfeld aktualisieren
+        function updateSubjectSelect() {
+            lessonSubjectSelect.innerHTML = '<option value="">Bitte wählen</option>';
+            subjects.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject.id;
+                option.textContent = subject.name;
+                lessonSubjectSelect.appendChild(option);
+            });
+        }
+        
+        // Stunden-Inhalt ein-/ausblenden
+        function toggleLessonContent(lessonId) {
+            const contentElement = document.getElementById(`content-${lessonId}`);
+            if (contentElement) {
+                contentElement.classList.toggle('expanded');
+            }
+        }
+        
+        // Anmeldefunktion
+        loginBtn.addEventListener('click', () => {
+            const email = loginEmail.value;
+            const password = loginPassword.value;
+            
+            if (!email || !password) {
+                alert('Bitte E-Mail und Passwort eingeben.');
+                return;
+            }
+            
+            auth.signInWithEmailAndPassword(email, password)
+                .catch((error) => {
+                    alert('Fehler bei der Anmeldung: ' + error.message);
+                });
+        });
+        
+        // Registrierungsfunktion
+        registerBtn.addEventListener('click', () => {
+            const email = loginEmail.value;
+            const password = loginPassword.value;
+            
+            if (!email || !password) {
+                alert('Bitte E-Mail und Passwort eingeben.');
+                return;
+            }
+            
+            if (password.length < 6) {
+                alert('Das Passwort muss mindestens 6 Zeichen lang sein.');
+                return;
+            }
+            
+            auth.createUserWithEmailAndPassword(email, password)
+                .then(() => {
+                    alert('Registrierung erfolgreich! Du bist jetzt angemeldet.');
+                })
+                .catch((error) => {
+                    alert('Fehler bei der Registrierung: ' + error.message);
+                });
+        });
+        
+        // Abmeldefunktion
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut();
+        });
+        
+        // Neues Fach hinzufügen
+        function addSubject() {
+            document.getElementById('modalTitle').textContent = 'Neues Fach hinzufügen';
+            document.getElementById('subjectId').value = '';
+            document.getElementById('subjectName').value = '';
+            document.getElementById('subjectTeacher').value = '';
+            document.getElementById('subjectColor').value = '#4a6fa5';
+            subjectModal.style.display = 'flex';
+        }
+        
+        // Fach bearbeiten
+        function editSubject(id) {
+            const subject = subjects.find(s => s.id === id);
+            if (subject) {
+                document.getElementById('modalTitle').textContent = 'Fach bearbeiten';
+                document.getElementById('subjectId').value = subject.id;
+                document.getElementById('subjectName').value = subject.name;
+                document.getElementById('subjectTeacher').value = subject.teacher || '';
+                document.getElementById('subjectColor').value = subject.color || '#4a6fa5';
+                subjectModal.style.display = 'flex';
+            }
+        }
+        
+        // Fach löschen
+        function deleteSubject(id) {
+            if (confirm('Möchtest du dieses Fach wirklich löschen? Alle zugehörigen Themen und Stunden werden ebenfalls gelöscht.')) {
+                const userId = currentUser.uid;
+                
+                // Fach aus Realtime Database löschen
+                database.ref('users/' + userId + '/subjects/' + id).remove()
+                    .then(() => {
+                        // Zugehörige Stunden löschen
+                        const lessonDeletes = lessons
+                            .filter(lesson => lesson.subjectId === id)
+                            .map(lesson => 
+                                database.ref('users/' + userId + '/lessons/' + lesson.id).remove()
+                            );
+                        
+                        return Promise.all(lessonDeletes);
+                    })
+                    .catch((error) => {
+                        alert('Fehler beim Löschen des Fachs: ' + error.message);
+                    });
+            }
+        }
+        
+        // Neues Thema hinzufügen
+        function addTopic(subjectId) {
+            document.getElementById('topicModalTitle').textContent = 'Neues Thema hinzufügen';
+            document.getElementById('topicId').value = '';
+            document.getElementById('parentSubjectId').value = subjectId;
+            document.getElementById('topicName').value = '';
+            document.getElementById('topicDescription').value = '';
+            document.getElementById('topicStatus').value = 'not-started';
+            document.getElementById('topicDate').value = '';
+            topicModal.style.display = 'flex';
+        }
+        
+        // Thema bearbeiten
+        function editTopic(subjectId, topicId) {
+            const subject = subjects.find(s => s.id === subjectId);
+            if (subject && subject.topics) {
+                const topic = subject.topics[topicId];
+                if (topic) {
+                    document.getElementById('topicModalTitle').textContent = 'Thema bearbeiten';
+                    document.getElementById('topicId').value = topicId;
+                    document.getElementById('parentSubjectId').value = subjectId;
+                    document.getElementById('topicName').value = topic.name;
+                    document.getElementById('topicDescription').value = topic.description || '';
+                    document.getElementById('topicStatus').value = topic.status || 'not-started';
+                    document.getElementById('topicDate').value = topic.date || '';
+                    topicModal.style.display = 'flex';
+                }
+            }
+        }
+        
+        // Thema löschen
+        function deleteTopic(subjectId, topicId) {
+            if (confirm('Möchtest du dieses Thema wirklich löschen?')) {
+                const userId = currentUser.uid;
+                
+                // Thema aus Realtime Database löschen
+                database.ref('users/' + userId + '/subjects/' + subjectId + '/topics/' + topicId).remove()
+                    .catch((error) => {
+                        alert('Fehler beim Löschen des Themas: ' + error.message);
+                    });
+            }
+        }
+        
+        // Neue Stunde hinzufügen
+        function addLesson() {
+            document.getElementById('lessonModalTitle').textContent = 'Neue Stunde hinzufügen';
+            document.getElementById('lessonId').value = '';
+            document.getElementById('lessonSubject').value = '';
+            document.getElementById('lessonDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('lessonTitle').value = '';
+            document.getElementById('lessonContent').value = '';
+            document.getElementById('lessonHomework').value = '';
+            document.getElementById('lessonNotes').value = '';
+            lessonModal.style.display = 'flex';
+        }
+        
+        // Stunde bearbeiten
+        function editLesson(id) {
+            const lesson = lessons.find(l => l.id === id);
+            if (lesson) {
+                document.getElementById('lessonModalTitle').textContent = 'Stunde bearbeiten';
+                document.getElementById('lessonId').value = lesson.id;
+                document.getElementById('lessonSubject').value = lesson.subjectId;
+                document.getElementById('lessonDate').value = lesson.date;
+                document.getElementById('lessonTitle').value = lesson.title;
+                document.getElementById('lessonContent').value = lesson.content || '';
+                document.getElementById('lessonHomework').value = lesson.homework || '';
+                document.getElementById('lessonNotes').value = lesson.notes || '';
+                lessonModal.style.display = 'flex';
+            }
+        }
+        
+        // Stunde löschen
+        function deleteLesson(id) {
+            if (confirm('Möchtest du diese Stunde wirklich löschen?')) {
+                const userId = currentUser.uid;
+                database.ref('users/' + userId + '/lessons/' + id).remove()
+                    .catch((error) => {
+                        alert('Fehler beim Löschen der Stunde: ' + error.message);
+                    });
+            }
+        }
+        
+        // Alle Stunden anzeigen (Filter zurücksetzen)
+        function viewAllLessons() {
+            renderLessons();
+            searchInput.value = '';
+        }
+        
+        // Suchfunktion
+        function searchItems() {
+            const searchTerm = searchInput.value.toLowerCase();
+            if (searchTerm === '') {
+                renderSubjects();
+                renderLessons();
+                return;
+            }
+            
+            // Fächer filtern
+            const filteredSubjects = subjects.map(subject => {
+                // Prüfen, ob der Fachname oder die Lehrkraft den Suchbegriff enthält
+                if (subject.name.toLowerCase().includes(searchTerm) || 
+                    (subject.teacher && subject.teacher.toLowerCase().includes(searchTerm))) {
+                    return subject;
+                }
+                
+                // Themen filtern, die den Suchbegriff enthalten
+                if (subject.topics) {
+                    const filteredTopics = {};
+                    Object.keys(subject.topics).forEach(topicId => {
+                        const topic = subject.topics[topicId];
+                        if (topic.name.toLowerCase().includes(searchTerm) || 
+                            (topic.description && topic.description.toLowerCase().includes(searchTerm))) {
+                            filteredTopics[topicId] = topic;
+                        }
+                    });
+                    
+                    // Wenn Themen gefunden wurden, ein neues Fach mit den gefilterten Themen zurückgeben
+                    if (Object.keys(filteredTopics).length > 0) {
+                        return {
+                            ...subject,
+                            topics: filteredTopics
+                        };
+                    }
+                }
+                
+                return null;
+            }).filter(subject => subject !== null);
+            
+            // Stunden filtern
+            const filteredLessons = lessons.filter(lesson => {
+                const subject = subjects.find(s => s.id === lesson.subjectId);
+                return (
+                    lesson.title.toLowerCase().includes(searchTerm) ||
+                    (lesson.content && lesson.content.toLowerCase().includes(searchTerm)) ||
+                    (subject && subject.name.toLowerCase().includes(searchTerm))
+                );
+            });
+            
+            renderSubjects(filteredSubjects);
+            renderLessons(filteredLessons);
+        }
+        
+        // Event-Listener
+        addSubjectBtn.addEventListener('click', addSubject);
+        addLessonBtn.addEventListener('click', addLesson);
+        viewAllLessonsBtn.addEventListener('click', viewAllLessons);
+        
+        closeModal.addEventListener('click', () => {
+            subjectModal.style.display = 'none';
+        });
+        
+        closeTopicModal.addEventListener('click', () => {
+            topicModal.style.display = 'none';
+        });
+        
+        closeLessonModal.addEventListener('click', () => {
+            lessonModal.style.display = 'none';
+        });
+        
+        cancelBtn.addEventListener('click', () => {
+            subjectModal.style.display = 'none';
+        });
+        
+        cancelTopicBtn.addEventListener('click', () => {
+            topicModal.style.display = 'none';
+        });
+        
+        cancelLessonBtn.addEventListener('click', () => {
+            lessonModal.style.display = 'none';
+        });
+        
+        // Formular für Fächer
+        subjectForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (!currentUser) return;
+            
+            const userId = currentUser.uid;
+            const id = document.getElementById('subjectId').value;
+            const name = document.getElementById('subjectName').value;
+            const teacher = document.getElementById('subjectTeacher').value;
+            const color = document.getElementById('subjectColor').value;
+            
+            const subjectData = {
+                name,
+                teacher,
+                color,
+                createdAt: new Date().toISOString()
+            };
+            
+            if (id) {
+                // Fach bearbeiten
+                database.ref('users/' + userId + '/subjects/' + id).update(subjectData)
+                    .then(() => {
+                        subjectModal.style.display = 'none';
+                    })
+                    .catch((error) => {
+                        alert('Fehler beim Aktualisieren des Fachs: ' + error.message);
+                    });
+            } else {
+                // Neues Fach hinzufügen
+                const newSubjectRef = database.ref('users/' + userId + '/subjects').push();
+                newSubjectRef.set(subjectData)
+                    .then(() => {
+                        subjectModal.style.display = 'none';
+                    })
+                    .catch((error) => {
+                        alert('Fehler beim Hinzufügen des Fachs: ' + error.message);
+                    });
+            }
+        });
+        
+        // Formular für Themen
+        topicForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (!currentUser) return;
+            
+            const userId = currentUser.uid;
+            const id = document.getElementById('topicId').value;
+            const subjectId = document.getElementById('parentSubjectId').value;
+            const name = document.getElementById('topicName').value;
+            const description = document.getElementById('topicDescription').value;
+            const status = document.getElementById('topicStatus').value;
+            const date = document.getElementById('topicDate').value;
+            
+            const topicData = {
+                id: id || Date.now().toString(),
+                name,
+                description,
+                status,
+                date
+            };
+            
+            if (id) {
+                // Thema bearbeiten
+                database.ref('users/' + userId + '/subjects/' + subjectId + '/topics/' + id).update(topicData)
+                    .then(() => {
+                        topicModal.style.display = 'none';
+                    })
+                    .catch((error) => {
+                        alert('Fehler beim Speichern des Themas: ' + error.message);
+                    });
+            } else {
+                // Neues Thema hinzufügen
+                const newTopicRef = database.ref('users/' + userId + '/subjects/' + subjectId + '/topics').push();
+                topicData.id = newTopicRef.key;
+                newTopicRef.set(topicData)
+                    .then(() => {
+                        topicModal.style.display = 'none';
+                    })
+                    .catch((error) => {
+                        alert('Fehler beim Hinzufügen des Themas: ' + error.message);
+                    });
+            }
+        });
+        
+        // Formular für Stunden
+        lessonForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (!currentUser) return;
+            
+            const userId = currentUser.uid;
+            const id = document.getElementById('lessonId').value;
+            const subjectId = document.getElementById('lessonSubject').value;
+            const date = document.getElementById('lessonDate').value;
+            const title = document.getElementById('lessonTitle').value;
+            const content = document.getElementById('lessonContent').value;
+            const homework = document.getElementById('lessonHomework').value;
+            const notes = document.getElementById('lessonNotes').value;
+            
+            const lessonData = {
+                subjectId,
+                date,
+                title,
+                content,
+                homework,
+                notes,
+                createdAt: new Date().toISOString()
+            };
+            
+            if (id) {
+                // Stunde bearbeiten
+                database.ref('users/' + userId + '/lessons/' + id).update(lessonData)
+                    .then(() => {
+                        lessonModal.style.display = 'none';
+                    })
+                    .catch((error) => {
+                        alert('Fehler beim Aktualisieren der Stunde: ' + error.message);
+                    });
+            } else {
+                // Neue Stunde hinzufügen
+                const newLessonRef = database.ref('users/' + userId + '/lessons').push();
+                lessonData.id = newLessonRef.key;
+                newLessonRef.set(lessonData)
+                    .then(() => {
+                        lessonModal.style.display = 'none';
+                    })
+                    .catch((error) => {
+                        alert('Fehler beim Hinzufügen der Stunde: ' + error.message);
+                    });
+            }
+        });
+        
+        // Suche bei Eingabe
+        searchInput.addEventListener('input', searchItems);
+        
+        // Modal schließen, wenn außerhalb geklickt wird
+        window.addEventListener('click', (e) => {
+            if (e.target === subjectModal) {
+                subjectModal.style.display = 'none';
+            }
+            if (e.target === topicModal) {
+                topicModal.style.display = 'none';
+            }
+            if (e.target === lessonModal) {
+                lessonModal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
