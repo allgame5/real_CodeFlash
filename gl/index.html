@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tobis Geburtstagsfeier</title>
+    <style>
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #4ecdc4;
+            --accent-color: #ffe66d;
+            --dark-color: #292f36;
+            --light-color: #f7fff7;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-color);
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .info-card {
+            background: var(--light-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .info-card h3 {
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .countdown-item {
+            background: var(--dark-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            text-align: center;
+            min-width: 80px;
+        }
+        
+        .countdown-number {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .rsvp-form {
+            display: grid;
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        label {
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        input, select, textarea {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #ff5252;
+        }
+        
+        footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .countdown {
+                flex-wrap: wrap;
+            }
+        }
+        
+        /* Animationen */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--accent-color);
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Leons Geburtstagsfeier</h1>
+            <p class="subtitle">Feiere mit mir am 12. Dezember 2025!</p>
+            <div class="countdown">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="days">00</div>
+                    <div>Tage</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="hours">00</div>
+                    <div>Stunden</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="minutes">00</div>
+                    <div>Minuten</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="seconds">00</div>
+                    <div>Sekunden</div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <section id="about">
+            <h2>Über die Feier</h2>
+            <p>Liebe Freunde, Familie und alle, die mir wichtig sind!</p>
+            <p>Ich lade euch herzlich ein, mit mir meinen Geburtstag zu feiern. Es wird ein unvergesslicher Abend mit gutem Essen, toller Musik und jeder Menge Spaß!</p>
+            <p>Bringt gute Laune mit und lasst uns gemeinsam feiern!</p>
+        </section>
+        
+        <section id="details">
+            <h2>Alle Informationen</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Wann?</h3>
+                    <p><strong>Datum:</strong> 12. Dezember 2023</p>
+                    <p><strong>Uhrzeit:</strong> 16:00 Uhr bis open end</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>Wo?</h3>
+                    <p><strong>Ort:</strong> Baden ÖBB hbf.</p>
+                </div>
+                
+                
+                <div class="info-card">
+                    <h3>Mitbringsel</h3>
+                    <p>Eure gute Laune ist das wichtigste!</p>
+                    <p>Für Getränke und Snacks ist gesorgt.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="programm">
+            <h2>Programm</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>16:00 Uhr</h3>
+                    <p>Treffpunkt</p>
+                </div>
+                
+            </div>
+        </section>
+        
+        <section id="rsvp">
+            <h2>Kannst du kommen?</h2>
+            <p>Bitte gib mir bis zum 7. Oktober Bescheid, ob du dabei bist!</p>
+            
+            <form class="rsvp-form" id="rsvpForm">
+                <div class="form-group">
+                    <label for="name">Name *</label>
+                    <input type="text" id="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">E-Mail *</label>
+                    <input type="email" id="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="guests">Anzahl der Begleitpersonen</label>
+                    <select id="guests">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3 oder mehr</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="attendance">Kannst du kommen? *</label>
+                    <select id="attendance" required>
+                        <option value="">Bitte auswählen</option>
+                        <option value="yes">Ja, ich komme!</option>
+                        <option value="no">Leider nein</option>
+                        <option value="maybe">Vielleicht</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Nachricht oder Wünsche</label>
+                    <textarea id="message" rows="4"></textarea>
+                </div>
+                
+                <button type="submit">Absenden</button>
+            </form>
+        </section>
+        
+        <section id="kontakt">
+            <h2>Kontakt</h2>
+            <p>Bei Fragen kannst du mich gerne kontaktieren:</p>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Telefon</h3>
+                    <p>+43 676 9033 706</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>E-Mail</h3>
+                    <p>tobadcat@gmail.com</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>Ich freue mich auf eine tolle Feier mit euch!</p>
+        <p>© 2023 Tobis Geburtstagsfeier</p>
+    </footer>
+
+    <script>
+        // Countdown-Funktion
+        function updateCountdown() {
+            const partyDate = new Date('December 15, 2023 19:00:00').getTime();
+            const now = new Date().getTime();
+            const timeLeft = partyDate - now;
+            
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').innerHTML = days;
+            document.getElementById('hours').innerHTML = hours;
+            document.getElementById('minutes').innerHTML = minutes;
+            document.getElementById('seconds').innerHTML = seconds;
+            
+            if (timeLeft < 0) {
+                clearInterval(countdownInterval);
+                document.querySelector('.countdown').innerHTML = "<h3>Die Feier hat bereits stattgefunden!</h3>";
+            }
+        }
+        
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+        
+        // Formular-Verarbeitung
+        document.getElementById('rsvpForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Hier würde normalerweise der Code stehen, um die Daten an einen Server zu senden
+            // Für dieses Beispiel zeigen wir einfach eine Bestätigung an
+            const name = document.getElementById('name').value;
+            const attendance = document.getElementById('attendance').value;
+            
+            let message = `Vielen Dank ${name} für deine Rückmeldung! `;
+            
+            if (attendance === 'yes') {
+                message += "Ich freue mich riesig, dass du dabei bist!";
+            } else if (attendance === 'no') {
+                message += "Schade, dass du nicht kommen kannst!";
+            } else {
+                message += "Danke für die Rückmeldung, lass mich bitte bald wissen, ob du es doch schaffst!";
+            }
+            
+            alert(message);
+            this.reset();
+        });
+        
+        // Einfache Konfetti-Animation
+        function createConfetti() {
+            const header = document.querySelector('header');
+            const confettiCount = 50;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                
+                // Zufällige Position
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = Math.random() * 100 + 'vh';
+                
+                // Zufällige Farbe
+                const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#ffa5a5', '#67e0c2'];
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Zufällige Größe
+                const size = Math.random() * 10 + 5;
+                confetti.style.width = size + 'px';
+                confetti.style.height = size + 'px';
+                
+                // Zufällige Rotation
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                
+                header.appendChild(confetti);
+            }
+        }
+        
+        // Konfetti beim Laden der Seite erstellen
+        window.addEventListener('load', createConfetti);
+    </script>
+</body>
+</html>
