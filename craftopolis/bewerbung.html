@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bewerbung — Craftopolis</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  body{font-family:"Inter",system-ui,Roboto; background:#f6f8fb;color:#111827;padding:20px;}
+  .wrap{max-width:600px;margin:0 auto;}
+  h1{margin-bottom:12px;}
+  form{display:flex;flex-direction:column;gap:12px;}
+  input,textarea,select{padding:10px;border-radius:8px;border:1px solid #ccc;font-size:1rem;}
+  button{background:#0fb26a;color:white;padding:10px 14px;border:none;border-radius:8px;font-weight:700;cursor:pointer;}
+  button:hover{background:#1f9a5a;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Bewerbung Craftopolis</h1>
+  <p>Bewirb dich für Team, Builder oder Support:</p>
+  <form onsubmit="handleBewerbung(event)">
+    <input name="name" placeholder="Name" required>
+    <input name="email" type="email" placeholder="E-Mail" required>
+    <select name="position" required>
+      <option value="">Gewünschte Position</option>
+      <option value="Team">Team</option>
+      <option value="Builder">Builder</option>
+      <option value="Support">Support</option>
+    </select>
+    <textarea name="message" placeholder="Warum sollten wir dich nehmen?" required></textarea>
+    <button type="submit">Bewerbung senden</button>
+  </form>
+  <p style="margin-top:12px;"><a href="index.html">Zurück zur Startseite</a></p>
+</div>
+
+<script>
+function handleBewerbung(e){
+  e.preventDefault();
+  const data = new FormData(e.target);
+  const subject = encodeURIComponent('Bewerbung Craftopolis: '+data.get('position'));
+  const body = encodeURIComponent(`Name: ${data.get('name')}\nE-Mail: ${data.get('email')}\nPosition: ${data.get('position')}\n\n${data.get('message')}`);
+  window.location.href=`mailto:bewerbung@craftopolis.de?subject=${subject}&body=${body}`;
+  e.target.reset();
+  alert('Bewerbung gesendet!');
+}
+</script>
+</body>
+</html>

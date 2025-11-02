@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Craftopolis — Minecraft Server</title>
+  <meta name="description" content="Craftopolis — Dein Multiplayer Minecraft Server. Minigames, Economy, Ränge, Voting & Community." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #f6f8fb; --card: #ffffff; --text: #111827; --muted: #6b7280;
+      --accent: #0fb26a; --accent-2: #1f9a5a; --shadow: 0 8px 30px rgba(2,6,23,0.08);
+      --radius: 14px; --nav-height: 72px; --transition: 350ms cubic-bezier(.2,.9,.3,1);
+    }
+    html.dark { --bg:#071024; --card:rgba(255,255,255,0.03); --text:#e6eef6; --muted:#9aa8b7; --accent:#57d88b; --accent-2:#3ec06a; --shadow:0 10px 30px rgba(2,6,23,0.6);}
+    html { scroll-behavior:smooth; font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial; background:var(--bg);}
+    * { box-sizing:border-box; margin:0; padding:0;}
+    body { line-height:1.45; background: linear-gradient(180deg, var(--bg), #eef3f8);}
+    .wrap{ max-width:1200px; margin:0 auto; padding:0 20px; }
+
+    header.nav { position: sticky; top:0; backdrop-filter: blur(6px); background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.15)); box-shadow: 0 6px 18px rgba(2,6,23,0.04); height: var(--nav-height); display:flex; align-items:center; z-index:60;}
+    .nav-inner{ display:flex; justify-content:space-between; width:100%; align-items:center; }
+    .brand { display:flex; gap:12px; align-items:center; font-weight:700; font-size:1.05rem; color:var(--text);}
+    .logo-mark { width:40px; height:40px; border-radius:10px; display:grid; place-items:center; font-weight:800; background: linear-gradient(135deg,var(--accent),var(--accent-2)); color:white; box-shadow:0 6px 18px rgba(15,178,106,0.18);}
+    .nav-links { display:flex; gap:20px; list-style:none; margin:0; padding:0; align-items:center;}
+    .nav-links a { text-decoration:none; color:var(--muted); font-weight:600; padding:8px 10px; border-radius:8px; transition: all var(--transition); }
+    .nav-links a:hover { color:var(--text); transform: translateY(-2px); }
+    .cta { background: linear-gradient(90deg,var(--accent),var(--accent-2)); color:white; padding:8px 14px; border-radius:10px; font-weight:700; text-decoration:none; box-shadow:0 8px 26px rgba(15,178,106,0.14); transition: transform var(--transition), box-shadow var(--transition); }
+    .cta:hover { transform: translateY(-3px); box-shadow:0 10px 34px rgba(15,178,106,0.22); }
+    .burger { display:none; font-size:1.45rem; background:none; border:0; padding:6px; color:var(--text);}
+    @media(max-width:880px){ .nav-links{ display:none; position:fixed; right:16px; top:72px; background:var(--card); padding:14px; border-radius:12px; box-shadow:var(--shadow); flex-direction:column; min-width:200px;} .nav-links.show{ display:flex; } .burger{ display:block; } .cta{ display:none; } }
+
+    .hero { min-height: calc(100vh - var(--nav-height)); display:grid; place-items:center; padding:48px 20px; position:relative; overflow:hidden; background: radial-gradient(1200px 600px at 10% 10%, rgba(95,200,140,0.06), transparent 6%), radial-gradient(800px 400px at 90% 80%, rgba(15,178,106,0.04), transparent 6%);}
+    .hero-inner{ display:grid; grid-template-columns:1fr 420px; gap:36px; align-items:center; width:100%; max-width:1200px; }
+    @media(max-width:980px){ .hero-inner{ grid-template-columns:1fr; text-align:center; } }
+    .hero-content h1{ font-size:clamp(1.6rem,4vw,2.6rem); margin:0 0 12px 0; line-height:1.02; letter-spacing:-0.02em; color:var(--text);}
+    .tagline { color:var(--muted); margin-bottom:18px; font-size:1.02rem; }
+    .hero-cta{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:10px; }
+
+    .hero-card{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:16px; padding:20px; box-shadow:var(--shadow); border:1px solid rgba(255,255,255,0.03); min-width:280px; backdrop-filter: blur(6px);}
+    html.dark .hero-card{ border-color: rgba(255,255,255,0.02); }
+
+    .services { padding:48px 20px; background: linear-gradient(180deg, transparent, rgba(0,0,0,0.02)); }
+    .services .grid{ display:grid; gap:18px; grid-template-columns: repeat(3,1fr); max-width:1200px; margin:0 auto; }
+    @media(max-width:1100px){ .services .grid{ grid-template-columns: repeat(2,1fr); } }
+    @media(max-width:700px){ .services .grid{ grid-template-columns:1fr; } }
+    .service{ background:var(--card); border-radius:12px; padding:20px; min-height:150px; display:flex; gap:14px; align-items:flex-start; box-shadow:0 8px 18px rgba(2,6,23,0.04); transition: transform var(--transition), box-shadow var(--transition); border:1px solid rgba(0,0,0,0.03);}
+    .service:hover{ transform: translateY(-8px); box-shadow:0 20px 40px rgba(2,6,23,0.08);}
+    html.dark .service{ border:1px solid rgba(255,255,255,0.02);}
+    .icon{ width:56px; height:56px; border-radius:12px; display:grid; place-items:center; background:linear-gradient(135deg, rgba(15,178,106,0.12), rgba(15,178,106,0.06)); flex:0 0 56px;}
+    .service h3{ margin:0 0 8px 0; font-size:1.05rem; }
+    .service p{ margin:0; color:var(--muted); font-size:0.95rem; line-height:1.4; }
+
+    footer.sitefoot{ padding:26px 20px; text-align:center; color:var(--muted); font-size:0.95rem; }
+
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <div class="brand">
+      <div class="logo-mark">CP</div>
+      <div>
+        <div style="font-weight:800;">Craft<span style="color:var(--accent)">opolis</span></div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px;">Minecraft Server</div>
+      </div>
+    </div>
+    <nav>
+      <button class="burger">☰</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Start</a></li>
+        <li><a href="#services">Features</a></li>
+        <li><a href="rangshop.html">Rangshop</a></li>
+        <li><a href="#vote">Vote</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+        <li><a href="bewerbung.html">Bewerbung</a></li>
+      </ul>
+    </nav>
+    <a class="cta" href="rangshop.html">Zum Rangshop</a>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section id="home" class="hero">
+    <div class="hero-inner wrap">
+      <div class="hero-content">
+        <h1>Craftopolis — Dein Multiplayer Minecraft Server</h1>
+        <p class="tagline">Minigames, City-Map, Economy, Ränge, BlueMap, Vote-System & Community.</p>
+        <div class="hero-cta">
+          <a class="cta" href="#services">Features entdecken</a>
+          <a class="cta" href="#vote">Jetzt voten</a>
+        </div>
+      </div>
+      <aside class="hero-card">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <div style="font-size:0.9rem; color:var(--muted)">Server Infos</div>
+            <div style="font-weight:700; margin-top:6px;">Craftopolis Minecraft 1.21.4</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="small">Spieler online</div>
+            <div style="font-weight:800; font-size:1.35rem; margin-top:6px;" id="onlineCount">—</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="services" class="services">
+    <div class="wrap" style="margin-bottom:18px;">
+      <h2>Server Features</h2>
+      <p class="small">Alles, was du für ein episches Minecraft-Erlebnis brauchst.</p>
+    </div>
+    <div class="grid">
+      <div class="service"><div class="icon">🏙️</div><div><h3>City Map</h3><p>Große Minecraft-Stadt mit Straßen, U-Bahn, Parks und Gebäuden.</p></div></div>
+      <div class="service"><div class="icon">🎮</div><div><h3>Minigames</h3><p>Bedwars, Hide & Seek, Custom Events und mehr.</p></div></div>
+      <div class="service"><div class="icon">💰</div><div><h3>Economy & Ränge</h3><p>Rangshop mit Ingame-Geld, virtuelle Währungen, Premium Features.</p></div></div>
+      <div class="service"><div class="icon">🔧</div><div><h3>Server Management</h3><p>24/7 Monitoring, RCON, Backups, Performance-Tuning.</p></div></div>
+      <div class="service"><div class="icon">🌐</div><div><h3>Community</h3><p>Discord Integration, Vote-System, Events & Support.</p></div></div>
+      <div class="service"><div class="icon">🛡️</div><div><h3>Security</h3><p>DDoS-Schutz, Backups, sichere Authentifizierung.</p></div></div>
+    </div>
+  </section>
+
+  <!-- VOTE -->
+  <section id="vote" class="services">
+    <div class="wrap">
+      <h2>Vote für Craftopolis</h2>
+      <p class="small">Unterstütze unseren Server und erhalte Belohnungen!</p>
+      <div style="margin-top:12px; display:flex; gap:12px; flex-wrap:wrap;">
+        <a class="cta" href="#">Vote auf Serverliste 1</a>
+        <a class="cta" href="#">Vote auf Serverliste 2</a>
+        <a class="cta" href="#">Vote auf Serverliste 3</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="sitefoot">
+    © <span id="year"></span> Craftopolis — Alle Rechte vorbehalten
+  </footer>
+</main>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Burger mobile
+const burger = document.querySelector('.burger');
+const navLinks = document.getElementById('navLinks');
+burger.addEventListener('click', () => { navLinks.classList.toggle('show'); burger.textContent = navLinks.classList.contains('show') ? '✕' : '☰'; });
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', ()=> { navLinks.classList.remove('show'); burger.textContent = '☰'; }));
+
+// Demo Spielerzahl (hier später RCON einbinden)
+function updateOnline() { document.getElementById('onlineCount').textContent = Math.floor(Math.random()*1200); }
+setInterval(updateOnline, 4000);
+updateOnline();
+</script>
+</body>
+</html>
