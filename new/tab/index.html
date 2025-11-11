@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Startseite</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      font-family: "Segoe UI", sans-serif;
+      color: #fff;
+    }
+
+    .time {
+      font-size: 4rem;
+      font-weight: 300;
+      margin-bottom: 10px;
+    }
+
+    .date {
+      font-size: 1.2rem;
+      opacity: 0.8;
+      margin-bottom: 40px;
+    }
+
+    .search-box {
+      width: 400px;
+      max-width: 90%;
+      display: flex;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 25px;
+      padding: 5px 15px;
+      backdrop-filter: blur(10px);
+    }
+
+    .search-box input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      outline: none;
+      color: white;
+      font-size: 1.1rem;
+      padding: 10px;
+    }
+
+    .search-box button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+
+    .shortcuts {
+      margin-top: 40px;
+      display: flex;
+      gap: 25px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .shortcut {
+      text-align: center;
+      color: white;
+      text-decoration: none;
+      transition: transform 0.2s ease;
+    }
+
+    .shortcut:hover {
+      transform: scale(1.1);
+    }
+
+    .shortcut img {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="time" id="time"></div>
+  <div class="date" id="date"></div>
+
+  <form class="search-box" action="https://www.google.com/search" method="GET">
+    <input type="text" name="q" placeholder="Im Web suchen..." autocomplete="off">
+    <button type="submit">🔍</button>
+  </form>
+
+  <div class="shortcuts">
+    <a href="https://www.google.com" class="shortcut"><img src="https://www.google.com/favicon.ico"><br>Google</a>
+    <a href="https://www.youtube.com" class="shortcut"><img src="https://www.youtube.com/favicon.ico"><br>YouTube</a>
+    <a href="https://github.com" class="shortcut"><img src="https://github.githubassets.com/favicons/favicon.svg"><br>GitHub</a>
+    <a href="https://wikipedia.org" class="shortcut"><img src="https://www.wikipedia.org/static/favicon/wikipedia.ico"><br>Wikipedia</a>
+    <a href="https://news.google.com" class="shortcut"><img src="https://news.google.com/favicon.ico"><br>News</a>
+  </div>
+
+  <script>
+    function updateTime() {
+      const now = new Date();
+      document.getElementById('time').textContent = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+      document.getElementById('date').textContent = now.toLocaleDateString('de-DE', {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'});
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+  </script>
+</body>
+</html>
