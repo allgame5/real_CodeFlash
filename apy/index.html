@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apy</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/store-icon.png">
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <span class="material-icons">apps</span>
+            <h1>Cf - AppStore</h1>
+        </div>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Apps suchen...">
+            <span class="material-icons search-icon">search</span>
+        </div>
+        <button id="installBtn" class="install-btn">
+            <span class="material-icons">download</span>
+            Store installieren
+        </button>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="categories">
+        <button class="category-btn active" data-category="all">Alle Apps</button>
+        <button class="category-btn" data-category="tools">Tools</button>
+        <button class="category-btn" data-category="news">News</button>
+        <button class="category-btn" data-category="social">Social</button>
+        <button class="category-btn" data-category="entertainment">Entertainment</button>
+    </nav>
+
+    <!-- App Grid -->
+    <main class="container">
+        <div class="stats">
+            <p>6 Apps verfügbar • <span id="lastUpdate">Heute aktualisiert</span></p>
+        </div>
+        
+        <div class="app-grid" id="appGrid">
+            <!-- Apps werden via JavaScript geladen -->
+        </div>
+    </main>
+
+    <!-- App Detail Modal -->
+    <div id="appModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">App Name</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-app-icon">
+                    <img id="modalIcon" src="" alt="App Icon">
+                </div>
+                <div class="modal-info">
+                    <p id="modalDescription"></p>
+                    <div class="modal-meta">
+                        <span><span class="material-icons">category</span> <span id="modalCategory"></span></span>
+                        <span><span class="material-icons">update</span> <span id="modalVersion"></span></span>
+                        <span><span class="material-icons">download</span> <span id="modalDownloads"></span></span>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button id="modalOpenBtn" class="btn-primary">
+                        <span class="material-icons">open_in_browser</span>
+                        App öffnen
+                    </button>
+                    <button id="modalInstallBtn" class="btn-secondary">
+                        <span class="material-icons">get_app</span>
+                        Zur Homepage hinzufügen
+                    </button>
+                    <button id="modalShareBtn" class="btn-share">
+                        <span class="material-icons">share</span>
+                        Teilen
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2024 Mein App Store • Alle 6 Websites in einer Sammlung</p>
+        <p>Automatische Updates • Keine Installation nötig • 100% Kostenlos</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
