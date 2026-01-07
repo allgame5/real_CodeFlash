@@ -1,149 +1,120 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="CodeFlash wird geladen" />
-  <title>CodeFlash | Laden</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CodeFlash wird geladen">
+  <title>CodeFlash | Start</title>
 
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <meta name="theme-color" content="#0fb26a">
 
   <style>
-    :root{
-      --bg:#f6f8fb;
-      --card:#ffffff;
-      --text:#111827;
-      --muted:#6b7280;
-      --accent:#0fb26a;
-      --accent-2:#1f9a5a;
-      --shadow:0 12px 30px rgba(2,6,23,.08);
-      --radius:16px;
-      --transition:420ms cubic-bezier(.2,.9,.3,1);
-    }
-
-    *{ box-sizing:border-box; margin:0; padding:0; }
-
-    html,body{
-      height:100%;
-      font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: "Inter", system-ui, Arial, sans-serif;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       background:
         radial-gradient(1000px 500px at 10% 10%, rgba(15,178,106,.06), transparent 6%),
-        linear-gradient(180deg,var(--bg),#eef3f8);
-      color:var(--text);
-      overflow:hidden;
+        linear-gradient(180deg, #f6f8fb, #eef3f8);
+      position: relative;
     }
 
-    main{
-      height:100%;
-      display:grid;
-      place-items:center;
-      padding:20px;
+    /* Inhalt */
+    .animation-container {
+      text-align: center;
+      opacity: 0;
+      animation: fadeIn 1.8s ease forwards;
     }
 
-    .card{
-      background:var(--card);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:48px 44px;
-      text-align:center;
-      width:100%;
-      max-width:420px;
-      animation: cardIn 1.2s var(--transition) forwards;
-      opacity:0;
+    .logo h1 {
+      font-size: 2.6rem;
+      font-weight: 800;
+      letter-spacing: 4px;
+      color: #111827;
+      margin: 0;
+      opacity: 0;
+      animation: textFadeIn 1.6s ease forwards 0.6s;
     }
 
-    .logo{
-      width:64px;
-      height:64px;
-      margin:0 auto 18px;
-      border-radius:14px;
-      display:grid;
-      place-items:center;
-      font-weight:900;
-      font-size:1.6rem;
-      color:#fff;
-      background:linear-gradient(135deg,var(--accent),var(--accent-2));
-      box-shadow:0 10px 26px rgba(15,178,106,.28);
+    .logo span {
+      color: #0fb26a;
     }
 
-    h1{
-      font-size:1.4rem;
-      margin-bottom:6px;
-      font-weight:800;
+    /* Loader */
+    .loader-container {
+      position: absolute;
+      bottom: 52px;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      animation: fadeIn 1s ease forwards 1.6s;
     }
 
-    .tagline{
-      font-size:.95rem;
-      color:var(--muted);
-      margin-bottom:26px;
+    .loader {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 3px solid rgba(17,24,39,.15);
+      border-top-color: #0fb26a;
+      animation: spin 1s linear infinite;
     }
 
-    /* Progress */
-    .progress{
-      height:8px;
-      width:100%;
-      background:rgba(0,0,0,.06);
-      border-radius:999px;
-      overflow:hidden;
+    /* Sanftes Ausblenden */
+    .fade-out {
+      animation: fadeOut 1s ease forwards;
     }
 
-    .progress span{
-      display:block;
-      height:100%;
-      width:0%;
-      background:linear-gradient(90deg,var(--accent),var(--accent-2));
-      animation: load 3.6s ease forwards;
-      border-radius:999px;
+    /* Animationen */
+    @keyframes fadeIn {
+      to { opacity: 1; }
     }
 
-    .hint{
-      margin-top:18px;
-      font-size:.85rem;
-      color:var(--muted);
-      opacity:0;
-      animation: fadeIn .8s ease forwards 1.6s;
+    @keyframes textFadeIn {
+      from { opacity: 0; transform: translateY(-14px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Animations */
-    @keyframes cardIn{
-      from{ opacity:0; transform:translateY(24px) scale(.98); }
-      to{ opacity:1; transform:translateY(0) scale(1); }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
 
-    @keyframes load{
-      to{ width:100%; }
-    }
-
-    @keyframes fadeIn{
-      to{ opacity:1; }
+    @keyframes fadeOut {
+      to { opacity: 0; }
     }
   </style>
 </head>
 
 <body>
 
-<main>
-  <div class="card">
-    <div class="logo">CF</div>
-    <h1>CodeFlash</h1>
-    <div class="tagline">Minecraft · Apps · Entwicklung</div>
-
-    <div class="progress">
-      <span></span>
+  <!-- Logo -->
+  <div class="animation-container" id="splash">
+    <div class="logo">
+      <h1>Code<span>Flash</span></h1>
     </div>
-
-    <div class="hint">Inhalte werden geladen …</div>
   </div>
-</main>
 
-<script>
-  // Weiterleitung nach Abschluss
-  setTimeout(() => {
-    window.location.href = "home.html";
-  }, 4200);
-</script>
+  <!-- Loader -->
+  <div class="loader-container">
+    <div class="loader"></div>
+  </div>
+
+  <script>
+    // leichtes Ausblenden
+    setTimeout(() => {
+      document.getElementById("splash").classList.add("fade-out");
+    }, 4200);
+
+    // Weiterleitung
+    setTimeout(() => {
+      window.location.href = "home.html";
+    }, 5200);
+  </script>
 
 </body>
 </html>
