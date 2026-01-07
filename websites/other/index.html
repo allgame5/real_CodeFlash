@@ -1,101 +1,173 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download-Bereich</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            max-width: 500px;
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            text-align: center;
-        }
-        h1 {
-            color: #764ba2;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-        .download-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-        .download-item {
-            width: 100%;
-            padding: 15px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            font-weight: bold;
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        .download-item:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-        .download-item a {
-            text-decoration: none;
-            color: white;
-            font-size: 16px;
-        }
-        .download-all {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: #ff8c00;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: bold;
-            transition: background 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        .download-all:hover {
-            background: #e07b00;
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Downloads – CodeFlash</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#f6f8fb;--card:#ffffff;--text:#111827;--muted:#6b7280;
+  --accent:#0fb26a;--accent-2:#1f9a5a;
+  --shadow:0 8px 30px rgba(2,6,23,.08);
+  --radius:14px;--nav-height:72px;--transition:350ms cubic-bezier(.2,.9,.3,1);
+}
+html{font-family:Inter;background:var(--bg)}
+body{margin:0;background:linear-gradient(180deg,var(--bg),#eef3f8);color:var(--text)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+
+/* NAV */
+header.nav{
+  position:sticky;top:0;height:var(--nav-height);
+  backdrop-filter:blur(6px);
+  background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,.15));
+  box-shadow:0 6px 18px rgba(2,6,23,.04);
+  display:flex;align-items:center;z-index:50
+}
+.nav-inner{display:flex;justify-content:space-between;align-items:center;width:100%}
+.brand{display:flex;gap:12px;align-items:center;font-weight:800}
+.logo-mark{
+  width:40px;height:40px;border-radius:10px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  color:white;box-shadow:0 6px 18px rgba(15,178,106,.2)
+}
+.nav-links{display:flex;gap:18px;list-style:none}
+.nav-links a{
+  text-decoration:none;color:var(--muted);font-weight:600;
+  padding:8px 10px;border-radius:8px;transition:.3s
+}
+.nav-links a:hover{color:var(--text);transform:translateY(-2px)}
+.cta{
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  color:white;padding:8px 14px;border-radius:10px;
+  text-decoration:none;font-weight:700;
+  box-shadow:0 8px 26px rgba(15,178,106,.18)
+}
+
+/* CONTENT */
+main{padding:60px 20px}
+h1{text-align:center;font-size:2.2rem;margin-bottom:10px}
+.subtitle{text-align:center;color:var(--muted);margin-bottom:40px}
+
+.download-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:22px;
+  max-width:900px;
+  margin:0 auto;
+}
+
+.download-card{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:22px;
+  box-shadow:var(--shadow);
+  transition:transform var(--transition),box-shadow var(--transition);
+  border:1px solid rgba(0,0,0,.04);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.download-card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 20px 40px rgba(2,6,23,.12);
+}
+
+.download-card h3{margin:0 0 10px}
+.download-card p{margin:0 0 18px;color:var(--muted)}
+
+.download-btn{
+  display:inline-block;
+  padding:12px;
+  text-align:center;
+  border-radius:10px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  color:white;
+  font-weight:700;
+  text-decoration:none;
+  transition:.25s;
+}
+.download-btn:hover{transform:scale(1.04)}
+
+.download-all{
+  margin-top:50px;
+  text-align:center;
+}
+.download-all a{
+  padding:14px 26px;
+  background:#ff8c00;
+  color:white;
+  border-radius:12px;
+  font-weight:800;
+  text-decoration:none;
+  box-shadow:0 8px 20px rgba(0,0,0,.2);
+}
+.download-all a:hover{background:#e07b00}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:30px;
+  color:var(--muted);
+  font-size:.95rem;
+}
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>Wähle eine Datei zum Download</h1>
-        <div class="download-container">
-            <div class="download-item">
-                <a href="downloads/Viren.zip" download>📁 Viern herunterladen</a>
-            </div>
-            <div class="download-item">
-                <a href="downloads/projekt_b.zip" download>📁 Website herunterladen</a>
-            </div>
-            <div class="download-item">
-                <a href="downloads/projekt_c.zip" download>📁  herunterladen</a>
-            </div>
-        </div>
-        <a class="download-all" href="downloads/alle_projekte.zip" download>📦 Alle Projekte herunterladen</a>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <div class="brand">
+      <div class="logo-mark">CF</div>
+      Code<span style="color:var(--accent)">Flash</span>
     </div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="/">Start</a></li>
+        <li><a href="/downloads.html">Downloads</a></li>
+        <li><a href="/kontakt.html">Kontakt</a></li>
+      </ul>
+    </nav>
+    <a class="cta" href="/websites/index.html">Zu Services</a>
+  </div>
+</header>
+
+<main>
+  <h1>Downloads</h1>
+  <p class="subtitle">Lade Projekte & Dateien von CodeFlash herunter</p>
+
+  <div class="download-grid">
+    <div class="download-card">
+      <h3>📁 Viren</h3>
+      <p>Test-Dateien & Beispiele</p>
+      <a class="download-btn" href="downloads/Viren.zip" download>Download</a>
+    </div>
+
+    <div class="download-card">
+      <h3>🌐 Website</h3>
+      <p>Komplette Website-Projekte</p>
+      <a class="download-btn" href="downloads/projekt_b.zip" download>Download</a>
+    </div>
+
+    <div class="download-card">
+      <h3>🧩 Projekt C</h3>
+      <p>Weitere Dateien & Tools</p>
+      <a class="download-btn" href="downloads/projekt_c.zip" download>Download</a>
+    </div>
+  </div>
+
+  <div class="download-all">
+    <a href="downloads/alle_projekte.zip" download>📦 Alle Projekte herunterladen</a>
+  </div>
+</main>
+
+<footer>
+  © 2026 CodeFlash — Alle Rechte vorbehalten
+</footer>
+
 </body>
 </html>
