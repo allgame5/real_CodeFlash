@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kontakt – CodeFlash">
+  <title>CodeFlash | Kontakt</title>
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0fb26a">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, Arial, sans-serif;
+      background:
+        radial-gradient(1000px 500px at 10% 10%, rgba(15,178,106,.06), transparent 6%),
+        linear-gradient(180deg, #f6f8fb, #eef3f8);
+      color: #111827;
+    }
+
+    header {
+      padding: 28px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      margin: 0;
+    }
+
+    header span {
+      color: #0fb26a;
+    }
+
+    main {
+      max-width: 700px;
+      margin: 60px auto;
+      padding: 0 24px;
+    }
+
+    h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    p.subtitle {
+      color: #6b7280;
+      margin-bottom: 40px;
+      font-size: 1rem;
+    }
+
+    form {
+      background: rgba(255,255,255,.85);
+      backdrop-filter: blur(8px);
+      border-radius: 18px;
+      padding: 40px;
+      box-shadow: 0 30px 60px rgba(0,0,0,.06);
+    }
+
+    .field {
+      margin-bottom: 22px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #374151;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid #d1d5db;
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border .2s, box-shadow .2s;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #0fb26a;
+      box-shadow: 0 0 0 3px rgba(15,178,106,.15);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    button {
+      margin-top: 10px;
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #0fb26a, #16c37b);
+      color: white;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(15,178,106,.35);
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 0;
+      color: #6b7280;
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: #0fb26a;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Code<span>Flash</span></h1>
+</header>
+
+<main>
+  <h2>Kontakt</h2>
+  <p class="subtitle">
+    Du hast eine Frage, ein Projekt oder Feedback?  
+    Schreib uns – wir melden uns schnellstmöglich.
+  </p>
+
+  <form>
+    <div class="field">
+      <label for="name">Name</label>
+      <input type="text" id="name" placeholder="Dein Name" required>
+    </div>
+
+    <div class="field">
+      <label for="email">E-Mail</label>
+      <input type="email" id="email" placeholder="deine@email.de" required>
+    </div>
+
+    <div class="field">
+      <label for="message">Nachricht</label>
+      <textarea id="message" placeholder="Deine Nachricht..." required></textarea>
+    </div>
+
+    <button type="submit">Nachricht senden</button>
+  </form>
+</main>
+
+<footer>
+  © 2026 CodeFlash · <a href="home.html">Startseite</a>
+</footer>
+
+</body>
+</html>
