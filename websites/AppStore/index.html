@@ -4,58 +4,64 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Appstores</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
   <style>
     * {
       box-sizing: border-box;
     }
 
-    body, html {
+    body {
       margin: 0;
-      padding: 0;
-      font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
-      background: linear-gradient(to right, #eef2f3, #8e9eab);
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       padding: 2rem;
       color: #333;
     }
 
     h1 {
-      text-align: center;
-      font-size: 2.5rem;
+      color: white;
+      font-size: 2.6rem;
+      margin-bottom: 2.5rem;
       font-weight: 700;
-      color: #222;
-      margin-bottom: 2rem;
+      text-shadow: 0 4px 10px rgba(0,0,0,0.25);
     }
 
     .app-list {
+      width: 100%;
+      max-width: 1100px;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 2rem;
-      padding: 0 1rem;
     }
 
     .app-card {
       background: white;
-      padding: 2rem;
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      padding: 2.5rem;
+      border-radius: 18px;
       text-align: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.25);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .app-card:hover {
-      transform: translateY(-5px) scale(1.02);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 45px rgba(0,0,0,0.35);
     }
 
     .app-icon {
-      width: 100px;
-      height: 100px;
-      border-radius: 20px;
-      margin-bottom: 1rem;
+      width: 110px;
+      height: 110px;
+      border-radius: 22px;
+      margin-bottom: 1.2rem;
       object-fit: cover;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.2);
       transition: transform 0.3s ease;
     }
 
@@ -64,62 +70,59 @@
     }
 
     .app-card h2 {
-      margin: 0.75rem 0 0.5rem;
-      font-size: 1.5rem;
+      margin: 1rem 0 0.5rem;
+      font-size: 1.6rem;
       font-weight: 600;
+      color: #333;
     }
 
     .app-card p {
       font-size: 1rem;
       color: #666;
+      margin-bottom: 1.5rem;
     }
 
     .store-buttons {
-      margin-top: 1.5rem;
       display: flex;
       justify-content: center;
+      gap: 1.2rem;
       flex-wrap: wrap;
-      gap: 1rem;
-      opacity: 1;
     }
 
     .store-buttons img {
-      height: 45px;
-      transition: transform 0.3s ease, filter 0.3s ease;
-      filter: grayscale(30%);
+      height: 46px;
       cursor: pointer;
+      transition: transform 0.25s ease, filter 0.25s ease;
+      filter: grayscale(40%);
     }
 
     .store-buttons img:hover {
-      transform: scale(1.1);
+      transform: scale(1.12);
       filter: grayscale(0%);
     }
 
-    /* Preloader komplett statisch - nur sichtbar am Start, keine Animation */
+    /* Preloader */
     #preloader {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: linear-gradient(135deg, #8e9eab, #eef2f3);
+      inset: 0;
+      background: linear-gradient(135deg, #667eea, #764ba2);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 9999;
-      color: #333;
-      font-size: 1.5rem;
-      user-select: none;
+      color: white;
+      font-size: 1.6rem;
+      font-weight: 600;
     }
 
-    /* Link Loader mit Ladebalken */
+    /* Link Loader */
     #link-loader {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 6px;
-      background: #ddd;
+      background: rgba(255,255,255,0.4);
       display: none;
       z-index: 10000;
     }
@@ -127,15 +130,13 @@
     #link-loader .progress-bar {
       width: 0%;
       height: 100%;
-      background: #4caf50;
-      transition: width linear;
+      background: #ff8c00;
     }
-
   </style>
 </head>
 <body>
 
-  <div id="preloader">Apps wird geladen...</div>
+  <div id="preloader">Apps werden geladen...</div>
 
   <div id="link-loader">
     <div class="progress-bar"></div>
@@ -145,19 +146,25 @@
 
   <div class="app-list">
     <div class="app-card">
-      <img class="app-icon" src="app1-icon.png" alt="App Icon" />
+      <img class="app-icon" src="app1-icon.png" alt="App Icon">
       <h2>Appstores</h2>
-      <p></p>
+      <p>Wähle deine bevorzugte Plattform</p>
+
       <div class="store-buttons">
-        <a href="https://appstore.codeflash.eu/"><img src="android.png" alt="androidPLAY" /></a>
-        <a href="https://codeflash.eu/websites/AppStore/apple/index.html"><img src="Apple-icon.png" alt="ApplePLAY" /></a>
-        <a href="hhtps://codeflash.eu/websites/AppStore/windows/index.html"><img src="windows.png" alt="WindowsPLAY" /></a>
+        <a href="https://appstore.codeflash.eu/">
+          <img src="android.png" alt="Android Store">
+        </a>
+        <a href="https://codeflash.eu/websites/AppStore/apple/index.html">
+          <img src="Apple-icon.png" alt="Apple Store">
+        </a>
+        <a href="https://codeflash.eu/websites/AppStore/windows/index.html">
+          <img src="windows.png" alt="Windows Store">
+        </a>
       </div>
     </div>
   </div>
 
   <script>
-    // Preloader nach 1 Sekunde ausblenden
     window.addEventListener('load', () => {
       setTimeout(() => {
         document.getElementById('preloader').style.display = 'none';
@@ -170,20 +177,18 @@
     document.querySelectorAll('a[href]').forEach(link => {
       link.addEventListener('click', function(e) {
         const url = this.href;
-        // Keine Aktion bei # oder target=_blank
         if (!url.startsWith('#') && this.target !== '_blank') {
           e.preventDefault();
           linkLoader.style.display = 'block';
           progressBar.style.width = '0%';
 
-          // Ladebalken animieren von 0% auf 100% in 2-5 Sekunden zufällig
-          const duration = 2000 + Math.random() * 3000; // 2000-5000ms
+          const duration = 2000 + Math.random() * 3000;
           progressBar.style.transition = `width ${duration}ms linear`;
+
           setTimeout(() => {
             progressBar.style.width = '100%';
           }, 50);
 
-          // Nach der Dauer weiterleiten
           setTimeout(() => {
             window.location.href = url;
           }, duration);
@@ -191,5 +196,6 @@
       });
     });
   </script>
+
 </body>
 </html>
