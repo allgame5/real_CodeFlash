@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Bewerbung – CodeFlash">
+  <title>CodeFlash | Bewerbung</title>
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0fb26a">
+
+  <style>
+    :root{
+      --bg:#f6f8fb;
+      --card:#ffffff;
+      --text:#111827;
+      --muted:#6b7280;
+      --accent:#0fb26a;
+      --accent-2:#1f9a5a;
+      --shadow:0 30px 60px rgba(2,6,23,.08);
+      --radius:16px;
+      --transition:350ms cubic-bezier(.2,.9,.3,1);
+    }
+
+    *{ box-sizing:border-box; margin:0; padding:0; }
+
+    body{
+      font-family:"Inter", system-ui, Arial, sans-serif;
+      background:
+        radial-gradient(1000px 500px at 10% 10%, rgba(15,178,106,.06), transparent 6%),
+        linear-gradient(180deg, var(--bg), #eef3f8);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header{
+      padding:28px 60px;
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+    }
+
+    header h1{
+      font-size:1.5rem;
+      font-weight:800;
+      letter-spacing:3px;
+    }
+
+    header span{ color: var(--accent); }
+
+    main{
+      max-width: 700px;
+      margin: 60px auto;
+      padding: 0 24px;
+    }
+
+    h2{
+      font-size:2.2rem;
+      font-weight:800;
+      margin-bottom: 10px;
+    }
+
+    p.subtitle{
+      color: var(--muted);
+      margin-bottom: 40px;
+      font-size:1rem;
+    }
+
+    form{
+      background: var(--card);
+      padding: 40px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .field{
+      margin-bottom:22px;
+    }
+
+    label{
+      display:block;
+      font-size:0.85rem;
+      font-weight:600;
+      margin-bottom:8px;
+      color: #374151;
+    }
+
+    input, textarea, select{
+      width:100%;
+      padding:14px 16px;
+      border-radius:12px;
+      border:1px solid #d1d5db;
+      font-family:inherit;
+      font-size:0.95rem;
+      outline:none;
+      transition: border .2s, box-shadow .2s;
+    }
+
+    input:focus, textarea:focus, select:focus{
+      border-color: var(--accent);
+      box-shadow:0 0 0 3px rgba(15,178,106,.15);
+    }
+
+    textarea{
+      resize: vertical;
+      min-height:120px;
+    }
+
+    button{
+      margin-top:10px;
+      width:100%;
+      padding:14px;
+      border:none;
+      border-radius:14px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      color:white;
+      font-size:1rem;
+      font-weight:700;
+      cursor:pointer;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    button:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(15,178,106,.35);
+    }
+
+    footer{
+      text-align:center;
+      padding:40px 0;
+      color: var(--muted);
+      font-size:0.85rem;
+    }
+
+    footer a{
+      color: var(--accent);
+      text-decoration:none;
+      font-weight:600;
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <h1>Code<span>Flash</span></h1>
+</header>
+
+<main>
+  <h2>Bewerbung</h2>
+  <p class="subtitle">
+    Du willst Teil unseres Teams werden?  
+    Fülle das Formular aus und wir melden uns schnellstmöglich.
+  </p>
+
+  <form>
+    <div class="field">
+      <label for="name">Name</label>
+      <input type="text" id="name" placeholder="Dein Name" required>
+    </div>
+
+    <div class="field">
+      <label for="email">E-Mail</label>
+      <input type="email" id="email" placeholder="deine@email.de" required>
+    </div>
+
+    <div class="field">
+      <label for="age">Alter</label>
+      <input type="number" id="age" placeholder="z.B. 18" min="12" required>
+    </div>
+
+    <div class="field">
+      <label for="role">Position / Rolle</label>
+      <select id="role" required>
+        <option value="">Bitte wählen...</option>
+        <option value="developer">Developer</option>
+        <option value="moderator">Moderator</option>
+        <option value="support">Support</option>
+        <option value="other">Andere</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="motivation">Warum willst du beitreten?</label>
+      <textarea id="motivation" placeholder="Schreibe hier deine Motivation..." required></textarea>
+    </div>
+
+    <button type="submit">Bewerbung absenden</button>
+  </form>
+</main>
+
+<footer>
+  © 2026 CodeFlash · <a href="home.html">Startseite</a>
+</footer>
+
+</body>
+</html>
