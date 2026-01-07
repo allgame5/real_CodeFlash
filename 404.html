@@ -1,128 +1,147 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>404 – Seite nicht gefunden</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>404 – Seite nicht gefunden | CodeFlash</title>
+  <meta name="description" content="Seite nicht gefunden" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    :root {
-      --bg-start: #020617;
-      --bg-end: #0f172a;
-      --accent: #38bdf8;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
+    :root{
+      --bg:#f6f8fb; --card:#ffffff; --text:#111827; --muted:#6b7280;
+      --accent:#0fb26a; --accent-2:#1f9a5a;
+      --shadow:0 8px 30px rgba(2,6,23,.08);
+      --radius:14px; --nav-height:72px;
+      --transition:350ms cubic-bezier(.2,.9,.3,1);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html{ font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,Arial; background:var(--bg); }
+    body{ min-height:100vh; background:linear-gradient(180deg,var(--bg),#eef3f8); color:var(--text); }
+
+    /* NAV */
+    header.nav{
+      position:sticky; top:0; height:var(--nav-height);
+      display:flex; align-items:center;
+      backdrop-filter:blur(6px);
+      background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,.15));
+      box-shadow:0 6px 18px rgba(2,6,23,.04);
+      z-index:50;
+    }
+    .wrap{ max-width:1200px; margin:0 auto; padding:0 20px; width:100%; }
+    .nav-inner{ display:flex; justify-content:space-between; align-items:center; }
+    .brand{ display:flex; gap:12px; align-items:center; font-weight:700; }
+    .logo-mark{
+      width:40px; height:40px; border-radius:10px;
+      display:grid; place-items:center; font-weight:800; color:#fff;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      box-shadow:0 6px 18px rgba(15,178,106,.18);
+    }
+    .cta{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#fff; padding:10px 16px; border-radius:10px;
+      font-weight:700; text-decoration:none;
+      box-shadow:0 8px 26px rgba(15,178,106,.18);
+      transition:transform var(--transition), box-shadow var(--transition);
+    }
+    .cta:hover{ transform:translateY(-3px); box-shadow:0 12px 34px rgba(15,178,106,.28); }
+
+    /* 404 */
+    main{
+      min-height:calc(100vh - var(--nav-height));
+      display:grid; place-items:center;
+      padding:40px 20px;
+      background:
+        radial-gradient(1000px 500px at 10% 10%, rgba(15,178,106,.06), transparent 6%),
+        radial-gradient(800px 400px at 90% 80%, rgba(15,178,106,.05), transparent 6%);
     }
 
-    body {
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
-      color: var(--text-main);
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      padding:48px 40px;
+      box-shadow:var(--shadow);
+      text-align:center;
+      max-width:520px;
+      width:100%;
+      border:1px solid rgba(0,0,0,.04);
     }
 
-    .container {
-      max-width: 480px;
-      padding: 48px 32px;
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(12px);
-      border-radius: 16px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
-      text-align: center;
+    .error{
+      font-size:96px;
+      font-weight:800;
+      letter-spacing:-0.04em;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      margin-bottom:12px;
     }
 
-    .error-code {
-      font-size: 88px;
-      font-weight: 800;
-      letter-spacing: -2px;
-      background: linear-gradient(90deg, var(--accent), #60a5fa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 16px;
+    h1{ font-size:1.6rem; margin-bottom:10px; }
+    p{ color:var(--muted); line-height:1.6; margin-bottom:28px; }
+
+    .actions{
+      display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
     }
 
-    h1 {
-      font-size: 24px;
-      margin-bottom: 12px;
+    .secondary{
+      background:transparent;
+      border:1px solid rgba(15,178,106,.35);
+      color:var(--accent);
+      box-shadow:none;
+    }
+    .secondary:hover{
+      background:rgba(15,178,106,.08);
+      transform:translateY(-2px);
     }
 
-    p {
-      font-size: 16px;
-      line-height: 1.6;
-      color: var(--text-muted);
-      margin-bottom: 32px;
-    }
-
-    .actions {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      padding: 12px 22px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.2s ease;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #020617;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(56, 189, 248, 0.35);
-    }
-
-    .btn-secondary {
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      color: var(--text-main);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(148, 163, 184, 0.1);
-    }
-
-    footer {
-      margin-top: 28px;
-      font-size: 12px;
-      color: var(--text-muted);
-      opacity: 0.8;
+    footer{
+      margin-top:26px;
+      font-size:.85rem;
+      color:var(--muted);
     }
   </style>
 </head>
 
 <body>
-  <main class="container">
-    <div class="error-code">404</div>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <div class="brand">
+      <div class="logo-mark">CF</div>
+      <div>
+        <div style="font-weight:800;">Code<span style="color:var(--accent)">Flash</span></div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px;">Minecraft Server</div>
+      </div>
+    </div>
+    <a class="cta" href="/">Zur Startseite</a>
+  </div>
+</header>
+
+<main>
+  <div class="card">
+    <div class="error">404</div>
     <h1>Seite nicht gefunden</h1>
     <p>
       Die aufgerufene Seite existiert nicht oder wurde verschoben.<br>
-      Bitte überprüfe die URL oder kehre zur Startseite zurück.
+      Bitte überprüfe die Adresse oder kehre zur Startseite zurück.
     </p>
 
     <div class="actions">
-      <a href="/" class="btn btn-primary">Zur Startseite</a>
-      <a href="javascript:history.back()" class="btn btn-secondary">Zurück</a>
+      <a href="/" class="cta">Startseite</a>
+      <a href="javascript:history.back()" class="cta secondary">Zurück</a>
     </div>
 
     <footer>
-      © 2026 codeflash.eu
+      © <span id="year"></span> CodeFlash
     </footer>
-  </main>
+  </div>
+</main>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
 </body>
 </html>
