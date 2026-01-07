@@ -1,143 +1,157 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Die Website zum Verlieben.">
-    <title>CodeFlash     |Start</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-</head>
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#0d1117">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Die Website zum Verlieben.">
+  <title>CodeFlash | Loading</title>
 
-<style>
-    /* Grundlegende Styles */
-    body, html {
-        height: 100%;
-        margin: 0;
-        font-family: Arial, sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        position: relative;
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0d1117">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: "Inter", system-ui, Arial, sans-serif;
+      overflow: hidden;
+      background: #000;
     }
 
     /* Hintergrundvideo */
     #background-video {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        z-index: -1;
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+      filter: brightness(0.45);
     }
 
-    /* Animation Container */
+    /* Dark Overlay */
+    .overlay-bg {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(0,0,0,0.2), rgba(0,0,0,0.85));
+      z-index: -1;
+    }
+
+    /* Content */
     .animation-container {
-        text-align: center;
-        opacity: 0;
-        animation: fadeIn 3s forwards;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #fff;
+      opacity: 0;
+      animation: fadeIn 2.2s ease forwards;
     }
 
     .logo h1 {
-        font-size: 3rem;
-        color: #ffcc00;
-        text-transform: uppercase;
-        letter-spacing: 5px;
-        opacity: 0;
-        animation: textFadeIn 3s forwards 1s;
+      font-size: clamp(2.4rem, 6vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: #ffcc00;
+      opacity: 0;
+      animation: logoIn 2s ease forwards 0.8s;
     }
 
-    /* Ladeanimation Container */
+    .tagline {
+      margin-top: 12px;
+      font-size: 0.95rem;
+      color: #e5e7eb;
+      letter-spacing: 1px;
+      opacity: 0;
+      animation: fadeUp 1.6s ease forwards 1.6s;
+    }
+
+    /* Loader */
     .loader-container {
-        position: absolute;
-        bottom: 50px;
-        left: 50%;
-        transform: translateX(-50%);
+      position: absolute;
+      bottom: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      animation: fadeIn 1.2s ease forwards 2.2s;
     }
 
-    /* Ladeanimation */
     .loader {
-        border: 6px solid #ffffff;
-        border-top: 6px solid #ffcc00;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        animation: spin 1s linear infinite;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 4px solid rgba(255,255,255,0.25);
+      border-top-color: #ffcc00;
+      animation: spin 1s linear infinite;
     }
 
-    /* Weiß-Verblassen Overlay */
-    .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: white;
-        opacity: 0;
-        pointer-events: none;
-        animation: fadeToWhite 1.5s forwards 6s;
+    /* Soft Fade-Out */
+    .fade-out {
+      animation: fadeOut 1.2s ease forwards;
     }
 
-    /* Fade-In Animation */
-    @keyframes fadeIn {
-        0% { opacity: 0; }
-        100% { opacity: 1; }
+    /* Animations */
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    @keyframes logoIn {
+      from { opacity: 0; transform: translateY(-18px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Text-Einblendung */
-    @keyframes textFadeIn {
-        0% { opacity: 0; transform: translateY(-20px); }
-        100% { opacity: 1; transform: translateY(0); }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Ladeanimation Drehung */
     @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+      to { transform: rotate(360deg); }
     }
 
-    /* Verblassen zu Weiß */
-    @keyframes fadeToWhite {
-        0% { opacity: 0; }
-        100% { opacity: 1; }
+    @keyframes fadeOut {
+      to { opacity: 0; }
     }
+  </style>
+</head>
 
-</style>
 <body>
 
-    <chat-bot platform_id="1b33ed59-122f-49f9-8734-9d48f015e5bf" user_id="a21698b7-0a6e-463f-b641-05540c076356" chatbot_id="2638593e-2377-462f-b947-621f5a7b3663"><a href="https://www.chatsimple.ai/?utm_source=widget&utm_medium=referral">chatsimple</a></chat-bot><script src="https://cdn.chatsimple.ai/chat-bot-loader.js" defer></script>
+  <!-- Background Video -->
+  <video autoplay muted loop playsinline id="background-video">
+    <source src="https://cdn.pixabay.com/video/2022/02/24/108813-681686688_large.mp4" type="video/mp4">
+  </video>
 
-    <!-- Hintergrundvideo -->
-    <video autoplay muted loop id="background-video">
-        <source src="https://cdn.pixabay.com/video/2022/02/24/108813-681686688_large.mp4" type="video/mp4">
-        Dein Browser unterstützt kein HTML5-Video.
-    </video>
+  <div class="overlay-bg"></div>
 
-    <!-- Animation Container -->
-    <div class="animation-container">
-        <div class="logo">
-            <h1>CodeFlash</h1>
-        </div>
+  <!-- Splash Content -->
+  <div class="animation-container" id="splash">
+    <div class="logo">
+      <h1>CodeFlash</h1>
     </div>
+    <div class="tagline">Minecraft · Apps · Entwicklung</div>
+  </div>
 
-    <!-- Ladeanimation -->
-    <div class="loader-container">
-        <div class="loader"></div>
-    </div>
+  <!-- Loader -->
+  <div class="loader-container">
+    <div class="loader"></div>
+  </div>
 
-    <!-- Weiß-Verblassen Overlay -->
-    <div class="overlay"></div>
+  <script>
+    // Splash sichtbar halten
+    setTimeout(() => {
+      document.getElementById("splash").classList.add("fade-out");
+    }, 5200);
 
-    <script>
-        // Nach 7,5 Sekunden zur nächsten Seite weiterleiten
-        setTimeout(() => {
-            window.location.href = "home.html";
-        }, 7500);
-    </script>
+    // Weiterleitung
+    setTimeout(() => {
+      window.location.href = "home.html";
+    }, 6500);
+  </script>
 
 </body>
 </html>
