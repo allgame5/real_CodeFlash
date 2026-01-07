@@ -1,88 +1,176 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unsere Webseiten</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #f4f4f4;
-            text-align: center;
-        }
-        header {
-            background: #0073e6;
-            color: white;
-            padding: 20px;
-            font-size: 24px;
-        }
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin: 20px;
-        }
-        .card {
-            background: white;
-            width: 300px;
-            margin: 15px;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        .card h3 {
-            margin: 0 0 10px;
-            color: #333;
-        }
-        .card p {
-            color: #666;
-            font-size: 14px;
-        }
-        .button {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 10px 15px;
-            background: #0073e6;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .button:hover {
-            background: #005bb5;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Unsere Webseiten – CodeFlash">
+  <title>CodeFlash | Unsere Webseiten</title>
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --card: rgba(255,255,255,.9);
+      --text: #111827;
+      --muted: #6b7280;
+      --accent: #0fb26a;
+      --accent-2: #16c37b;
+      --radius: 18px;
+      --shadow: 0 30px 60px rgba(0,0,0,.08);
+      --transition: 350ms cubic-bezier(.2,.9,.3,1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", system-ui, Arial, sans-serif;
+      background:
+        radial-gradient(900px 400px at 10% 10%, rgba(15,178,106,.06), transparent 6%),
+        linear-gradient(180deg, var(--bg), #eef3f8);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 32px 60px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+    }
+
+    header span {
+      color: var(--accent);
+    }
+
+    header p {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 60px auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: var(--card);
+      backdrop-filter: blur(8px);
+      border-radius: var(--radius);
+      padding: 30px;
+      box-shadow: var(--shadow);
+      transition: transform var(--transition), box-shadow var(--transition);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 40px 80px rgba(0,0,0,.12);
+    }
+
+    .card h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      flex-grow: 1;
+    }
+
+    .button {
+      margin-top: 20px;
+      align-self: flex-start;
+      padding: 12px 20px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(15,178,106,.35);
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+  </style>
 </head>
+
 <body>
 
-
-
-<header>Unsere Webseiten</header>
+<header>
+  <h1>Code<span>Flash</span></h1>
+  <p>Unsere Projekte & Webseiten im Überblick</p>
+</header>
 
 <div class="container">
-    <div class="card">
-        <h3>Loes</h3>
-        <p>Beschreibung der ersten Webseite.</p>
-        <a href="https://codeflash.eu/websites/loes/index.html" class="button" target="_blank">Besuchen</a>
-    </div>
 
-    <div class="card">
-        <h3>AppStore</h3>
-        <p>Kurze Beschreibung der zweiten Webseite.</p>
-        <a href="https://codeflash.eu/websites/AppStore/index.html" class="button" target="_blank">Besuchen</a>
-    </div>
+  <div class="card">
+    <h3>Loes</h3>
+    <p>
+      Eine moderne Webseite mit klarem Design und Fokus auf Performance
+      und Benutzerfreundlichkeit.
+    </p>
+    <a href="https://codeflash.eu/websites/loes/index.html" class="button" target="_blank">
+      Webseite öffnen
+    </a>
+  </div>
 
-    <div class="card">
-        <h3>Andere</h3>
-        <p>Informationen zur dritten Webseite.</p>
-        <a href="https://codeflash.eu/websites/other/index.html" class="button" target="_blank">Besuchen</a>
-    </div>
+  <div class="card">
+    <h3>AppStore</h3>
+    <p>
+      Webbasierter App-Store mit Kategorien, Detailseiten
+      und moderner UI.
+    </p>
+    <a href="https://codeflash.eu/websites/AppStore/index.html" class="button" target="_blank">
+      Webseite öffnen
+    </a>
+  </div>
+
+  <div class="card">
+    <h3>Andere Projekte</h3>
+    <p>
+      Weitere experimentelle oder individuelle Projekte,
+      entwickelt unter CodeFlash.
+    </p>
+    <a href="https://codeflash.eu/websites/other/index.html" class="button" target="_blank">
+      Webseite öffnen
+    </a>
+  </div>
+
 </div>
+
+<footer>
+  © 2026 CodeFlash
+</footer>
 
 </body>
 </html>
