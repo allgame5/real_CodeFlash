@@ -2,29 +2,127 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Seite nicht gefunden</title>
+  <title>404 – Seite nicht gefunden</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
+    :root {
+      --bg-start: #020617;
+      --bg-end: #0f172a;
+      --accent: #38bdf8;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: white;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+      color: var(--text-main);
+    }
+
+    .container {
+      max-width: 480px;
+      padding: 48px 32px;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
       text-align: center;
     }
-    a {
-      color: #38bdf8;
+
+    .error-code {
+      font-size: 88px;
+      font-weight: 800;
+      letter-spacing: -2px;
+      background: linear-gradient(90deg, var(--accent), #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 22px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
       text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #020617;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(56, 189, 248, 0.35);
+    }
+
+    .btn-secondary {
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      color: var(--text-main);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(148, 163, 184, 0.1);
+    }
+
+    footer {
+      margin-top: 28px;
+      font-size: 12px;
+      color: var(--text-muted);
+      opacity: 0.8;
     }
   </style>
 </head>
+
 <body>
-  <div>
-    <h1>404 😢</h1>
-    <p>Diese Seite existiert nicht.</p>
-    <a href="/">Zur Startseite</a>
-  </div>
+  <main class="container">
+    <div class="error-code">404</div>
+    <h1>Seite nicht gefunden</h1>
+    <p>
+      Die aufgerufene Seite existiert nicht oder wurde verschoben.<br>
+      Bitte überprüfe die URL oder kehre zur Startseite zurück.
+    </p>
+
+    <div class="actions">
+      <a href="/" class="btn btn-primary">Zur Startseite</a>
+      <a href="javascript:history.back()" class="btn btn-secondary">Zurück</a>
+    </div>
+
+    <footer>
+      © 2026 codeflash.eu
+    </footer>
+  </main>
 </body>
 </html>
