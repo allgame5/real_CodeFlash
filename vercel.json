@@ -1,6 +1,19 @@
 {
   "routes": [
     { "handle": "filesystem" },
+
+    { "src": "^/$", "dest": "/index.html" },
+
+    {
+      "src": "^/(apps|appstore|chat|chatco|cook-fabric|craftopolis|game|home|icons|img|max|new_tab|pc-repair|search|system|toadcat|websites|zohoverly|zuhaue)(.*)",
+      "dest": "/index.html"
+    },
+
+    {
+      "src": "^/(home|kontakt|bewerbung|terms)\\.html$",
+      "dest": "/index.html"
+    },
+
     { "src": "/(.*)", "dest": "/404.html" }
   ]
 }
