@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CodeFlash | Store</title>
+  <meta name="description" content="CodeFlash Store – Ränge, Apps und Extras">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0fb26a">
+
+  <style>
+    :root {
+      --accent: #0fb26a;
+      --accent-dark: #0a8f55;
+      --text: #111827;
+      --muted: #6b7280;
+      --card: #ffffff;
+      --bg1: #f6f8fb;
+      --bg2: #eef3f8;
+      --radius: 16px;
+      --shadow: 0 12px 30px rgba(2,6,23,.08);
+      --transition: 300ms ease;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, Arial, sans-serif;
+      background:
+        radial-gradient(1000px 500px at 10% 10%, rgba(15,178,106,.06), transparent 6%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      padding: 26px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+
+    header span {
+      color: var(--accent);
+    }
+
+    header p {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    /* STORE GRID */
+    .store {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 26px;
+    }
+
+    .product {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 26px;
+      box-shadow: var(--shadow);
+      transition: transform var(--transition), box-shadow var(--transition);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(15,178,106,.08), transparent 60%);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .product:hover::before {
+      opacity: 1;
+    }
+
+    .product:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(2,6,23,.12);
+    }
+
+    .icon {
+      font-size: 2.6rem;
+      margin-bottom: 16px;
+    }
+
+    .product h3 {
+      margin: 0 0 8px;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .product p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .price {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin: 18px 0;
+      color: var(--accent);
+    }
+
+    .buy-btn {
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+      color: white;
+      transition: transform var(--transition), box-shadow var(--transition);
+      box-shadow: 0 10px 26px rgba(15,178,106,.22);
+    }
+
+    .buy-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 36px rgba(15,178,106,.32);
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 26px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Code<span>Flash</span> Store</h1>
+    <p>Ränge, Apps & exklusive Features</p>
+  </header>
+
+  <section class="store">
+
+    <div class="product">
+      <div class="icon">👑</div>
+      <h3>VIP Rang</h3>
+      <p>Exklusive Features auf dem Server, spezielle Commands und ein VIP-Badge.</p>
+      <div class="price">4,99 €</div>
+      <button class="buy-btn" onclick="buy('VIP Rang')">Jetzt kaufen</button>
+    </div>
+
+    <div class="product">
+      <div class="icon">🚀</div>
+      <h3>Premium Rang</h3>
+      <p>Alle VIP-Vorteile plus mehr Slots, Partikel & besondere Extras.</p>
+      <div class="price">9,99 €</div>
+      <button class="buy-btn" onclick="buy('Premium Rang')">Jetzt kaufen</button>
+    </div>
+
+    <div class="product">
+      <div class="icon">📦</div>
+      <h3>Starter Bundle</h3>
+      <p>Perfekt für neue Spieler: Items, Ingame-Geld & Boost.</p>
+      <div class="price">2,99 €</div>
+      <button class="buy-btn" onclick="buy('Starter Bundle')">Jetzt kaufen</button>
+    </div>
+
+    <div class="product">
+      <div class="icon">⚙️</div>
+      <h3>Pro App</h3>
+      <p>Erweiterte Funktionen für deine CodeFlash-Apps.</p>
+      <div class="price">Kostenlos</div>
+      <button class="buy-btn" onclick="buy('Pro App')">Download</button>
+    </div>
+
+  </section>
+
+  <footer>
+    © <span id="year"></span> CodeFlash — Alle Rechte vorbehalten
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    function buy(product) {
+      alert("Produkt ausgewählt: " + product + "\n\n(Checkout folgt später)");
+    }
+  </script>
+
+</body>
+</html>
