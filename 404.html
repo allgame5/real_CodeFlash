@@ -170,107 +170,83 @@
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  // Easter Egg System
+  // Easter Egg System (ohne URL-Prüfung)
   (function() {
-    // NUR auf https://codeflash.eu/jd aktivieren (exakte URL)
-    const currentUrl = window.location.href;
-    const targetUrl = 'https://codeflash.eu/jd';
+    let secretCode = '';
+    const targetCode = '1234567890'; // Nur Zahlen
+    let easterEggActive = false;
     
-    // Prüfe auf exakte URL (mit oder ohne trailing slash)
-    const isCorrectUrl = currentUrl === targetUrl || 
-                         currentUrl === targetUrl + '/' ||
-                         currentUrl.startsWith(targetUrl + '?') ||
-                         currentUrl.startsWith(targetUrl + '/?');
+    const logoMark = document.getElementById('secretLogo');
+    const errorText = document.getElementById('secretError');
     
-    if (isCorrectUrl) {
-      let secretCode = '';
-      const targetCode = '1234567890dj';
-      let easterEggActive = false;
-      
-      const logoMark = document.getElementById('secretLogo');
-      const errorText = document.getElementById('secretError');
-      
-      // Tastatureingaben überwachen
-      document.addEventListener('keydown', function(e) {
-        // Buchstaben und Zahlen sammeln
-        if (e.key.length === 1 && /[a-z0-9]/i.test(e.key)) {
-          secretCode += e.key.toLowerCase();
-          
-          // Letzte Zeichen behalten (Länge des Zielcodes)
-          if (secretCode.length > targetCode.length) {
-            secretCode = secretCode.slice(-targetCode.length);
-          }
-          
-          // Prüfen ob Code korrekt ist
-          if (secretCode === targetCode && !easterEggActive) {
-            easterEggActive = true;
-            
-            // Klick-Events hinzufügen
-            logoMark.addEventListener('click', function(event) {
-              if (event.shiftKey) {
-                window.location.href = 'https://michi-six.vercel.app/iidjjajfjnnbe0hohuhduheu.html';
-              }
-            });
-            
-            errorText.addEventListener('click', function(event) {
-              if (event.shiftKey) {
-                window.location.href = 'https://michi-six.vercel.app/iidjjajfjnnbe0hohuhduheu.html';
-              }
-            });
-            
-            // Visuelle Hinweise (sehr subtil)
-            logoMark.classList.add('active-easter', 'easter-pulse');
-            errorText.classList.add('active-easter');
-            
-            // Nach 5 Sekunden die Animation stoppen (bleibt aber aktiv)
-            setTimeout(() => {
-              logoMark.classList.remove('easter-pulse');
-            }, 5000);
-            
-            console.log('🎉 Easter Egg aktiviert! Shift+Klick auf Logo oder "ERROR 404"');
-          }
+    // Tastatureingaben überwachen
+    document.addEventListener('keydown', function(e) {
+      // Nur Zahlen sammeln (0-9)
+      if (e.key.length === 1 && /[0-9]/.test(e.key)) {
+        secretCode += e.key;
+        
+        // Letzte Zeichen behalten
+        if (secretCode.length > targetCode.length) {
+          secretCode = secretCode.slice(-targetCode.length);
         }
         
-        // Reset mit Escape (optional)
-        if (e.key === 'Escape') {
-          secretCode = '';
-          console.log('Easter Egg Eingabe zurückgesetzt');
+        // Prüfen ob Code korrekt ist
+        if (secretCode === targetCode && !easterEggActive) {
+          easterEggActive = true;
+          
+          // Einfacher Klick (kein Shift erforderlich)
+          logoMark.addEventListener('click', function() {
+            window.location.href = 'https://michi-six.vercel.app/iidjjajfjnnbe0hohuhduheu.html';
+          });
+          
+          errorText.addEventListener('click', function() {
+            window.location.href = 'https://michi-six.vercel.app/iidjjajfjnnbe0hohuhduheu.html';
+          });
+          
+          // Visuelle Hinweise
+          logoMark.classList.add('active-easter', 'easter-pulse');
+          errorText.classList.add('active-easter');
+          
+          // Nach 5 Sekunden die Animation stoppen
+          setTimeout(() => {
+            logoMark.classList.remove('easter-pulse');
+          }, 5000);
+          
+          console.log('✅ Easter Egg aktiviert! Einfacher Klick auf Logo oder "ERROR 404"');
         }
-        
-        // Debug: Strg+Alt+D aktiviert sofort (für Testing)
-        if (e.ctrlKey && e.altKey && e.key === 'd') {
-          if (!easterEggActive) {
-            easterEggActive = true;
-            secretCode = targetCode;
-            
-            logoMark.addEventListener('click', function(event) {
-              if (event.shiftKey) {
-                window.location.href = 'https://michi-six.vercel.app/iidjjajfjnnbe0hohuhduheu.html';
-              }
-            });
-            
-            errorText.addEventListener('click', function(event) {
-              if (event.shiftKey) {
-                window.location.href = 'https://michi-six.vercel.app/iidjjajfjnnbe0hohuhduheu.html';
-              }
-            });
-            
-            logoMark.classList.add('active-easter');
-            errorText.classList.add('active-easter');
-            
-            console.log('🔓 Easter Egg manuell aktiviert (Debug)');
-          }
+      }
+      
+      // Reset mit Escape
+      if (e.key === 'Escape') {
+        secretCode = '';
+        console.log('Eingabe zurückgesetzt');
+      }
+      
+      // Debug: Strg+Alt+0 aktiviert sofort (für Testing)
+      if (e.ctrlKey && e.altKey && e.key === '0') {
+        if (!easterEggActive) {
+          easterEggActive = true;
+          secretCode = targetCode;
+          
+          logoMark.addEventListener('click', function() {
+            window.location.href = 'https://michi-six.vercel.app/iidjjajfjnnbe0hohuhduheu.html';
+          });
+          
+          errorText.addEventListener('click', function() {
+            window.location.href = 'https://michi-six.vercel.app/iidjjajfjnnbe0hohuhduheu.html';
+          });
+          
+          logoMark.classList.add('active-easter');
+          errorText.classList.add('active-easter');
+          
+          console.log('🔓 Easter Egg manuell aktiviert (Debug)');
         }
-      });
-      
-      console.log('🔍 Easter Egg System aktiv auf:', currentUrl);
-      console.log('📝 Gib "1234567890dj" ein, dann Shift+Klick auf Logo oder ERROR 404');
-      
-    } else {
-      console.log('🚫 Easter Egg nicht aktiv (URL nicht korrekt)');
-      console.log('Erwartet:', targetUrl);
-      console.log('Aktuell:', currentUrl);
-    }
+      }
+    });
+    
+    console.log('🔍 Easter Egg System geladen');
+    console.log('🔢 Gib "1234567890" ein, dann normaler Klick auf Logo oder ERROR 404');
+    
   })();
 </script>
 
