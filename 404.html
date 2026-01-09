@@ -140,6 +140,19 @@
 </main>
 
 <script>
+
+  function handleShiftClick(event, url) {
+  if (event.shiftKey) {
+    window.location.href = url;
+  } else {
+    // Kleiner visueller Effekt
+    event.target.style.opacity = '0.6';
+    setTimeout(() => {
+      event.target.style.opacity = '1';
+    }, 300);
+  }
+}
+  
   document.getElementById("year").textContent = new Date().getFullYear();
 </script>
 
