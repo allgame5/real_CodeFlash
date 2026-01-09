@@ -1,141 +1,169 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eier Uhr</title>
-    <link rel="manifest" href="manifest.json">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodeFlash – Eieruhr</title>
 
-    <style>
-        body {
-            display: flex;
-            margin: 0;
-            font-family: 'Roboto', sans-serif;
-        }
-        .sidebar {
-            width: 250px;
-            background-color: #2c3e50;
-            color: white;
-            height: 100vh;
-            padding-top: 20px;
-            position: fixed;
-            left: 0;
-            top: 0;
-        }
-        .sidebar h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .sidebar a {
-            display: block;
-            padding: 15px;
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            transition: background 0.3s;
-        }
-        .sidebar a:hover {
-            background-color: #1a252f;
-        }
-        .dropdown {
-            display: none;
-            background-color: #34495e;
-            padding-left: 20px;
-        }
-        .dropdown a {
-            font-size: 16px;
-        }
-        .dropdown-btn {
-            cursor: pointer;
-            padding: 15px;
-            font-size: 18px;
-            display: block;
-            color: white;
-            background: none;
-            border: none;
-            text-align: left;
-            width: 100%;
-        }
-        .dropdown-btn:hover {
-            background-color: #1a252f;
-        }
-        .main-content {
-            margin-left: 270px;
-            padding: 40px;
-            flex-grow: 1;
-            background-color: #262626;
-            text-align: center;
-        }
-        .timer {
-            font-size: 60px;
-            color: white;
-        }
-        .margin-top {
-            margin-top: 100px;
-        }
-    </style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-    <script>
-        let alarm = new Audio('alarm.mp3');
-        let timerStarted = false;
+<style>
+:root{
+  --bg:#f6f8fb;
+  --card:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+  --accent:#0fb26a;
+  --accent-2:#1f9a5a;
+  --radius:16px;
+  --shadow:0 10px 30px rgba(2,6,23,.1);
+}
+html{font-family:Inter,system-ui;background:var(--bg)}
+body{margin:0;min-height:100vh;display:grid;place-items:center}
 
-        function startTimer() {
-            if (!timerStarted) {
-                let startTime = new Date().getTime();
-                let fiveMinutes = 1000 * 60 * 5;
-                let endTime = startTime + fiveMinutes;
+.card{
+  background:var(--card);
+  width:100%;
+  max-width:420px;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:32px;
+  text-align:center;
+}
 
-                setInterval(function() {
-                    let timeLeft = endTime - new Date().getTime();
-                    if (timeLeft > 0) {
-                        let minutes = Math.floor(timeLeft / (1000 * 60));
-                        let seconds = Math.round((timeLeft / 1000) % 60);
-                        seconds = ('0' + seconds).slice(-2);
-                        document.getElementById("timer").innerHTML = '0' + minutes + ' : ' + seconds;
-                    } else {
-                        alarm.play();
-                        document.getElementById("timer").innerHTML = '00 : 00';
-                    }
-                }, 1000);
-                timerStarted = true;
-            }
-        }
+h1{margin:0;font-size:1.8rem}
+p{color:var(--muted);margin:8px 0 24px}
 
-        function toggleDropdown() {
-            var dropdown = document.getElementById("dropdown-menu");
-            if (dropdown.style.display === "block") {
-                dropdown.style.display = "none";
-            } else {
-                dropdown.style.display = "block";
-            }
-        }
-    </script>
+.timer{
+  font-size:3rem;
+  font-weight:700;
+  margin:20px 0;
+}
+
+.progress{
+  height:10px;
+  background:#e5e7eb;
+  border-radius:20px;
+  overflow:hidden;
+}
+.bar{
+  height:100%;
+  width:100%;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  transition:width 1s linear;
+}
+
+.buttons{
+  display:flex;
+  gap:12px;
+  margin-top:28px;
+}
+button{
+  flex:1;
+  padding:14px;
+  border:0;
+  border-radius:12px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.25s;
+}
+.start{background:var(--accent);color:white}
+.pause{background:#f59e0b;color:white}
+.reset{background:#ef4444;color:white}
+button:hover{transform:translateY(-2px)}
+
+footer{
+  margin-top:18px;
+  font-size:.85rem;
+  color:var(--muted);
+}
+</style>
 </head>
 
 <body>
-    <div class="sidebar">
-        <h2>Menü</h2>
-        <a href="#">• Startseite</a>
-        <button class="dropdown-btn" onclick="toggleDropdown()">Weitere Optionen</button>
-        <div class="dropdown" id="dropdown-menu">
-            <a href="info.html">Info</a>
-            <a href="#"></a>
-            <a href="#"></a>
-        </div>
-        <a href="#">Kontakt</a>
-    </div>
 
-    <div class="main-content">
-        <div class="margin-top">
-            <img src="egg.png">
-        </div>
-        <div class="margin-top timer" id="timer">05 : 00</div>
-        <div class="margin-top">
-            <img onclick="startTimer()" src="button.png">
-        </div>
-    </div>
+<div class="card">
+  <h1>🥚 Eier-Uhr</h1>
+  <p>Perfekt gekochte Eier – jedes Mal</p>
+
+  <div class="timer" id="timer">05:00</div>
+
+  <div class="progress">
+    <div class="bar" id="bar"></div>
+  </div>
+
+  <div class="buttons">
+    <button class="start" onclick="startTimer()">Start</button>
+    <button class="pause" onclick="pauseTimer()">Pause</button>
+    <button class="reset" onclick="resetTimer()">Reset</button>
+  </div>
+
+  <footer>CodeFlash Tool</footer>
+</div>
+
+<script>
+let duration = 300;
+let remaining = duration;
+let interval = null;
+
+/* 🔔 Signalton */
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playBeep(){
+  for(let i=0;i<3;i++){
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = "sine";
+    osc.frequency.value = 880;
+    gain.gain.value = 0.3;
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start(audioCtx.currentTime + i*0.4);
+    osc.stop(audioCtx.currentTime + i*0.4 + 0.25);
+  }
+}
+
+const timerEl = document.getElementById("timer");
+const bar = document.getElementById("bar");
+
+function updateUI(){
+  let min = Math.floor(remaining / 60);
+  let sec = remaining % 60;
+  timerEl.textContent =
+    String(min).padStart(2,"0") + ":" + String(sec).padStart(2,"0");
+  bar.style.width = (remaining / duration * 100) + "%";
+}
+
+function startTimer(){
+  if(interval) return;
+  audioCtx.resume(); // wichtig für Mobile
+  interval = setInterval(()=>{
+    if(remaining > 0){
+      remaining--;
+      updateUI();
+    } else {
+      clearInterval(interval);
+      interval = null;
+      playBeep(); // 🔔 SIGNALTON
+    }
+  },1000);
+}
+
+function pauseTimer(){
+  clearInterval(interval);
+  interval = null;
+}
+
+function resetTimer(){
+  pauseTimer();
+  remaining = duration;
+  updateUI();
+}
+
+updateUI();
+</script>
+
 </body>
-
 </html>
