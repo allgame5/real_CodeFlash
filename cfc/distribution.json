@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "rss": "",
+  "servers": [
+    {
+      "id": "cfc-server",
+      "name": "CFC Minecraft Server",
+      "description": "Willkommen auf dem offiziellen Codeflash Server!",
+      "icon": "https://raw.githubusercontent.com/allgame5/real_CodeFlash/main/cfc/icon.png",
+      "version": "1.21.11", 
+      "address": "cubeflash.net",
+      "port": 25565,
+      "discord": {
+        "shortId": "123456789",
+        "largeImageKey": "cfc_logo",
+        "largeImageText": "CFC Client"
+      },
+      "mainServer": true,
+      "modules": []
+    }
+  ]
+}
