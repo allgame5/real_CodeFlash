@@ -29,6 +29,7 @@
           "type": "VersionManifest",
           "required": { "value": true, "def": true },
           "artifact": {
+            "size": 2862,
             "url": "https://meta.fabricmc.net/v2/versions/loader/1.21.11/0.16.10/profile/json"
           }
         },
@@ -39,6 +40,7 @@
           "classpath": true,
           "required": { "value": true, "def": true },
           "artifact": {
+            "size": 1387408,
             "url": "https://maven.fabricmc.net/net/fabricmc/fabric-loader/0.16.10/fabric-loader-0.16.10.jar"
           }
         },
