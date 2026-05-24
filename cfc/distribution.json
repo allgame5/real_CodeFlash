@@ -24,7 +24,7 @@
       "autoconnect": true,
       "modules": [
         {
-          "id": "net.fabricmc:fabric-loader",
+          "id": "fabric-loader",
           "name": "Fabric Loader",
           "type": "VersionManifest",
           "required": { "value": true, "def": true },
@@ -32,90 +32,6 @@
             "size": 2862,
             "hash": "da72722b95fae4689cbfa78c89b78b54",
             "url": "https://meta.fabricmc.net/v2/versions/loader/1.21.11/0.16.10/profile/json"
-          }
-        },
-        {
-          "id": "net.fabricmc.fabric-loader.0.16.10",
-          "name": "Fabric Loader Core",
-          "type": "Library",
-          "classpath": true,
-          "required": { "value": true, "def": true },
-          "artifact": {
-            "size": 1387408,
-            "hash": "c00de9ea93f25d97f2c96c429bfb4e99",
-            "url": "https://maven.fabricmc.net/net/fabricmc/fabric-loader/0.16.10/fabric-loader-0.16.10.jar"
-          }
-        },
-        {
-          "id": "org.ow2.asm.asm.9.6",
-          "name": "ASM Core",
-          "type": "Library",
-          "classpath": true,
-          "required": { "value": true, "def": true },
-          "artifact": {
-            "size": 123247,
-            "hash": "89025e1975e7a9e3bc82143717df3f38",
-            "url": "https://repo1.maven.org/maven2/org/ow2/asm/asm/9.6/asm-9.6.jar"
-          }
-        },
-        {
-          "id": "org.ow2.asm.asm-analysis.9.6",
-          "name": "ASM Analysis",
-          "type": "Library",
-          "classpath": true,
-          "required": { "value": true, "def": true },
-          "artifact": {
-            "size": 34185,
-            "hash": "b535d4fa58893d7c357d76ee7ced2c87",
-            "url": "https://repo1.maven.org/maven2/org/ow2/asm/asm-analysis/9.6/asm-analysis-9.6.jar"
-          }
-        },
-        {
-          "id": "org.ow2.asm.asm-commons.9.6",
-          "name": "ASM Commons",
-          "type": "Library",
-          "classpath": true,
-          "required": { "value": true, "def": true },
-          "artifact": {
-            "size": 73224,
-            "hash": "834c32b0f4ec283a218f2f2112e4c0eb",
-            "url": "https://repo1.maven.org/maven2/org/ow2/asm/asm-commons/9.6/asm-commons-9.6.jar"
-          }
-        },
-        {
-          "id": "org.ow2.asm.asm-tree.9.6",
-          "name": "ASM Tree",
-          "type": "Library",
-          "classpath": true,
-          "required": { "value": true, "def": true },
-          "artifact": {
-            "size": 53579,
-            "hash": "95f32ebf118182b8f526b71b6933405d",
-            "url": "https://repo1.maven.org/maven2/org/ow2/asm/asm-tree/9.6/asm-tree-9.6.jar"
-          }
-        },
-        {
-          "id": "org.ow2.asm.asm-util.9.6",
-          "name": "ASM Util",
-          "type": "Library",
-          "classpath": true,
-          "required": { "value": true, "def": true },
-          "artifact": {
-            "size": 91703,
-            "hash": "ef65778a6ff603517865cf9a9dcfd145",
-            "url": "https://repo1.maven.org/maven2/org/ow2/asm/asm-util/9.6/asm-util-9.6.jar"
-          }
-        },
-        {
-          "id": "net.fabricmc.sponge-mixin",
-          "name": "Sponge Mixin",
-          "type": "Library",
-          "classpath": true,
-          "required": { "value": true, "def": true },
-          "artifact": {
-            "size": 1335011,
-            "hash": "0b3bb87034bf0805178f887cf4595e80",
-            "url": "https://maven.fabricmc.net/net/fabricmc/sponge-mixin/0.13.3+mixin.0.8.5/sponge-mixin-0.13.3+mixin.0.8.5.jar"
           }
         }
       ]
