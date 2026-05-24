@@ -53,9 +53,9 @@
           "classpath": true,
           "required": { "value": true, "def": true },
           "artifact": {
-            "url": "https://launcher.mojang.com/v1/objects/b06f658797b5cb98e4f50fe0a3733051412b1bc5/client.jar",
-            "size": 31221150,
-            "MD5": "b06f658797b5cb98e4f50fe0a3733051412b1bc5"
+            "url": "https://piston-data.mojang.com/v1/objects/5943896677f30018f67bc02970a0df6ec090cfcf/client.jar",
+            "size": 31221146,
+            "MD5": "5943896677f30018f67bc02970a0df6ec"
           }
         },
         {
