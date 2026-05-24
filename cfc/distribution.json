@@ -24,14 +24,15 @@
       "autoconnect": false,
       "modules": [
         {
-          "id": "net.fabricmc:fabric-loader:0.16.0",
-          "name": "Fabric Loader 0.16.0",
-          "type": "Library",
-          "classpath": true,
-          "artifact": {
-            "size": 0,
-            "url": "https://meta.fabricmc.net/v2/versions/loader/1.21.1/0.16.0/1.0.0/profile/json"
-          }
+  "id": "net.fabricmc:fabric-loader:0.16.0",
+  "name": "Fabric Loader 0.16.0",
+  "type": "Fabric",
+  "classpath": true,
+  "artifact": {
+    "size": 0,
+    "url": "https://meta.fabricmc.net/v2/versions/loader/1.21.1/0.16.0/1.0.0/profile/json"
+  }
+}
         }
       ]
     }
