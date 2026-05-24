@@ -14,7 +14,7 @@
       "icon": "https://raw.githubusercontent.com/allgame5/real_CodeFlash/main/cfc/icon.png",
       "version": "1.0.0",
       "address": "cubeflash.net:25565",
-      "minecraftVersion": "1.21.1",
+      "minecraftVersion": "1.21.11",
       "discord": {
         "shortId": "CFC",
         "largeImageKey": "https://raw.githubusercontent.com/dscalzi/HeliosLauncher/master/build/icon.png",
@@ -24,13 +24,18 @@
       "autoconnect": true,
       "modules": [
         {
-          "id": "net.minecraft:client:1.21.11",
-          "name": "Minecraft Vanilla",
+          "id": "net.fabricmc:fabric-loader",
+          "name": "Fabric Loader",
           "type": "VersionManifest",
           "classpath": true,
           "required": {
             "value": true,
             "def": true
+          },
+          "artifact": {
+            "url": "https://meta.fabricmc.net/v2/versions/loader/1.21.11/0.15.11/profile/json",
+            "size": 10000,
+            "MD5": "00000000000000000000000000000000"
           }
         }
       ]
