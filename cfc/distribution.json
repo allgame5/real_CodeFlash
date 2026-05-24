@@ -24,27 +24,27 @@
       "autoconnect": true,
       "modules": [
         {
+          "id": "fabric-loader-1.21.1",
+          "name": "Fabric Engine",
+          "type": "VersionManifest",
+          "required": { "value": true, "def": true },
+          "artifact": {
+            "size": 1184,
+            "MD5": "25bd1b046166ff0a2f4cc5662a7fecc0",
+            "url": "https://meta.fabricmc.net/v2/versions/loader/1.21.1/0.15.11/profile/json"
+          }
+        },
+        {
           "id": "net.fabricmc:fabric-loader:0.15.11",
           "name": "Fabric Loader (Core)",
-          "type": "ForgeHosted",
+          "type": "Library",
           "classpath": true,
+          "required": { "value": true, "def": true },
           "artifact": {
             "size": 472573,
             "MD5": "91ab6df7b2203fa0e6c6ff88c0363220",
             "url": "https://maven.fabricmc.net/net/fabricmc/fabric-loader/0.15.11/fabric-loader-0.15.11.jar"
-          },
-          "subModules": [
-            {
-              "id": "fabric-loader-1.21.1",
-              "name": "Fabric Version Manifest",
-              "type": "VersionManifest",
-              "artifact": {
-                "size": 1184,
-                "MD5": "25bd1b046166ff0a2f4cc5662a7fecc0",
-                "url": "https://meta.fabricmc.net/v2/versions/loader/1.21.1/0.15.11/profile/json"
-              }
-            }
-          ]
+          }
         },
         {
           "id": "org.ow2.asm:asm:9.6",
