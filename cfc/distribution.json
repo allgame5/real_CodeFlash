@@ -24,9 +24,9 @@
       "autoconnect": true,
       "modules": [
         {
-          "id": "fabric-loader",
+          "id": "net.fabricmc:fabric-loader",
           "name": "Fabric Loader",
-          "type": "VersionManifest",
+          "type": "Fabric",
           "required": { "value": true, "def": true },
           "artifact": {
             "size": 2862,
