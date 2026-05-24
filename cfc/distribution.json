@@ -45,6 +45,78 @@
               }
             }
           ]
+        },
+        {
+          "id": "org.ow2.asm:asm:9.6",
+          "name": "ASM Core",
+          "type": "Library",
+          "classpath": true,
+          "required": { "value": true, "def": true },
+          "artifact": {
+            "url": "https://repo1.maven.org/maven2/org/ow2/asm/asm/9.6/asm-9.6.jar",
+            "size": 124317,
+            "MD5": "dae8dd567bda4268e0e640fe6be640e7"
+          }
+        },
+        {
+          "id": "org.ow2.asm:asm-analysis:9.6",
+          "name": "ASM Analysis",
+          "type": "Library",
+          "classpath": true,
+          "required": { "value": true, "def": true },
+          "artifact": {
+            "url": "https://repo1.maven.org/maven2/org/ow2/asm/asm-analysis/9.6/asm-analysis-9.6.jar",
+            "size": 34181,
+            "MD5": "25d808e64e5be15f793bdf5d3cf4b16a"
+          }
+        },
+        {
+          "id": "org.ow2.asm:asm-commons:9.6",
+          "name": "ASM Commons",
+          "type": "Library",
+          "classpath": true,
+          "required": { "value": true, "def": true },
+          "artifact": {
+            "url": "https://repo1.maven.org/maven2/org/ow2/asm/asm-commons/9.6/asm-commons-9.6.jar",
+            "size": 71830,
+            "MD5": "ffc0805f63beea9ec1c12df8b1efbe23"
+          }
+        },
+        {
+          "id": "org.ow2.asm:asm-tree:9.6",
+          "name": "ASM Tree",
+          "type": "Library",
+          "classpath": true,
+          "required": { "value": true, "def": true },
+          "artifact": {
+            "url": "https://repo1.maven.org/maven2/org/ow2/asm/asm-tree/9.6/asm-tree-9.6.jar",
+            "size": 52174,
+            "MD5": "246bf2f5847fa274aa90ae95b0577fc0"
+          }
+        },
+        {
+          "id": "org.ow2.asm:asm-util:9.6",
+          "name": "ASM Util",
+          "type": "Library",
+          "classpath": true,
+          "required": { "value": true, "def": true },
+          "artifact": {
+            "url": "https://repo1.maven.org/maven2/org/ow2/asm/asm-util/9.6/asm-util-9.6.jar",
+            "size": 91811,
+            "MD5": "b3e945c71d6f455c192d1193d93708bb"
+          }
+        },
+        {
+          "id": "net.fabricmc:sponge-mixin:0.13.3+mixin.0.8.5",
+          "name": "Sponge Mixin",
+          "type": "Library",
+          "classpath": true,
+          "required": { "value": true, "def": true },
+          "artifact": {
+            "url": "https://maven.fabricmc.net/net/fabricmc/sponge-mixin/0.13.3+mixin.0.8.5/sponge-mixin-0.13.3+mixin.0.8.5.jar",
+            "size": 1391444,
+            "MD5": "70b3b4ee52b1bdfba2f0ffb57b9f3900"
+          }
         }
       ]
     }
