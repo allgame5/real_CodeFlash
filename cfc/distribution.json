@@ -24,7 +24,7 @@
       "autoconnect": true,
       "modules": [
         {
-          "id": "fabric-loader",
+          "id": "net.fabricmc:fabric-loader",
           "name": "Fabric Version Manifest",
           "type": "VersionManifest",
           "required": { "value": true, "def": true },
@@ -35,7 +35,7 @@
           }
         },
         {
-          "id": "net.fabricmc:fabric-loader:0.16.10",
+          "id": "fabric-loader",
           "name": "Fabric Loader (Core)",
           "type": "Library",
           "classpath": true,
