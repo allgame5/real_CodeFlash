@@ -26,7 +26,7 @@
         {
           "id": "net.fabricmc:fabric-loader:0.16.10",
           "name": "Fabric Loader",
-          "type": "Forge",
+          "type": "Fabric",
           "required": { "value": true, "def": true },
           "artifact": {
             "size": 2862,
