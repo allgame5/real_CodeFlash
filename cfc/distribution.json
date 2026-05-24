@@ -24,15 +24,16 @@
       "autoconnect": true,
       "modules": [
         {
-          "id": "net.fabricmc:fabric-loader:0.16.10",
-          "name": "Fabric Loader",
-          "type": "Fabric",
-          "required": { "value": true, "def": true },
-          "artifact": {
-            "size": 2862,
-            "hash": "da72722b95fae4689cbfa78c89b78b54",
-            "url": "https://meta.fabricmc.net/v2/versions/loader/1.21.11/0.16.10/profile/json"
-          }
+  "id": "net.fabricmc:fabric-loader:0.16.10",
+  "name": "Fabric Loader",
+  "type": "Library",
+  "required": { "value": true, "def": true },
+  "artifact": {
+    "size": 2862,
+    "hash": "da72722b95fae4689cbfa78c89b78b54",
+    "url": "https://meta.fabricmc.net/v2/versions/loader/1.21.11/0.16.10/profile/json"
+  }
+}
         }
       ]
     }
