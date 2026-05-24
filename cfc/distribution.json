@@ -8,15 +8,15 @@
   },
   "servers": [
     {
-      "id": "cfc-1.21.1",
-      "name": "CubeFlash (1.21.1)",
-      "description": "Willkommen auf CubeFlash! Running Fabric 1.21.1",
+      "id": "cfc-1.21.11",
+      "name": "CubeFlash (1.21.11)",
+      "description": "Willkommen auf CubeFlash! Running Fabric 1.21.11",
       "icon": "https://raw.githubusercontent.com/allgame5/real_CodeFlash/main/cfc/icon.png",
       "version": "1.0.0",
       "address": "cubeflash.net:25565",
-      "minecraftVersion": "1.21.1",
+      "minecraftVersion": "1.21.11",
       "discord": {
-        "shortId": "CFC 1.21.1",
+        "shortId": "CFC 1.21.11",
         "largeImageKey": "https://raw.githubusercontent.com/dscalzi/HeliosLauncher/master/build/icon.png",
         "largeImageText": "fabric-cfc"
       },
@@ -24,26 +24,22 @@
       "autoconnect": true,
       "modules": [
         {
-          "id": "fabric-loader-1.21.1",
-          "name": "Fabric Engine",
+          "id": "fabric-loader-1.21.11",
+          "name": "Fabric Version Manifest",
           "type": "VersionManifest",
           "required": { "value": true, "def": true },
           "artifact": {
-            "size": 1184,
-            "MD5": "25bd1b046166ff0a2f4cc5662a7fecc0",
-            "url": "https://meta.fabricmc.net/v2/versions/loader/1.21.1/0.15.11/profile/json"
+            "url": "https://meta.fabricmc.net/v2/versions/loader/1.21.11/0.16.10/profile/json"
           }
         },
         {
-          "id": "net.fabricmc:fabric-loader:0.15.11",
+          "id": "net.fabricmc:fabric-loader:0.16.10",
           "name": "Fabric Loader (Core)",
           "type": "Library",
           "classpath": true,
           "required": { "value": true, "def": true },
           "artifact": {
-            "size": 472573,
-            "MD5": "91ab6df7b2203fa0e6c6ff88c0363220",
-            "url": "https://maven.fabricmc.net/net/fabricmc/fabric-loader/0.15.11/fabric-loader-0.15.11.jar"
+            "url": "https://maven.fabricmc.net/net/fabricmc/fabric-loader/0.16.10/fabric-loader-0.16.10.jar"
           }
         },
         {
@@ -53,9 +49,7 @@
           "classpath": true,
           "required": { "value": true, "def": true },
           "artifact": {
-            "url": "https://repo1.maven.org/maven2/org/ow2/asm/asm/9.6/asm-9.6.jar",
-            "size": 124317,
-            "MD5": "dae8dd567bda4268e0e640fe6be640e7"
+            "url": "https://repo1.maven.org/maven2/org/ow2/asm/asm/9.6/asm-9.6.jar"
           }
         },
         {
@@ -65,9 +59,7 @@
           "classpath": true,
           "required": { "value": true, "def": true },
           "artifact": {
-            "url": "https://repo1.maven.org/maven2/org/ow2/asm/asm-analysis/9.6/asm-analysis-9.6.jar",
-            "size": 34181,
-            "MD5": "25d808e64e5be15f793bdf5d3cf4b16a"
+            "url": "https://repo1.maven.org/maven2/org/ow2/asm/asm-analysis/9.6/asm-analysis-9.6.jar"
           }
         },
         {
@@ -77,9 +69,7 @@
           "classpath": true,
           "required": { "value": true, "def": true },
           "artifact": {
-            "url": "https://repo1.maven.org/maven2/org/ow2/asm/asm-commons/9.6/asm-commons-9.6.jar",
-            "size": 71830,
-            "MD5": "ffc0805f63beea9ec1c12df8b1efbe23"
+            "url": "https://repo1.maven.org/maven2/org/ow2/asm/asm-commons/9.6/asm-commons-9.6.jar"
           }
         },
         {
@@ -89,9 +79,7 @@
           "classpath": true,
           "required": { "value": true, "def": true },
           "artifact": {
-            "url": "https://repo1.maven.org/maven2/org/ow2/asm/asm-tree/9.6/asm-tree-9.6.jar",
-            "size": 52174,
-            "MD5": "246bf2f5847fa274aa90ae95b0577fc0"
+            "url": "https://repo1.maven.org/maven2/org/ow2/asm/asm-tree/9.6/asm-tree-9.6.jar"
           }
         },
         {
@@ -101,9 +89,7 @@
           "classpath": true,
           "required": { "value": true, "def": true },
           "artifact": {
-            "url": "https://repo1.maven.org/maven2/org/ow2/asm/asm-util/9.6/asm-util-9.6.jar",
-            "size": 91811,
-            "MD5": "b3e945c71d6f455c192d1193d93708bb"
+            "url": "https://repo1.maven.org/maven2/org/ow2/asm/asm-util/9.6/asm-util-9.6.jar"
           }
         },
         {
@@ -113,9 +99,7 @@
           "classpath": true,
           "required": { "value": true, "def": true },
           "artifact": {
-            "url": "https://maven.fabricmc.net/net/fabricmc/sponge-mixin/0.13.3+mixin.0.8.5/sponge-mixin-0.13.3+mixin.0.8.5.jar",
-            "size": 1391444,
-            "MD5": "70b3b4ee52b1bdfba2f0ffb57b9f3900"
+            "url": "https://maven.fabricmc.net/net/fabricmc/sponge-mixin/0.13.3+mixin.0.8.5/sponge-mixin-0.13.3+mixin.0.8.5.jar"
           }
         }
       ]
