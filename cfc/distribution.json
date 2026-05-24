@@ -1,21 +1,27 @@
 {
   "version": "1.0.0",
   "rss": "",
+  "discord": {
+    "clientId": "1086936373057040395",
+    "smallImageText": "CFC Client",
+    "smallImageKey": "big"
+  },
   "servers": [
     {
       "id": "cfc-server",
       "name": "CFC Minecraft Server",
       "description": "Willkommen auf dem offiziellen Codeflash Server!",
       "icon": "https://raw.githubusercontent.com/allgame5/real_CodeFlash/main/cfc/icon.png",
-      "version": "1.20.4", 
-      "address": "cfc.codeflash.eu",
-      "port": 25565,
+      "version": "1.0.0",
+      "address": "cfc.codeflash.eu:25565",
+      "minecraftVersion": "1.20.4",
       "discord": {
-        "shortId": "123456789",
-        "largeImageKey": "cfc_logo",
+        "shortId": "CFC",
+        "largeImageKey": "https://raw.githubusercontent.com/dscalzi/HeliosLauncher/master/build/icon.png",
         "largeImageText": "CFC Client"
       },
       "mainServer": true,
+      "autoconnect": true,
       "modules": []
     }
   ]
