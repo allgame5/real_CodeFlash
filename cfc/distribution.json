@@ -24,8 +24,8 @@
       "autoconnect": true,
       "modules": [
         {
-          "id": "fabric-loader-1.21.11",
-          "name": "Fabric Version Manifest",
+          "id": "net.fabricmc:fabric-loader",
+          "name": "Fabric Loader",
           "type": "VersionManifest",
           "required": { "value": true, "def": true },
           "artifact": {
