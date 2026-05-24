@@ -8,9 +8,9 @@
   },
   "servers": [
     {
-      "id": "cfc-server",
-      "name": "CubeFlash",
-      "description": "Willkommen auf dem offiziellen Codeflash Server! (Minecraft 1.21.1)",
+      "id": "cfc-1.21.1",
+      "name": "CubeFlash (1.21.1)",
+      "description": "Willkommen auf CubeFlash! Running Fabric 1.21.1",
       "icon": "https://raw.githubusercontent.com/allgame5/real_CodeFlash/main/cfc/icon.png",
       "version": "1.0.0",
       "address": "cubeflash.net:25565",
@@ -18,35 +18,33 @@
       "discord": {
         "shortId": "CFC 1.21.1",
         "largeImageKey": "https://raw.githubusercontent.com/dscalzi/HeliosLauncher/master/build/icon.png",
-        "largeImageText": "CFC Client"
+        "largeImageText": "fabric-cfc"
       },
       "mainServer": true,
       "autoconnect": true,
       "modules": [
         {
-          "id": "net.minecraft:client:1.21.1",
-          "name": "Minecraft Vanilla Manifest",
-          "type": "VersionManifest",
-          "classpath": true,
-          "required": {
-            "value": true,
-            "def": true
-          }
-        },
-        {
           "id": "net.fabricmc:fabric-loader:0.15.11",
-          "name": "Fabric Loader Component",
-          "type": "Library",
+          "name": "Fabric Loader (Core)",
+          "type": "ForgeHosted",
           "classpath": true,
-          "required": {
-            "value": true,
-            "def": true
-          },
           "artifact": {
-            "url": "https://maven.fabricmc.net/net/fabricmc/fabric-loader/0.15.11/fabric-loader-0.15.11.jar",
             "size": 472573,
-            "MD5": "91ab6df7b2203fa0e6c6ff88c0363220"
-          }
+            "MD5": "91ab6df7b2203fa0e6c6ff88c0363220",
+            "url": "https://maven.fabricmc.net/net/fabricmc/fabric-loader/0.15.11/fabric-loader-0.15.11.jar"
+          },
+          "subModules": [
+            {
+              "id": "fabric-loader-1.21.1",
+              "name": "Fabric Version Manifest",
+              "type": "VersionManifest",
+              "artifact": {
+                "size": 1184,
+                "MD5": "25bd1b046166ff0a2f4cc5662a7fecc0",
+                "url": "https://meta.fabricmc.net/v2/versions/loader/1.21.1/0.15.11/profile/json"
+              }
+            }
+          ]
         }
       ]
     }
