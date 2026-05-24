@@ -24,18 +24,27 @@
       "autoconnect": true,
       "modules": [
         {
+          "id": "net.minecraft:client:1.21.1",
+          "name": "Minecraft Vanilla",
+          "type": "VersionManifest",
+          "classpath": true,
+          "required": {
+            "value": true,
+            "def": true
+          }
+        },
+        {
           "id": "net.fabricmc:fabric-loader:0.15.11",
           "name": "Fabric Loader",
-          "type": "ForgeHosted",
-          "classpath": true,
+          "type": "Library",
           "required": {
             "value": true,
             "def": true
           },
           "artifact": {
-            "url": "https://meta.fabricmc.net/v2/versions/loader/1.21.1/0.15.11/profile/json",
-            "size": 2852,
-            "MD5": "098bf7262a672722bc13d506d33a696e"
+            "url": "https://maven.fabricmc.net/net/fabricmc/fabric-loader/0.15.11/fabric-loader-0.15.11.jar",
+            "size": 472573,
+            "MD5": "91ab6df7b2203fa0e6c6ff88c0363220"
           }
         }
       ]
