@@ -30,6 +30,7 @@
           "required": { "value": true, "def": true },
           "artifact": {
             "size": 2862,
+            "hash": "da72722b95fae4689cbfa78c89b78b54",
             "url": "https://meta.fabricmc.net/v2/versions/loader/1.21.11/0.16.10/profile/json"
           }
         },
@@ -41,6 +42,7 @@
           "required": { "value": true, "def": true },
           "artifact": {
             "size": 1387408,
+            "hash": "c00de9ea93f25d97f2c96c429bfb4e99",
             "url": "https://maven.fabricmc.net/net/fabricmc/fabric-loader/0.16.10/fabric-loader-0.16.10.jar"
           }
         },
