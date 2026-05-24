@@ -47,6 +47,18 @@
           ]
         },
         {
+          "id": "com.mojang:minecraft-client:1.21.1",
+          "name": "Minecraft Client JAR",
+          "type": "Library",
+          "classpath": true,
+          "required": { "value": true, "def": true },
+          "artifact": {
+            "url": "https://launcher.mojang.com/v1/objects/b06f658797b5cb98e4f50fe0a3733051412b1bc5/client.jar",
+            "size": 31221150,
+            "MD5": "b06f658797b5cb98e4f50fe0a3733051412b1bc5"
+          }
+        },
+        {
           "id": "org.ow2.asm:asm:9.6",
           "name": "ASM Core",
           "type": "Library",
