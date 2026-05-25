@@ -12,6 +12,10 @@
       "minecraftVersion": "1.21.1",
       "mainServer": true,
       "autoconnect": true,
+      "eventHandler": {
+        "type": "node",
+        "file": "${LAUNCHER_DIR}/exclude-asm.js"
+      },
       "modules": [
         {
           "id": "net.fabricmc:fabric-loader:0.16.2",
