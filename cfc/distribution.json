@@ -1,38 +1,39 @@
 {
   "version": "1.0.0",
-  "rss": "https://helios-files.geekcorner.eu.org/rss.xml",
-  "discord": {
-    "clientId": "1086936373057040395",
-    "smallImageText": "Spielt gerade",
-    "smallImageKey": "big"
-  },
+  "rss": "https://codeflash.eu/cfc/news.xml",
   "servers": [
     {
-      "id": "Fabric-1.21.1",
-      "name": "Mein Fabric Server",
-      "description": "Server mit Fabric 1.21.1",
-      "icon": "https://helios-files.geekcorner.eu.org/icon.png",
+      "id": "cfc-fabric-1211",
+      "name": "CodeFlash Fabric Server",
+      "description": "Minecraft 1.21.1 Fabric",
+      "icon": "https://codeflash.eu/cfc/icon.png",
       "version": "1.0.0",
-      "address": "dein-server.de:25565",
+      "address": "deine-server-ip:25565",
       "minecraftVersion": "1.21.1",
-      "discord": {
-        "shortId": "Fabric 1.21.1",
-        "largeImageKey": "https://raw.githubusercontent.com/dscalzi/HeliosLauncher/master/build/icon.png",
-        "largeImageText": "fabric-modded"
-      },
       "mainServer": true,
-      "autoconnect": false,
+      "autoconnect": true,
       "modules": [
         {
-  "id": "net.fabricmc:fabric-loader:0.16.0",
-  "name": "Fabric Loader 0.16.0",
-  "type": "Fabric",
-  "classpath": true,
-  "artifact": {
-    "size": 0,
-    "url": "https://meta.fabricmc.net/v2/versions/loader/1.21.1/0.16.0/1.0.0/profile/json"
-  }
-}
+          "id": "net.fabricmc:fabric-loader:0.16.2",
+          "name": "Fabric Loader",
+          "type": "Fabric",
+          "artifact": {
+            "url": "https://maven.fabricmc.net/net/fabricmc/fabric-loader/0.16.2/fabric-loader-0.16.2.jar",
+            "size": 0,
+            "MD5": ""
+          },
+          "subModules": [
+            {
+              "id": "1.21.1-fabric-0.16.2",
+              "name": "Fabric Version",
+              "type": "VersionManifest",
+              "artifact": {
+                "url": "https://meta.fabricmc.net/v2/versions/loader/1.21.1/0.16.2/profile/json",
+                "size": 0,
+                "MD5": ""
+              }
+            }
+          ]
         }
       ]
     }
