@@ -8,7 +8,7 @@
       "description": "Minecraft 1.21.1 Fabric",
       "icon": "https://codeflash.eu/cfc/icon.png",
       "version": "1.0.0",
-      "address": "deine-server-ip:25565",
+      "address": "cubeflash.net:25565",
       "minecraftVersion": "1.21.1",
       "mainServer": true,
       "autoconnect": true,
